@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Monitor implements MonitorInterface {
     private PetriNet petriNet;
     private Politica politica;

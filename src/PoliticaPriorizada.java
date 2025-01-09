@@ -1,5 +1,7 @@
 //Prioriza transiciones en un orden definido (el primero en la lista)
-public class PoliticaPriorizada extends Politica {
+import java.util.List;
+
+public class PoliticaPriorizada implements Politica {
     @Override
     public int seleccionarTransicion(List<Integer> transiciones) {
         return transiciones.stream().findFirst().orElse(-1);

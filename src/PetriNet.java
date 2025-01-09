@@ -1,3 +1,8 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class PetriNet {
     private Map<Integer, Integer> places;
     private Map<Integer, List<Integer>> inputTransitions;
@@ -76,4 +81,9 @@ public class PetriNet {
             places.put(place, places.getOrDefault(place, 0) + 1);
         }
     }
+
+    public List<Integer> getAllTransitions() {
+        return new ArrayList<>(inputTransitions.keySet());
+    }
+
 }
