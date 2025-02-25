@@ -3,7 +3,7 @@ import Jama.Matrix;
 public class Main {
     private static final int cantHilos = 6;
     private static final String policyType = "Equitative";
-    //private static final String policyType = "8020";
+    //private static final String policyType = "7580";
     private static PetriNet petrinet;               // Petri net representative of the system.
     private static Monitor monitor;                 // Monitor that will control the Petri net that models the system.
     
@@ -35,13 +35,12 @@ public class Main {
         Long initTime = System.currentTimeMillis();
         petrinet = new PetriNet();
 
-        Policy policy = new Policy(policyType);
+        Politica policy = new Politica(policyType);
         System.out.println("Policy type: " + policyType + " \n");
 
         monitor = new Monitor(petrinet, policy);
 
-        Threads[] threads = new Threads[cantHilos
-];
+        Threads[] threads = new Threads[cantHilos];
 
         petrinet.enableTransitions();
 

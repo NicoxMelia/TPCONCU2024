@@ -2,20 +2,20 @@ import java.util.HashMap;
 import java.util.concurrent.Semaphore;
 import Jama.Matrix;
 
-public class Monitor {
+public class Monitor implements MonitorInterface{
 
     private PetriNet petrinet;
-    private Policy policy;
-    private Semaphore mutex;
+    private Politica politica;
+    private Semaphore mutex; //Controla el acceso a la sección crítica
     private Transitions conditionTransition;
-    private HashMap<Long, Long> timeLeft;
+    private HashMap<Long, Long> timeLeft; //Almacena el tiempo restante para que una transicion sea habilitada
 
-    private int deadThreads;
+    private int deadThreads; //Cant hilos que han terminado su ejecuccion
 
-    public Monitor(PetriNet petrinet, Policy policy) {
+    public Monitor(PetriNet petrinet, Politica politica) {
         this.conditionTransition = new Transitions();
         this.petrinet = petrinet;
-        this.policy = policy;
+        this.politica = politica;
         this.timeLeft = new HashMap<Long, Long>();
         this.mutex = new Semaphore(1, true);
         this.deadThreads = 0;
@@ -34,93 +34,67 @@ public class Monitor {
     }
 
     /*
-     * *************************
-     * *** PRINCIPAL METHOD  ***
-     * *************************
-     */
-
-    /*
-     * The method checks if the transition is enabled an "time enabled" calling the 'testTime' method.
-     * In case all conditions are met, the transition is fired and the method returns true.
-     * Otherwise, the thread is queued up and the method returns false.
+     * El método comprueba si la transición está habilitada en un "tiempo habilitado" llamando al método 'testTime'.
+     * En caso de que se cumplan todas las condiciones, la transición se activa y el método devuelve verdadero.
+     * De lo contrario, el hilo se pone en cola y el método devuelve falso.
      *
-     * @param v: firing vector
-     * @return true if the transition is fired, false otherwise
+     * @param v: vector de disparo
+     * @return verdadero si se activa la transición, falso en caso contrario
      */
-    public boolean fireTransition(Matrix v) 
-    {
-
+    public boolean fireTransition(int transition) {
+        boolean qualification = false;
         try {
-            if (petrinet.getCompletedInvariants() < 200) {
-                catchMonitor();
+            mutex.acquire();
+            Matrix v = new Matrix(1, petrinet.getIncidenceMatrix().getColumnDimension());
+            v.set(0, transition, 1);
+
+            if(testTime(v)) { //verifica si la transicion esta habilitada por tiempo
+                petrinet.fire(v); //se dispara si ha esperado el tiempo necesario
+                
+                // Comprueba si hay hilos en cola en transiciones sensibilizadas para despertarlos con la política establecida.
+                Matrix sensibilized = petrinet.getSensibilized(); //Verifica que transiciones estan sensibilizadas
+                Matrix queued = conditionTransition.queuedUp(); //Verifica que hilos estan en cola, esperando
+                Matrix and = sensibilized.arrayTimes(queued); 
+
+                int m = result(and); // transiciones sensibilizadas y en cola
+
+                if(m > 0) { //si hay hilos esperando
+                    int choice = politica.fireChoice(and); //selecciona uno para despertar
+                    conditionTransition.getQueued().get(choice).release(); //Despierta el hilo
+                } else {
+                    exitMonitor(); //libera el mutex
+                }
+                qualification = true;
             } else {
-                return false;
-            }
-        } catch(Exception e) {
-            System.err.println("❌  I was interrupted with the monitor in my hands  ❌");
-            System.exit(1);     // Stop the program with a non-zero exit code
-        }
-
-
-        if(!petrinet.fundamentalEquationTest(v) || (petrinet.workingState(v) == 1)) { // Someone is working on it, but it is not the thread that is requesting it. STATE = OTHER
-            exitMonitor();
-
-            int queue = conditionTransition.getQueue(v);
-
-            try {
-                conditionTransition.getQueued().get(queue).acquire();
-                if (petrinet.getCompletedInvariants() >= 200)
-                        return false;
-            } catch(Exception e) {
-                System.err.println("❌  current thread is interrupted   ❌");
-                System.exit(1);     // Stop the program with a non-zero exit code
-            }
-        }
-
-        if(testTime(v)) {
-            petrinet.fire(v);
-            
-            // Checks for threads queued up in sensibilized transitions to wake them up with the established policy.
-            Matrix sensibilized = petrinet.getSensibilized();
-
-            Matrix queued = conditionTransition.queuedUp();
-            Matrix and = sensibilized.arrayTimes(queued); //  'and' '&'
-
-            int m = result(and); // sensibilized and queued transitions
-
-
-            if(m > 0) {
-                int choice = policy.fireChoice(and);
-                // release
-                conditionTransition.getQueued().get(choice).release();
-            }else {
+                //petrinet.setWorkingVector(v, (double) Thread.currentThread().getId()); //Indica que otro hilo esta trabajando en la transicion
                 exitMonitor();
             }
-            return true;
-        } else {
-             petrinet.setWorkingVector(v, (double) Thread.currentThread().getId());
-             exitMonitor();
-             return false;
+        } catch(InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } finally {
+            mutex.release();
         }
+
+        return qualification;    
     }
 
     /*
-     * Test if the transition is "time enabled". Checking if the elapsed time since
-     * the sensibilization of the transition is greater than the alpha time.
-     * Returns true if the transition is "time enabled", if it's not, returns false and save's the remaining time.
-     *
-     * @param v: firing vector
-     * @return true if the transition is "time enabled", false otherwise
+     * Prueba si la transición tiene "tiempo habilitado". Comprobando si el tiempo transcurrido desde
+     * la sensibilización de la transición es mayor que el tiempo alfa.
+     * Devuelve verdadero si la transición tiene "tiempo habilitado", si no lo está, devuelve falso y guarda el tiempo restante.
+     * 
+     * @param v: vector de disparo
+     * @return Verdadero si la transición está "habilitada por tiempo", falso en caso contrario
      */
     private boolean testTime(Matrix v)
     {
         long time = System.currentTimeMillis();
-        long alpha = (long) petrinet.getAlphaTimes().get(0, getIndex(v));
-        long initTime = (long) petrinet.getSensibilizedTime().get(0, getIndex(v));
-        if (alpha < (time - initTime) || alpha == 0) {
+        long alpha = (long) petrinet.getAlphaTimes().get(0, getIndex(v)); //tiempo minimo de espera para disparar la transicion establecidos
+        long initTime = (long) petrinet.getSensibilizedTime().get(0, getIndex(v)); //tiempo en que la transicion fue sensibilizada
+        if (alpha < (time - initTime) || alpha == 0) { //si ha pasado suficiente tiempo para disparar la transicion o no hay restriccion temporal
             return true;
         } else {
-            setTimeLeft(Thread.currentThread().getId(), alpha - (time - initTime));
+            setTimeLeft(Thread.currentThread().getId(), alpha - (time - initTime)); //Calcula cuánto tiempo falta para que la transición pueda dispararse
             return false;
         }
     }
@@ -131,8 +105,7 @@ public class Monitor {
      * *************************
      */
 
-    public void printDeadThreads()
-    {
+    public void printDeadThreads(){
         System.out.println("Dead threads: " + deadThreads + "/12");
     }
 
@@ -145,13 +118,12 @@ public class Monitor {
     }
 
     /*
-     * Returns the number of enabled and queued transitions.
+     * Devuelve el número de transiciones habilitadas y en cola.
      *
-     * @param and: matrix resulting from the 'and' operation between the sensibilized and queued transitions.
-     * @return the number of enabled and queued transitions.
+     * @param and: matriz resultante de la operación 'y' entre las transiciones sensibilizadas y en cola.
+     * @return número de transiciones habilitadas y en cola.
      */
-    public int result(Matrix and)
-    {
+    public int result(Matrix and){
         int m = 0;
 
         for (int i = 0; i < and.getColumnDimension(); i++)
@@ -162,7 +134,7 @@ public class Monitor {
     }
 
     /*
-     * Returns the index of the transition that is going to be fired.
+     * Devuelve el índice de la transición que se va a activar.
      *
      * @param v: firing vector
      * @return index of the transition

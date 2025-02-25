@@ -10,7 +10,7 @@ import Jama.Matrix;
 // Clase que crea el Log estadístico para la ejecución del programa
 public class Log extends Thread {
 
-    private int[] occurrences;
+    //private int[] occurrences;
 
     // Campos privados
     private PetriNet petrinet; // Red de Petri del sistema.
@@ -30,7 +30,7 @@ public class Log extends Thread {
         this.startTime = startTime;
         this.isLog = isLog;
 
-        this.occurrences = new int[12];
+        //this.occurrences = new int[12];
 
     }
 
@@ -145,7 +145,7 @@ public class Log extends Thread {
                String info = petrinet.transitionsCounterInfo();
                 pw_log.print("\n                    ➡️ " + info);
                 pw_log.println();
-                pw_log.print("\n\n");
+                pw_log.print("\nMarcado Final: " + finalMarking);
                 pw_log.close();
 
             } else {
