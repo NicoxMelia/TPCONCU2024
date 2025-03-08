@@ -2,11 +2,19 @@ import java.util.ArrayList;
 
 public class Segment extends Thread {
 
+    /*
+     * VARIABLES
+     */
+
     private ArrayList<Transition> transitions;
     private ArrayList<Place> places;
     private Place startPlace;
     private Place endPlace;
     private Logger logger;
+
+    /*
+     * CONSTRUCTORS
+     */
 
     public Segment(
             ArrayList<Transition> transitions,
@@ -22,6 +30,10 @@ public class Segment extends Thread {
         this.logger = logger;
     }
 
+    /*
+     * METHODS
+     */
+    
     @Override
     public void run() {
 

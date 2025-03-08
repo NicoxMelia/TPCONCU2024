@@ -2,10 +2,18 @@ import java.util.ArrayList;
 
 public class PetriNet {
 
+    /*
+     * VARIABLES
+     */
+
     private ArrayList<Place> places;
     private ArrayList<Transition> transitions;
     private ArrayList<Segment> segments;
     private Logger logger;
+
+    /*
+     * CONSTRUCTORS
+     */
 
     public PetriNet(
             Integer[][] incidenceMatrix,
@@ -29,6 +37,10 @@ public class PetriNet {
                 segmentsStarts,
                 segmentsEnds);
     }
+
+    /*
+     * METHODS
+     */
 
     private void createPlaces(Integer[] initialMarking) {
 

@@ -2,6 +2,10 @@ import java.util.ArrayList;
 
 public class Transition {
 
+    /*
+     * VARIABLES
+     */
+
     private Integer minDelayTime;
     private Integer maxDelayTime;
     private ArrayList<Integer> consumedQuantities;
@@ -9,6 +13,10 @@ public class Transition {
     private ArrayList<Place> inputPlaces;
     private ArrayList<Place> outputPlaces;
     private Logger logger;
+
+    /*
+     * CONSTRUCTORS
+     */
 
     public Transition(
             Integer minDelayTime,
@@ -27,6 +35,10 @@ public class Transition {
         this.outputPlaces = outputPlaces;
         this.logger = logger;
     }
+
+    /*
+     * METHODS
+     */
 
     public void fireTransition() {
         if(canFire()) {

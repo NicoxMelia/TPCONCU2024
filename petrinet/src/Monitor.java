@@ -1,8 +1,16 @@
 public class Monitor {
 
+    /*
+     * VARIABLES
+     */
+
     private PetriNet petriNet;
     private Policy policy;
     private Logger logger;
+
+    /*
+     * CONSTRUCTORS
+     */
 
     public Monitor(
             Integer[][] incidenceMatrix,
@@ -28,4 +36,10 @@ public class Monitor {
                 probabilities,
                 logger);
     }
+
+    /*
+     * METHODS
+     */
+
+    
 }
