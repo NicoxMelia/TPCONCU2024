@@ -76,4 +76,32 @@ public class Transition {
     public Integer randomizeDelayTime() {
         return (int) (Math.random() * (maxDelayTime - minDelayTime + 1) + minDelayTime);
     }
+
+    /*
+     * GETTERS AND SETTERS
+     */
+
+    public Integer getMinDelayTime() {
+        return minDelayTime;
+    }
+
+    public Integer getMaxDelayTime() {
+        return maxDelayTime;
+    }
+
+    public ArrayList<Integer> getConsumedQuantities() {
+        return consumedQuantities;
+    }
+
+    public ArrayList<Integer> getProducedQuantities() {
+        return producedQuantities;
+    }
+
+    public ArrayList<Place> getInputPlaces() {
+        return inputPlaces;
+    }
+
+    public ArrayList<Place> getOutputPlaces() {
+        return outputPlaces;
+    }
 }

@@ -31,6 +31,10 @@ public class Place {
         tokens += quantity;
     }
 
+    /*
+     * GETTERS AND SETTERS
+     */
+
     public Integer getTokens() {
         return tokens;
     }

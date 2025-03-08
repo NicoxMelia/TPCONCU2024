@@ -17,4 +17,12 @@ public class Policy {
 
         this.probabilites = probabilites;
     }
+
+    /*
+     * GETTERS AND SETTERS
+     */
+
+    public void setProbabilites(Integer[] probabilites) {
+        this.probabilites = probabilites;
+    }
 }

@@ -15,7 +15,8 @@ public class Monitor {
     public Monitor(
             Integer[][] incidenceMatrix,
             Integer[] initialMarking,
-            Integer[][] segments,
+            Integer[][] placesSegmentsMatrix,
+            Integer[][] transitionsSegmentsMatrix,
             Integer[] segmentsStarts,
             Integer[] segmentsEnds,
             Integer[] minDelayTimes,
@@ -26,7 +27,8 @@ public class Monitor {
         this.petriNet = new PetriNet(
                 incidenceMatrix,
                 initialMarking,
-                segments,
+                placesSegmentsMatrix,
+                transitionsSegmentsMatrix,
                 segmentsStarts,
                 segmentsEnds,
                 minDelayTimes,
@@ -35,11 +37,5 @@ public class Monitor {
         this.policy = new Policy(
                 probabilities,
                 logger);
-    }
-
-    /*
-     * METHODS
-     */
-
-    
+    }    
 }

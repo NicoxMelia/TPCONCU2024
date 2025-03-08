@@ -6,8 +6,8 @@ public class Segment extends Thread {
      * VARIABLES
      */
 
-    private ArrayList<Transition> transitions;
     private ArrayList<Place> places;
+    private ArrayList<Transition> transitions;
     private Place startPlace;
     private Place endPlace;
     private Logger logger;
@@ -17,14 +17,14 @@ public class Segment extends Thread {
      */
 
     public Segment(
-            ArrayList<Transition> transitions,
             ArrayList<Place> places,
+            ArrayList<Transition> transitions,
             Place startPlace,
             Place endPlace,
             Logger logger) {
 
-        this.transitions = transitions;
         this.places = places;
+        this.transitions = transitions;
         this.startPlace = startPlace;
         this.endPlace = endPlace;
         this.logger = logger;
@@ -37,7 +37,7 @@ public class Segment extends Thread {
     @Override
     public void run() {
 
-        // Fires transitions all the time
+        // Fires possible transitions all the time
         while (true) {
             for (Transition transition : transitions) {
                 transition.fireTransition();
