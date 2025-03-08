@@ -44,4 +44,24 @@ public class Segment extends Thread {
             }
         }
     }
+
+    /*
+     * GETTERS AND SETTERS
+     */
+
+    public ArrayList<Place> getPlaces() {
+        return places;
+    }
+
+    public ArrayList<Transition> getTransitions() {
+        return transitions;
+    }
+
+    public Place getStartPlace() {
+        return startPlace;
+    }
+
+    public Place getEndPlace() {
+        return endPlace;
+    }
 }

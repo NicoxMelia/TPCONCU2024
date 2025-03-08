@@ -139,7 +139,7 @@ public class PetriNet {
         for (int i = 0; i < placesSegmentsMatrix.length; i++) {
             ArrayList<Place> places = new ArrayList<>();
             ArrayList<Transition> transitions = new ArrayList<>();
-            
+
             // Load all places of the actual segment based on the places list
             for (int j = 0; j < this.places.size(); j++) {
                 if (placesSegmentsMatrix[i][j] == 1) {
@@ -156,10 +156,30 @@ public class PetriNet {
             Segment segment = new Segment(
                     places,
                     transitions,
-                    places.get(segmentsStarts[i]),
-                    places.get(segmentsEnds[i]),
+                    this.places.get(segmentsStarts[i]),
+                    this.places.get(segmentsEnds[i]),
                     logger);
             segments.add(segment);
+        }
+
+        // DEBUG
+        if (true) {
+            System.out.println("<< CREATED SEGMENTS >>");
+            int n = 0;
+            for (Segment segment : segments) {
+                System.out.println("\nSegment " + n + ":");
+                System.out.print("Places: ");
+                for (Place place : segment.getPlaces()) {
+                    System.out.print(places.indexOf(place) + " ");
+                }
+                System.out.print("\nTransitions: ");
+                for (Transition transition : segment.getTransitions()) {
+                    System.out.print(transitions.indexOf(transition) + " ");
+                }
+                System.out.println("\nStart place: " + places.indexOf(segment.getStartPlace()));
+                System.out.println("End place: " + places.indexOf(segment.getEndPlace()));
+                n++;
+            }
         }
     }
 

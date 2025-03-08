@@ -37,5 +37,5 @@ public class Monitor {
         this.policy = new Policy(
                 probabilities,
                 logger);
-    }    
+    }
 }
