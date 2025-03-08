@@ -88,17 +88,12 @@ public class Main {
         1, // T10
         1, // T11
     };
+    private static Integer[] PROBABILITIES = {
+        75, // P1
+        30, // P2
+    };
     
     public static void main(String args[]) {
 
-        PetriNet petriNet = new PetriNet(INCIDENCE_MATRIX,
-                INITIAL_MARKING,
-                SEGMENTS_MATRIX,
-                SEGMENTS_STARTS,
-                SEGMENTS_ENDS,
-                MIN_DELAY_TIMES,
-                MAX_DELAY_TIMES);
-        
-        petriNet.start();
     }
 }

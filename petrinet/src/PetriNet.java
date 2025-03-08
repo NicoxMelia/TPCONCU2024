@@ -5,43 +5,54 @@ public class PetriNet {
     private ArrayList<Place> places;
     private ArrayList<Transition> transitions;
     private ArrayList<Segment> segments;
+    private Logger logger;
 
-    public PetriNet(Integer[][] incidenceMatrix,
+    public PetriNet(
+            Integer[][] incidenceMatrix,
             Integer[] initialMarking,
             Integer[][] segments,
             Integer[] segmentsStarts,
             Integer[] segmentsEnds,
             Integer[] minDelayTimes,
-            Integer[] maxDelayTimes) {
+            Integer[] maxDelayTimes,
+            Logger logger) {
 
         this.places = new ArrayList<>();
         this.transitions = new ArrayList<>();
         this.segments = new ArrayList<>();
+        this.logger = logger;
         createPlaces(initialMarking);
-        createTransitions(incidenceMatrix, minDelayTimes, maxDelayTimes);
-        createSegments(segments, segmentsStarts, segmentsEnds);
+        createTransitions(incidenceMatrix,
+                minDelayTimes,
+                maxDelayTimes);
+        createSegments(segments,
+                segmentsStarts,
+                segmentsEnds);
     }
 
     private void createPlaces(Integer[] initialMarking) {
 
-        // Create places
+        // Create places based on initial marking
         for (int i = 0; i < initialMarking.length; i++) {
-            Place place = new Place(initialMarking[i]);
+            Place place = new Place(initialMarking[i],
+                    logger);
             this.places.add(place);
         }
-        
     }
 
-    private void createTransitions(Integer[][] incidenceMatrix,
+    private void createTransitions(
+            Integer[][] incidenceMatrix,
             Integer[] minDelayTimes,
             Integer[] maxDelayTimes) {
 
-        // Create transitions
+        // Create transitions based on incidence matrix columns
         for (int i = 0; i < incidenceMatrix[0].length; i++) {
             ArrayList<Integer> consumedQuantities = new ArrayList<>();
             ArrayList<Integer> producedQuantities = new ArrayList<>();
             ArrayList<Place> inputPlaces = new ArrayList<>();
             ArrayList<Place> outputPlaces = new ArrayList<>();
+
+            // Load consumed & produced quantities and input & output places for each transition based on incidence matrix rows
             for (int j = 0; j < incidenceMatrix.length; j++) {
                 if (incidenceMatrix[j][i] < 0) {
                     consumedQuantities.add(-incidenceMatrix[j][i]);
@@ -51,43 +62,57 @@ public class PetriNet {
                     outputPlaces.add(places.get(j));
                 }
             }
-            Transition transition = new Transition(minDelayTimes[i],
+            Transition transition = new Transition(
+                    minDelayTimes[i],
                     maxDelayTimes[i],
                     consumedQuantities,
                     producedQuantities,
                     inputPlaces,
-                    outputPlaces);
+                    outputPlaces,
+                    logger);
             this.transitions.add(transition);
         }
     }
 
-    private void createSegments(Integer[][] segmentsMatrix,
+    private void createSegments(
+            Integer[][] segmentsMatrix,
             Integer[] segmentsStarts,
             Integer[] segmentsEnds) {
 
-        // Create segments
+        // Create transitions and places for each segment based on segments matrix rows
         for (int i = 0; i < segmentsMatrix.length; i++) {
             ArrayList<Transition> transitions = new ArrayList<>();
             ArrayList<Place> places = new ArrayList<>();
+            
+            // Load all places on the actual segment based on segments matrix columns
             for (int j = 0; j < segmentsMatrix[i].length; j++) {
                 if (segmentsMatrix[i][j] == 1) {
                     places.add(this.places.get(j));
                 }
             }
-            
 
-            // POSSIBLE ERROR HERE
-            for (int j = segmentsStarts[i]; j < segmentsEnds[i]; j++) {
-                places.add(this.places.get(j));
-            }
-            Segment segment = new Segment(transitions, places, places.get(0), places.get(places.size() - 1));
-            this.segments.add(segment);
+            // Load all transitions on the actual segment
+            //xx
+
+            Segment segment = new Segment(
+                    transitions,
+                    places,
+                    places.get(0),
+                    places.get(places.size() - 1),
+                    logger);
+            segments.add(segment);
         }
     }
 
-    public void start() {
-        for (Segment segment : segments) {
-            segment.start();
-        }
+    public ArrayList<Place> getPlaces() {
+        return places;
+    }
+
+    public ArrayList<Transition> getTransition() {
+        return transitions;
+    }
+
+    public ArrayList<Segment> getSegments() {
+        return segments;
     }
 }

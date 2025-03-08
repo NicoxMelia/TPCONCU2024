@@ -1,9 +1,14 @@
 public class Place {
 
     private Integer tokens;
+    private Logger logger;
 
-    public Place(Integer tokens) {
+    public Place(
+            Integer tokens,
+            Logger logger) {
+                
         this.tokens = tokens;
+        this.logger = logger;
     }
 
     public synchronized void consume(Integer quantity) {
