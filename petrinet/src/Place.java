@@ -1,3 +1,5 @@
+import java.util.concurrent.Semaphore;
+
 public class Place {
 
     /*
@@ -6,7 +8,7 @@ public class Place {
 
     private Integer id;
     private Integer tokens;
-    private Logger logger;
+    private Semaphore semaphore;
 
     /*
      * CONSTRUCTORS
@@ -14,12 +16,11 @@ public class Place {
 
     public Place(
             Integer id,
-            Integer tokens,
-            Logger logger) {
+            Integer tokens) {
 
         this.id = id;
         this.tokens = tokens;
-        this.logger = logger;
+        this.semaphore = new Semaphore(1);
     }
 
     /*
@@ -44,5 +45,9 @@ public class Place {
 
     public Integer getTokens() {
         return tokens;
+    }
+
+    public Semaphore getSemaphore() {
+        return semaphore;
     }
 }

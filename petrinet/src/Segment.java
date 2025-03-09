@@ -43,7 +43,11 @@ public class Segment extends Thread {
         // Fires possible transitions all the time
         while (true) {
             for (Transition transition : transitions) {
-                transition.fireTransition();
+
+                // Fires transition if possible and logs
+                if (transition.fireTransition()) {
+                    logger.logTransitionFiring(transition);
+                }
             }
         }
     }

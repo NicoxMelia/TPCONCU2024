@@ -23,21 +23,21 @@ public class Main {
         {  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  1, -1 }  // P14 
     };
     private static Integer[] INITIAL_MARKING = {
-        1,  // P0
-        1,  // P1
-        0,  // P2
-        0,  // P3
-        5,  // P4
-        0,  // P5
-        1,  // P6
-        1,  // P7
-        0,  // P8
-        0,  // P9
-        1,  // P10
-        0,  // P11
-        0,  // P12
-        0,  // P13
-        0   // P14
+        8, // P0
+        1, // P1
+        0, // P2
+        0, // P3
+        5, // P4
+        0, // P5
+        1, // P6
+        1, // P7
+        0, // P8
+        0, // P9
+        1, // P10
+        0, // P11
+        0, // P12
+        0, // P13
+        0  // P14
     };
     private static Integer[][] PLACES_SEGMENTS_MATRIX = {
         // P0  P1  P2  P3  P4  P5  P6  P7  P8  P9  P10 P11 P12 P13 P14

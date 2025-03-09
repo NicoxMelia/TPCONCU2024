@@ -31,10 +31,12 @@ public class PetriNet {
         this.segments = new ArrayList<>();
         this.logger = logger;
         createPlaces(initialMarking);
-        createTransitions(incidenceMatrix,
+        createTransitions(
+                incidenceMatrix,
                 minDelayTimes,
                 maxDelayTimes);
-        createSegments(placesSegmentsMatrix,
+        createSegments(
+                placesSegmentsMatrix,
                 transitionsSegmentsMatrix,
                 segmentsStarts,
                 segmentsEnds);
@@ -50,8 +52,7 @@ public class PetriNet {
         for (int i = 0; i < initialMarking.length; i++) {
             Place place = new Place(
                     i,
-                    initialMarking[i],
-                    logger);
+                    initialMarking[i]);
             this.places.add(place);
         }
 
@@ -82,14 +83,13 @@ public class PetriNet {
                 }
             }
             Transition transition = new Transition(
-                    i, 
+                    i,
                     minDelayTimes[i],
                     maxDelayTimes[i],
                     consumedQuantities,
                     producedQuantities,
                     inputPlaces,
-                    outputPlaces,
-                    logger);
+                    outputPlaces);
             this.transitions.add(transition);
         }
 

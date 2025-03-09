@@ -13,7 +13,6 @@ public class Transition {
     private ArrayList<Integer> producedQuantities;
     private ArrayList<Place> inputPlaces;
     private ArrayList<Place> outputPlaces;
-    private Logger logger;
 
     /*
      * CONSTRUCTORS
@@ -26,8 +25,7 @@ public class Transition {
             ArrayList<Integer> consumedQuantities,
             ArrayList<Integer> producedQuantities,
             ArrayList<Place> inputPlaces,
-            ArrayList<Place> outputPlaces,
-            Logger logger) {
+            ArrayList<Place> outputPlaces) {
 
         this.id = id;        
         this.minDelayTime = minDelayTime;
@@ -36,15 +34,28 @@ public class Transition {
         this.producedQuantities = producedQuantities;
         this.inputPlaces = inputPlaces;
         this.outputPlaces = outputPlaces;
-        this.logger = logger;
     }
 
     /*
      * METHODS
      */
 
-    public void fireTransition() {
-        if(canFire()) {
+    public Boolean fireTransition() {
+
+        // Acquires semaphores from input places
+        for (Place place : inputPlaces) {
+            try {
+                place.getSemaphore().acquire();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // Checks if transition can fire
+        Boolean fireable = canFire();
+
+        // Fires transition if possible
+        if(fireable) {
 
             // Consumes tokens from input places
             for (int i = 0; i < inputPlaces.size(); i++) {
@@ -62,10 +73,14 @@ public class Transition {
             for (int i = 0; i < outputPlaces.size(); i++) {
                 outputPlaces.get(i).produce(producedQuantities.get(i));
             }
-
-            // Log
-            logger.logTransitionFiring(this);
         }
+
+        // Releases semaphores from input places
+        for (Place place : inputPlaces) {
+            place.getSemaphore().release();
+        }
+
+        return fireable;
     }
 
     public Boolean canFire() {
