@@ -13,6 +13,7 @@ public class Transition {
     private ArrayList<Integer> producedQuantities;
     private ArrayList<Place> inputPlaces;
     private ArrayList<Place> outputPlaces;
+    private Integer fireCounter;
 
     /*
      * CONSTRUCTORS
@@ -34,6 +35,7 @@ public class Transition {
         this.producedQuantities = producedQuantities;
         this.inputPlaces = inputPlaces;
         this.outputPlaces = outputPlaces;
+        this.fireCounter = 0;
     }
 
     /*
@@ -47,7 +49,7 @@ public class Transition {
             try {
                 place.getSemaphore().acquire();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                System.out.println("ERROR: Place ID " + place.getId() + " semaphore acquire failed.");
             }
         }
 
@@ -73,6 +75,9 @@ public class Transition {
             for (int i = 0; i < outputPlaces.size(); i++) {
                 outputPlaces.get(i).produce(producedQuantities.get(i));
             }
+
+            // Increments fire counter
+            fireCounter++;
         }
 
         // Releases semaphores from input places
@@ -128,5 +133,9 @@ public class Transition {
 
     public ArrayList<Place> getOutputPlaces() {
         return outputPlaces;
+    }
+
+    public Integer getFireCounter() {
+        return fireCounter;
     }
 }

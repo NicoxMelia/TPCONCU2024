@@ -24,6 +24,9 @@ public class Monitor {
             Integer[] probabilities) {
         
         this.logger = new Logger();
+        this.policy = new Policy(
+                probabilities,
+                logger);
         this.petriNet = new PetriNet(
                 incidenceMatrix,
                 initialMarking,
@@ -33,9 +36,7 @@ public class Monitor {
                 segmentsEnds,
                 minDelayTimes,
                 maxDelayTimes,
-                logger);
-        this.policy = new Policy(
-                probabilities,
+                policy,
                 logger);
     }
 
@@ -43,5 +44,9 @@ public class Monitor {
         for (Segment segment : petriNet.getSegments()) {
             segment.start();
         }
+    }
+
+    public void updatePolicy(Integer[] probabilities) {
+        policy.setProbabilites(probabilities);
     }
 }

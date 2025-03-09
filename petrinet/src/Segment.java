@@ -11,6 +11,7 @@ public class Segment extends Thread {
     private ArrayList<Transition> transitions;
     private Place startPlace;
     private Place endPlace;
+    private Integer segmentCounter;
     private Logger logger;
 
     /*
@@ -30,6 +31,7 @@ public class Segment extends Thread {
         this.transitions = transitions;
         this.startPlace = startPlace;
         this.endPlace = endPlace;
+        this.segmentCounter = 0;
         this.logger = logger;
     }
 
@@ -46,6 +48,11 @@ public class Segment extends Thread {
 
                 // Fires transition if possible and logs
                 if (transition.fireTransition()) {
+
+                    // If a transition next to the segment starting place is fired, then increment the segment counter
+                    if (transition.getInputPlaces().contains(startPlace)) {
+                        segmentCounter++;
+                    }
                     logger.logTransitionFiring(transition);
                 }
             }

@@ -9,6 +9,7 @@ public class PetriNet {
     private ArrayList<Place> places;
     private ArrayList<Transition> transitions;
     private ArrayList<Segment> segments;
+    private Policy policy;
     private Logger logger;
 
     /*
@@ -24,11 +25,13 @@ public class PetriNet {
             Integer[] segmentsEnds,
             Integer[] minDelayTimes,
             Integer[] maxDelayTimes,
+            Policy policy,
             Logger logger) {
 
         this.places = new ArrayList<>();
         this.transitions = new ArrayList<>();
         this.segments = new ArrayList<>();
+        this.policy = policy;
         this.logger = logger;
         createPlaces(initialMarking);
         createTransitions(
