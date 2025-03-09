@@ -35,7 +35,7 @@ public class PetriNet {
         { 0, 0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 0 },    //P6
         { 0, 0, 0, -1, 1, 0, 0, 0, 0, 0, 0, 0 },    //P7
         { 0, 0, 0, 1, -1, 0, 0, 0, 0, 0, 0, 0 },    //P8
-        { 0, 0, 0, 0, 0, 1, 1, -1, -1, 0, 0, 0,},   //P9
+        { 0, 0, 0, 0, 1, 1, -1, -1, 0, 0, 0, 0 },   //P9
         { 0, 0, 0, 0, 0, 0, -1, -1, 1, 0, 1, 0 },   //P10
         { 0, 0, 0, 0, 0, 0, 1, 0, 0, -1, 0, 0 },    //P11
         { 0, 0, 0, 0, 0, 0, 0, 1, -1, 0, 0, 0 },    //P12
@@ -43,35 +43,12 @@ public class PetriNet {
         { 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, -1 }     //P14 
     };
 
-    // private final double[][] tInvariant = {
-    //         { 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1 }, // T1 T3 T5 T7 T9 T11 T12 T13
-    //         { 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1 }, // T1 T3 T5 T7 T8 T10 T12 T13
-    //         { 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1 }, // T1 T3 T4 T6 T9 T11 T12 T13
-    //         { 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1 }, // T1 T3 T4 T6 T8 T10 T12 T13
-    //         { 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1 }, // T0 T2 T5 T7 T9 T11 T12 T13
-    //         { 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1 }, // T0 T2 T5 T7 T8 T10 T12 T13
-    //         { 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1 }, // T0 T2 T4 T6 T9 T11 T12 T13
-    //         { 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1 }, // T0 T2 T4 T6 T8 T10 T12 T13
-    // };
-    // private final double[][] pInvariant = {
-    //         // 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18
-    //         { 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0 }, // 1 0,3,5,6,9,11,12,13,15,16,17
-    //         { 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // 2 1,3,
-    //         { 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // 3 2,5
-    //         { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0 }, // 4 13,14,15
-    //         { 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, // 5 7,9
-    //         { 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 }, // 6 8,11------------------
-    //         { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0 }, // 7 9,10,11
-    //         { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1 }, // 8 17,18----------------
-    //         { 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0 }, // 9 3,4,5,17
-    // };
-
     private final double[][] bIncidencia = {
         //T0 T1 T2 T3 T4 T5 T6 T7 T8 T9 T10 T11
         { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },    //P0
         { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },    //P1
         { 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },    //P2
-        { 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0 },   //P3
+        { 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0 },    //P3
         { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },    //P4
         { 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0 },    //P5
         { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 },    //P6
@@ -85,7 +62,7 @@ public class PetriNet {
         { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 }     //P14  
     };
                                            // 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14
-    private final double[] initialMarking = { 1, 1, 0, 0, 5, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0};
+    private final double[] initialMarking = { 5, 1, 0, 0, 5, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0};
 
                                    // 0   1   2  3   4    5   6  7   8    9   10   11 
     private final double[] aTimes = { 0, 200, 0, 0, 100, 100, 0, 0, 200, 100, 100, 0 };
@@ -214,23 +191,6 @@ public class PetriNet {
 
     void fire(Matrix v) // esta es la que hace el disparo literal, actualizando la rdp
     {
-        // Construir una cadena con los valores del vector de disparo
-    StringBuilder firingVectorStr = new StringBuilder("Firing vector: [");
-    for (int i = 0; i < v.getRowDimension(); i++) {
-        for (int j = 0; j < v.getColumnDimension(); j++) {
-            firingVectorStr.append(v.get(i, j));
-            if (j < v.getColumnDimension() - 1) {
-                firingVectorStr.append(", ");
-            }
-        }
-        if (i < v.getRowDimension() - 1) {
-            firingVectorStr.append("; ");
-        }
-    }
-    firingVectorStr.append("]");
-    System.out.println(firingVectorStr.toString()); // Imprimir el vector de disparo
-
-
         setmarcaActual(fundamentalEquation(v));
         setWorkingVector(v, 0);
         testPInvariants();
@@ -271,7 +231,7 @@ public class PetriNet {
         return (marking + "\n");
     }
 
-    public int getCompletedInvariants() {
+    public synchronized int getCompletedInvariants() {
         return completedInvariants;
     }
 
@@ -315,6 +275,9 @@ public class PetriNet {
             return 2;
     }
 
+    public synchronized void incrementCompletedInvariants() {
+        completedInvariants++;
+    }
 
     /*
      * Follows the transitions fired in order to check the T-invariants.
@@ -333,19 +296,19 @@ public class PetriNet {
             if (rutaActual.contains("01347811"))
             {
                 countIT[0] += 1;
-                completedInvariants++;
+                incrementCompletedInvariants();
             } else if (rutaActual.contains("0134691011"))
             {
                 countIT[1] += 1;
-                completedInvariants++;
+                incrementCompletedInvariants();
             } else if (rutaActual.contains("01257811"))
             {
                 countIT[2] += 1;
-                completedInvariants++;
+                incrementCompletedInvariants();
             } else if (rutaActual.contains("0125691011"))
             {
                 countIT[3] += 1;
-                completedInvariants++;
+                incrementCompletedInvariants();
             } else
             {
 
@@ -400,6 +363,16 @@ public class PetriNet {
         {
             System.out.println("Error in a p-invariant.");
             System.out.println(IP0 + "," + IP1 + "," + IP2 + "," + IP3 + "," + IP4 + "," + IP5);
+            System.out.println(marcaActual.get(0, 0) + marcaActual.get(0, 2) 
+            + marcaActual.get(0, 3) + marcaActual.get(0, 5) 
+            + marcaActual.get(0, 8) + marcaActual.get(0, 9)
+            + marcaActual.get(0, 11) + marcaActual.get(0, 12) 
+            + marcaActual.get(0, 13) + marcaActual.get(0, 14));
+            System.out.println(marcaActual.get(0, 0) + "," + marcaActual.get(0, 2) 
+            + "," +  marcaActual.get(0, 3) + "," + marcaActual.get(0, 5) 
+            + "," + marcaActual.get(0, 8) + "," + marcaActual.get(0, 9)
+            + "," + marcaActual.get(0, 11) + "," + marcaActual.get(0, 12) 
+            + "," + marcaActual.get(0, 13) + "," + marcaActual.get(0, 14));
         }
     }
 

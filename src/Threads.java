@@ -47,40 +47,28 @@ public class Threads extends Thread {
     public void run()
     {
         System.out.println("Thread " + getThreadName() + ": started run()");
-        //mientras el nro de invariantes completados sea menos a 200
-        while (this.monitor.getPetriNet().getCompletedInvariants() < 200) 
-        {
-            this.firingVector = transitions.get(transitionCounter); //transition actual
-            if (monitor.fireTransition(firingVector)) //dispara la transicion
-            {
-                nextTransition(); //siguiente transicion si se disparo
-            } else
-            {
-                //en caso contrario se duerme el hilo por el tiempo obtenido del monitor
-                //con los try-catch permite que el hilo siga ejecutandose si ocurre un fallo permitiendoles "recuperarse"
+        while (this.monitor.getPetriNet().getCompletedInvariants() < 200) {
+            this.firingVector = transitions.get(transitionCounter);
+            if (monitor.fireTransition(firingVector)) {
+                nextTransition();
+            } else {
                 long sleepTime;
-                try
-                {
+                try {
                     sleepTime = this.monitor.getTimeLeft(Thread.currentThread().getId());
+                } catch (Exception e) {
+                    sleepTime = 0;
                 }
-                catch (Exception e)
-                {
-                    sleepTime = 0; //establece en 0 si ocurre algun error, pero sigue ejecutandose
-                }
-                if(!(this.monitor.getPetriNet().getCompletedInvariants() < 200))
-                {
-                    try
-                    {
+                if (!(this.monitor.getPetriNet().getCompletedInvariants() < 200)) {
+                    try {
                         TimeUnit.MILLISECONDS.sleep(sleepTime);
-                    } catch(Exception e)
-                    {
+                    } catch (Exception e) {
                         System.err.println("Thread " + getThreadName() + ": interrupted while sleeping");
-                        System.exit(1);     // Stop the program with a non-zero exit code
+                        System.exit(1);
                     }
                 }
             }
         }
-        this.monitor.addDeadThreads(); //con 200 invariantes, se detiene el hilo
+        this.monitor.addDeadThreads();
         System.out.println("Thread " + getThreadName() + ": finished run()");
     }
 }

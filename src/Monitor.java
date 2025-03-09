@@ -1,55 +1,15 @@
-/* 
-import java.util.ArrayList;
-import java.util.List;
-
-public class Monitor implements MonitorInterface {
-    private PetriNet petriNet;
-    private Politica politica;
-
-    public Monitor(PetriNet petriNet, Politica politica) {
-        this.petriNet = petriNet;
-        this.politica = politica;
-    }
-
-    @Override
-    public synchronized boolean fireTransition(int transition) {
-        List<Integer> enabledTransitions = getEnabledTransitions();
-        if (enabledTransitions.isEmpty()) {
-            return false;
-        }
-        //Usa la politica seleccionada para lanzar transiciones
-        int selectedTransition = politica.seleccionarTransicion(enabledTransitions);
-        if (selectedTransition != -1 && petriNet.isTransitionEnabled(selectedTransition)) {
-            petriNet.executeTransition(selectedTransition);
-            System.out.println("Transición " + selectedTransition + " disparada por política.");
-            return true;
-        }
-        return false;
-    }
-
-    private List<Integer> getEnabledTransitions() {
-        List<Integer> enabled = new ArrayList<>();
-        for (int transition : petriNet.getAllTransitions()) {
-            if (petriNet.isTransitionEnabled(transition)) {
-                enabled.add(transition);
-            }
-        }
-        return enabled;
-    }
-}
-*/
-
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Semaphore;
 import Jama.Matrix;
 
 public class Monitor {
+    //Controla el acceso a la RdP usando un mutex para asegurar que solo un hilo a la vez pueda acceder
 
     private PetriNet petrinet;
     private Policy policy;
-    private Semaphore mutex;
-    private Transitions conditionTransition;
-    private HashMap<Long, Long> timeLeft;
+    private Semaphore mutex; //(binario) para asegurar que un hilo a la vez acceda a la seccion critica
+    private Transitions conditionTransition; //para bloquear hilos que no pueden disparar una transicion
+    private ConcurrentHashMap<Long, Long> timeLeft; //tiempo restante para que un hilo pueda disparar una transicion
 
     private int deadThreads;
 
@@ -57,8 +17,8 @@ public class Monitor {
         this.conditionTransition = new Transitions();
         this.petrinet = petrinet;
         this.policy = policy;
-        this.timeLeft = new HashMap<Long, Long>();
-        this.mutex = new Semaphore(1, true);
+        this.timeLeft = new ConcurrentHashMap<>();
+        this.mutex = new Semaphore(1, true); //prioriza hilos en orden FIFO
         this.deadThreads = 0;
     }
 
@@ -66,7 +26,7 @@ public class Monitor {
         return conditionTransition;
     }
 
-    public void addDeadThreads() {
+    public synchronized void addDeadThreads() {
         this.deadThreads++;
     }
 
@@ -81,9 +41,9 @@ public class Monitor {
      */
 
     /*
-     * The method checks if the transition is enabled an "time enabled" calling the 'testTime' method.
-     * In case all conditions are met, the transition is fired and the method returns true.
-     * Otherwise, the thread is queued up and the method returns false.
+     * El método verifica si la transición está habilitada en un "tiempo habilitado" llamando al método 'testTime'.
+     * En caso de que se cumplan todas las condiciones, la transición se activa y el método devuelve verdadero.
+     * De lo contrario, el hilo se pone en cola y el método devuelve falso.
      *
      * @param v: firing vector
      * @return true if the transition is fired, false otherwise
@@ -93,7 +53,7 @@ public class Monitor {
 
         try {
             if (petrinet.getCompletedInvariants() < 200) {
-                catchMonitor();
+                catchMonitor(); //para bloquear el acceso con el monitor
             } else {
                 return false;
             }
@@ -102,19 +62,22 @@ public class Monitor {
             System.exit(1);     // Stop the program with a non-zero exit code
         }
 
-
-        if(!petrinet.fundamentalEquationTest(v) || (petrinet.workingState(v) == 1)) { // Someone is working on it, but it is not the thread that is requesting it. STATE = OTHER
+        //a traves de la ec fundamental, verifica si una transicion no puede dispararse o si ya hay otro hilo trabajandola
+        if(!petrinet.fundamentalEquationTest(v) || (petrinet.workingState(v) == 1)) { 
             exitMonitor();
 
             int queue = conditionTransition.getTransition(v);
-
+            
+            //Si un hilo es interrupido mientras sostiene el monitos, el programa termina
+            //en lugar de dejar el sistema bloqueado en un estado incorrecto.
             try {
+                //obtiene el semaforo correspondiente a la transicion queue y pone en espera al hilo hasta que otro lo despierte
                 conditionTransition.getTransitions().get(queue).acquire();
                 if (petrinet.getCompletedInvariants() >= 200)
                         return false;
             } catch(Exception e) {
                 System.err.println("❌  current thread is interrupted   ❌");
-                System.exit(1);     // Stop the program with a non-zero exit code
+                System.exit(1);
             }
         }
 
@@ -125,7 +88,7 @@ public class Monitor {
             Matrix sensibilized = petrinet.getSensibilized();
 
             Matrix queued = conditionTransition.transitionUp();
-            Matrix and = sensibilized.arrayTimes(queued); //  'and' '&'
+            Matrix and = sensibilized.arrayTimes(queued);
 
             int m = result(and); // sensibilized and queued transitions
 
@@ -138,7 +101,7 @@ public class Monitor {
                 exitMonitor();
             }
             return true;
-        } else {
+        } else { //se marca como en espera
              petrinet.setWorkingVector(v, (double) Thread.currentThread().getId());
              exitMonitor();
              return false;
@@ -146,9 +109,9 @@ public class Monitor {
     }
 
     /*
-     * Test if the transition is "time enabled". Checking if the elapsed time since
-     * the sensibilization of the transition is greater than the alpha time.
-     * Returns true if the transition is "time enabled", if it's not, returns false and save's the remaining time.
+     * Pruebe si la transición tiene "tiempo habilitado". Comprobando si el tiempo transcurrido desde
+     * la sensibilización de la transición es mayor que el tiempo alfa.
+     * Devuelve verdadero si la transición tiene "tiempo habilitado", si no lo está, devuelve falso y guarda el tiempo restante.
      *
      * @param v: firing vector
      * @return true if the transition is "time enabled", false otherwise
