@@ -48,22 +48,15 @@ public class PetriNet {
 
         // Create places based on initial marking
         for (int i = 0; i < initialMarking.length; i++) {
-            Place place = new Place(initialMarking[i],
+            Place place = new Place(
+                    i,
+                    initialMarking[i],
                     logger);
             this.places.add(place);
         }
 
-        // DEBUG
-        if (true) {
-            System.out.println("<< CREATED PLACES >>");
-            int n = 0;
-            for (Place place : places) {
-                System.out.println("\nPlace " + n + ":");
-                System.out.println("Tokens: " + place.getTokens());
-                n++;
-            }
-            System.out.println();
-        }
+        // Log
+        logger.logPlacesCreation(places);
     }
 
     private void createTransitions(
@@ -89,6 +82,7 @@ public class PetriNet {
                 }
             }
             Transition transition = new Transition(
+                    i, 
                     minDelayTimes[i],
                     maxDelayTimes[i],
                     consumedQuantities,
@@ -99,34 +93,8 @@ public class PetriNet {
             this.transitions.add(transition);
         }
 
-        // DEBUG
-        if (true) {
-            System.out.println("<< CREATED TRANSITIONS >>");
-            int n = 0;
-            for (Transition transition : transitions) {
-                System.out.println("\nTransition " + n + ":");
-                System.out.println("Min delay time: " + transition.getMinDelayTime());
-                System.out.println("Max delay time: " + transition.getMaxDelayTime());
-                System.out.print("Consumed quantities: ");
-                for (Integer consumedQuantity : transition.getConsumedQuantities()) {
-                    System.out.print(consumedQuantity + " ");
-                }
-                System.out.print("\nProduced quantities: ");
-                for (Integer producedQuantity : transition.getProducedQuantities()) {
-                    System.out.print(producedQuantity + " ");
-                }
-                System.out.print("\nInput places: ");
-                for (Place inputPlace : transition.getInputPlaces()) {
-                    System.out.print(places.indexOf(inputPlace) + " ");
-                }
-                System.out.print("\nOutput places: ");
-                for (Place outputPlace : transition.getOutputPlaces()) {
-                    System.out.print(places.indexOf(outputPlace) + " ");
-                }
-                System.out.println();
-                n++;
-            }
-        }
+        // Log
+        logger.logTransitionsCreation(transitions);
     }
 
     private void createSegments(
@@ -154,6 +122,7 @@ public class PetriNet {
                 }
             }
             Segment segment = new Segment(
+                    i,
                     places,
                     transitions,
                     this.places.get(segmentsStarts[i]),
@@ -162,25 +131,8 @@ public class PetriNet {
             segments.add(segment);
         }
 
-        // DEBUG
-        if (true) {
-            System.out.println("<< CREATED SEGMENTS >>");
-            int n = 0;
-            for (Segment segment : segments) {
-                System.out.println("\nSegment " + n + ":");
-                System.out.print("Places: ");
-                for (Place place : segment.getPlaces()) {
-                    System.out.print(places.indexOf(place) + " ");
-                }
-                System.out.print("\nTransitions: ");
-                for (Transition transition : segment.getTransitions()) {
-                    System.out.print(transitions.indexOf(transition) + " ");
-                }
-                System.out.println("\nStart place: " + places.indexOf(segment.getStartPlace()));
-                System.out.println("End place: " + places.indexOf(segment.getEndPlace()));
-                n++;
-            }
-        }
+        // Log
+        logger.logSegmentsCreation(segments);
     }
 
     /*
@@ -191,7 +143,7 @@ public class PetriNet {
         return places;
     }
 
-    public ArrayList<Transition> getTransition() {
+    public ArrayList<Transition> getTransitions() {
         return transitions;
     }
 

@@ -6,6 +6,7 @@ public class Segment extends Thread {
      * VARIABLES
      */
 
+    private long id;
     private ArrayList<Place> places;
     private ArrayList<Transition> transitions;
     private Place startPlace;
@@ -17,12 +18,14 @@ public class Segment extends Thread {
      */
 
     public Segment(
+            long id,
             ArrayList<Place> places,
             ArrayList<Transition> transitions,
             Place startPlace,
             Place endPlace,
             Logger logger) {
 
+        this.id = id;
         this.places = places;
         this.transitions = transitions;
         this.startPlace = startPlace;
@@ -48,6 +51,10 @@ public class Segment extends Thread {
     /*
      * GETTERS AND SETTERS
      */
+
+    public long getId() {
+        return id;
+    }
 
     public ArrayList<Place> getPlaces() {
         return places;

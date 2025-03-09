@@ -4,6 +4,7 @@ public class Place {
      * VARIABLES
      */
 
+    private Integer id;
     private Integer tokens;
     private Logger logger;
 
@@ -12,9 +13,11 @@ public class Place {
      */
 
     public Place(
+            Integer id,
             Integer tokens,
             Logger logger) {
 
+        this.id = id;
         this.tokens = tokens;
         this.logger = logger;
     }
@@ -34,6 +37,10 @@ public class Place {
     /*
      * GETTERS AND SETTERS
      */
+
+    public Integer getId() {
+        return id;
+    }
 
     public Integer getTokens() {
         return tokens;

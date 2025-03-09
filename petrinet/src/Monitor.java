@@ -38,4 +38,10 @@ public class Monitor {
                 probabilities,
                 logger);
     }
+
+    public void start() {
+        for (Segment segment : petriNet.getSegments()) {
+            segment.start();
+        }
+    }
 }

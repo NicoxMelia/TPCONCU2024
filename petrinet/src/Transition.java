@@ -6,6 +6,7 @@ public class Transition {
      * VARIABLES
      */
 
+    private Integer id;
     private Integer minDelayTime;
     private Integer maxDelayTime;
     private ArrayList<Integer> consumedQuantities;
@@ -19,6 +20,7 @@ public class Transition {
      */
 
     public Transition(
+            Integer id,
             Integer minDelayTime,
             Integer maxDelayTime,
             ArrayList<Integer> consumedQuantities,
@@ -26,7 +28,8 @@ public class Transition {
             ArrayList<Place> inputPlaces,
             ArrayList<Place> outputPlaces,
             Logger logger) {
-        
+
+        this.id = id;        
         this.minDelayTime = minDelayTime;
         this.maxDelayTime = maxDelayTime;
         this.consumedQuantities = consumedQuantities;
@@ -59,6 +62,9 @@ public class Transition {
             for (int i = 0; i < outputPlaces.size(); i++) {
                 outputPlaces.get(i).produce(producedQuantities.get(i));
             }
+
+            // Log
+            logger.logTransitionFiring(this);
         }
     }
 
@@ -81,6 +87,10 @@ public class Transition {
      * GETTERS AND SETTERS
      */
 
+    public Integer getId() {
+        return id;
+    }
+    
     public Integer getMinDelayTime() {
         return minDelayTime;
     }

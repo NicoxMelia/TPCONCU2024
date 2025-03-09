@@ -16,13 +16,24 @@ public class Policy {
             Logger logger) {
 
         this.probabilites = probabilites;
+        this.logger = logger;
+
+        // Log
+        logger.logPolicy(probabilites);
     }
 
     /*
      * GETTERS AND SETTERS
      */
 
+    public Integer[] getProbabilites() {
+        return probabilites;
+    }
+
     public void setProbabilites(Integer[] probabilites) {
         this.probabilites = probabilites;
+
+        // Log
+        logger.logPolicy(probabilites);
     }
 }

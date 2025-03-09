@@ -23,7 +23,7 @@ public class Main {
         {  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  1, -1 }  // P14 
     };
     private static Integer[] INITIAL_MARKING = {
-        20, // P0
+        1,  // P0
         1,  // P1
         0,  // P2
         0,  // P3
@@ -74,32 +74,32 @@ public class Main {
         0   // S5
     };
     private static Integer[] MIN_DELAY_TIMES = {
-        1, // T0
-        1, // T1
-        1, // T2
-        1, // T3
-        1, // T4
-        1, // T5
-        1, // T6
-        1, // T7
-        1, // T8
-        1, // T9
-        1, // T10
-        1, // T11
+        100, // T0
+        100, // T1
+        100, // T2
+        100, // T3
+        100, // T4
+        100, // T5
+        100, // T6
+        100, // T7
+        100, // T8
+        100, // T9
+        100, // T10
+        100, // T11
     };
     private static Integer[] MAX_DELAY_TIMES = {
-        1, // T0
-        1, // T1
-        1, // T2
-        1, // T3
-        1, // T4
-        1, // T5
-        1, // T6
-        1, // T7
-        1, // T8
-        1, // T9
-        1, // T10
-        1, // T11
+        200, // T0
+        200, // T1
+        200, // T2
+        200, // T3
+        200, // T4
+        200, // T5
+        200, // T6
+        200, // T7
+        200, // T8
+        200, // T9
+        200, // T10
+        200, // T11
     };
     private static Integer[] PROBABILITIES = {
         75, // P1
@@ -122,5 +122,7 @@ public class Main {
                 MIN_DELAY_TIMES,
                 MAX_DELAY_TIMES,
                 PROBABILITIES);
+
+        monitor.start();
     }
 }
