@@ -107,35 +107,19 @@ public class Transition {
      * GETTERS AND SETTERS
      */
 
-    public Integer getId() {
-        return id;
-    }
+    public Integer getId() { return id; }
     
-    public Integer getMinDelayTime() {
-        return minDelayTime;
-    }
+    public Integer getMinDelayTime() { return minDelayTime; }
 
-    public Integer getMaxDelayTime() {
-        return maxDelayTime;
-    }
+    public Integer getMaxDelayTime() { return maxDelayTime; }
 
-    public ArrayList<Integer> getConsumedQuantities() {
-        return consumedQuantities;
-    }
+    public ArrayList<Integer> getConsumedQuantities() { return consumedQuantities; }
 
-    public ArrayList<Integer> getProducedQuantities() {
-        return producedQuantities;
-    }
+    public ArrayList<Integer> getProducedQuantities() { return producedQuantities; }
 
-    public ArrayList<Place> getInputPlaces() {
-        return inputPlaces;
-    }
+    public ArrayList<Place> getInputPlaces() { return inputPlaces; }
 
-    public ArrayList<Place> getOutputPlaces() {
-        return outputPlaces;
-    }
+    public ArrayList<Place> getOutputPlaces() { return outputPlaces; }
 
-    public Integer getFireCounter() {
-        return fireCounter;
-    }
+    public Integer getFireCounter() { return fireCounter; }
 }
