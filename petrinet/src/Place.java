@@ -45,23 +45,13 @@ public class Place {
      * GETTERS AND SETTERS
      */
 
-    public Integer getId() {
-        return id;
-    }
+    public Integer getId() { return id; }
 
-    public Integer getTokens() {
-        return tokens;
-    }
+    public Integer getTokens() { return tokens; }
 
-    public Semaphore getSemaphore() {
-        return semaphore;
-    }
+    public Semaphore getSemaphore() { return semaphore; }
 
-    public Integer getConsumedTokens() {
-        return consumedTokens;
-    }
+    public Integer getConsumedTokens() { return consumedTokens; }
 
-    public Integer getProducedTokens() {
-        return producedTokens;
-    }
+    public Integer getProducedTokens() { return producedTokens; }
 }

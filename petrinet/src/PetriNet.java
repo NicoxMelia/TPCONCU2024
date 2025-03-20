@@ -142,15 +142,9 @@ public class PetriNet {
      * GETTERS AND SETTERS
      */
 
-    public ArrayList<Place> getPlaces() {
-        return places;
-    }
+    public ArrayList<Place> getPlaces() { return places; }
 
-    public ArrayList<Transition> getTransitions() {
-        return transitions;
-    }
+    public ArrayList<Transition> getTransitions() { return transitions; }
 
-    public ArrayList<Segment> getSegments() {
-        return segments;
-    }
+    public ArrayList<Segment> getSegments() { return segments; }
 }

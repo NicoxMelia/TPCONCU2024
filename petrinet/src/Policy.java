@@ -26,9 +26,7 @@ public class Policy {
      * GETTERS AND SETTERS
      */
 
-    public Integer[] getProbabilites() {
-        return probabilites;
-    }
+    public Integer[] getProbabilites() { return probabilites; }
 
     public void setProbabilites(Integer[] probabilites) {
         this.probabilites = probabilites;

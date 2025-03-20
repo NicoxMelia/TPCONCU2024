@@ -46,7 +46,7 @@ public class Segment extends Thread {
         while (true) {
             for (Transition transition : transitions) {
 
-                // Fires transition if possible and logs
+                // Fires transition if possible and then log
                 if (transition.fireTransition()) {
 
                     // If a transition next to the segment starting place is fired, then increment the segment counter
@@ -63,23 +63,13 @@ public class Segment extends Thread {
      * GETTERS AND SETTERS
      */
 
-    public long getId() {
-        return id;
-    }
+    public long getId() { return id; }
 
-    public ArrayList<Place> getPlaces() {
-        return places;
-    }
+    public ArrayList<Place> getPlaces() { return places; }
 
-    public ArrayList<Transition> getTransitions() {
-        return transitions;
-    }
+    public ArrayList<Transition> getTransitions() { return transitions; }
 
-    public Place getStartPlace() {
-        return startPlace;
-    }
+    public Place getStartPlace() { return startPlace; }
 
-    public Place getEndPlace() {
-        return endPlace;
-    }
+    public Place getEndPlace() { return endPlace; }
 }
