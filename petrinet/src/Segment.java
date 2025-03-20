@@ -53,6 +53,8 @@ public class Segment extends Thread {
                     if (transition.getInputPlaces().contains(startPlace)) {
                         segmentCounter++;
                     }
+
+                    // Log
                     logger.logTransitionFiring(transition);
                 }
             }

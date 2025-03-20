@@ -20,7 +20,7 @@ public class Logger extends Thread {
     }
 
     public void logTransitionFiring(Transition transition) {
-        System.out.println("Transition: " + transition.getId() + " fired.");
+        System.out.println("Transition ID: " + transition.getId() + " fired.");
     }
 
     public void logPlacesCreation(ArrayList<Place> places) {

@@ -99,7 +99,7 @@ public class PetriNet {
         // Log
         logger.logTransitionsCreation(transitions);
     }
-
+    
     private void createSegments(
             Integer[][] placesSegmentsMatrix,
             Integer[][] transitionsSegmentsMatrix,
