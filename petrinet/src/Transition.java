@@ -40,15 +40,6 @@ public class Transition {
 
     public Boolean fireTransition() {
 
-        // Acquires semaphores from input places
-        for (Place place : inputPlaces) {
-            try {
-                place.getSemaphore().acquire();
-            } catch (InterruptedException e) {
-                System.out.println("ERROR: Place ID " + place.getId() + " semaphore acquire failed.");
-            }
-        }
-
         // Checks if transition can fire
         Boolean fireable = canFire();
 
@@ -80,15 +71,10 @@ public class Transition {
             }
         }
 
-        // Releases semaphores from input places
-        for (Place place : inputPlaces) {
-            place.getSemaphore().release();
-        }
-
         return fireable;
     }
 
-    public Boolean canFire() {
+    private Boolean canFire() {
 
         // Checks if there are enough tokens in input places
         for (int i = 0; i < inputPlaces.size(); i++) {

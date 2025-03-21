@@ -21,16 +21,11 @@ public class Place {
     public Place(
             Integer id,
             Boolean isTracked,
-            Integer tokens) {
+            ArrayList<Token> tokens) {
 
         this.id = id;
         this.isTracked = isTracked;
-        this.tokens = new ArrayList<>();
-        for (int i = 0; i < tokens; i++) {
-            this.tokens.add(new Token(
-                    i + 100 * id,
-                    isTracked));
-        }
+        this.tokens = tokens;
         this.semaphore = new Semaphore(1);
     }
 
@@ -45,7 +40,27 @@ public class Place {
     }
 
     public synchronized void produce(Token token) {
-        this.tokens.add(token);
+        if (isTracked) {
+            tokens.add(token);
+        } else {
+            Integer tmpId;
+            for (int i = 0; true; i++) {
+                tmpId = i + 100 * id;
+                Boolean isFound = false;
+                for (Token t : tokens) {
+                    if (t.getId().equals(tmpId)) {
+                        isFound = true;
+                        break;
+                    }
+                }
+                if (!isFound) {
+                    tokens.add(new Token(
+                    i + 100 * id,
+                    isTracked));
+                    break;
+                }
+            }
+        }
     }
 
     /*

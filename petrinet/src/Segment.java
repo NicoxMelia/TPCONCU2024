@@ -44,11 +44,39 @@ public class Segment extends Thread {
         while (true) {
             for (Transition transition : transitions) {
 
+                // Acquires semaphores from input places
+                for (Place place : transition.getInputPlaces()) {
+                    try {
+                        place.getSemaphore().acquire();
+                    } catch (InterruptedException e) {
+                        System.out.println("ERROR: Place ID " + place.getId() + " semaphore acquire failed.");
+                    }
+                }
+
+                // Aquires semaphores from output places
+                for (Place place : transition.getOutputPlaces()) {
+                    try {
+                        place.getSemaphore().acquire();
+                    } catch (InterruptedException e) {
+                        System.out.println("ERROR: Place ID " + place.getId() + " semaphore acquire failed.");
+                    }
+                }
+
                 // Fires transition if possible and then log
                 if (transition.fireTransition()) {
 
                     // Log
                     logger.logTransitionFiring(transition);
+                }
+
+                // Releases semaphores from input places
+                for (Place place : transition.getInputPlaces()) {
+                    place.getSemaphore().release();
+                }
+
+                // Releases semaphores from output places
+                for (Place place : transition.getOutputPlaces()) {
+                    place.getSemaphore().release();
                 }
             }
         }

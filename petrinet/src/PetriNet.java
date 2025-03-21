@@ -6,6 +6,7 @@ public class PetriNet {
      * VARIABLES
      */
 
+    private ArrayList<Token> tokens;
     private ArrayList<Place> places;
     private ArrayList<Transition> transitions;
     private ArrayList<Segment> segments;
@@ -29,11 +30,15 @@ public class PetriNet {
             Policy policy,
             Logger logger) {
 
+        this.tokens = new ArrayList<>();
         this.places = new ArrayList<>();
         this.transitions = new ArrayList<>();
         this.segments = new ArrayList<>();
         this.policy = policy;
         this.logger = logger;
+        createTokens(
+                mainPlaces,
+                initialMarking);
         createPlaces(
                 mainPlaces,
                 initialMarking);
@@ -46,27 +51,49 @@ public class PetriNet {
                 transitionsSegmentsMatrix,
                 segmentsStarts,
                 segmentsEnds);
+        logger.loadPetriNet(
+                tokens,
+                places,
+                transitions,
+                segments);
     }
 
     /*
      * METHODS
      */
 
+    private void createTokens(
+            Integer[] mainPlaces,
+            Integer[] initialMarking) {
+
+        // Create tokens based on initial marking
+        for (int i = 0; i < initialMarking.length; i++) {
+            for (int j = 0; j < initialMarking[i]; j++) {
+                Token token = new Token(
+                        j + 100 * i,
+                        mainPlaces[i] == 1);
+                this.tokens.add(token);
+            }
+        }
+    }
+
     private void createPlaces(
             Integer[] mainPlaces,
             Integer[] initialMarking) {
 
         // Create places based on initial marking
-        for (int i = 0; i < initialMarking.length; i++) {
-            Place place = new Place(
-                    i,
-                    mainPlaces[i] == 1,
-                    initialMarking[i]);
-            this.places.add(place);
+        int tokenIndex = 0;
+        for (int j = 0; j < initialMarking.length; j++) {
+            ArrayList<Token> tmp = new ArrayList<>();
+            for (int k = 0; k < initialMarking[j]; k++) {
+                tmp.add(tokens.get(tokenIndex));
+                tokenIndex++;
+            }
+            this.places.add(new Place(
+                    j,
+                    mainPlaces[j] == 1,
+                    tmp));
         }
-
-        // Log
-        logger.logPlacesCreation(places);
     }
 
     private void createTransitions(
@@ -99,9 +126,6 @@ public class PetriNet {
                     maxDelayTimes[i]);
             this.transitions.add(transition);
         }
-
-        // Log
-        logger.logTransitionsCreation(transitions);
     }
     
     private void createSegments(
@@ -137,9 +161,6 @@ public class PetriNet {
                     logger);
             segments.add(segment);
         }
-
-        // Log
-        logger.logSegmentsCreation(segments);
     }
 
     /*
