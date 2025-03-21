@@ -22,8 +22,25 @@ public class Main {
         {  0,  0,  0,  0,  0,  0,  0,  0,  0,  1, -1,  0 }, // P13
         {  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  1, -1 }  // P14 
     };
+    private static Integer[] MAIN_PLACES = {
+        1, // P0
+        0, // P1
+        1, // P2
+        1, // P3
+        0, // P4
+        1, // P5
+        0, // P6
+        0, // P7
+        1, // P8
+        1, // P9
+        0, // P10
+        1, // P11
+        1, // P12
+        1, // P13
+        1  // P14
+    };
     private static Integer[] INITIAL_MARKING = {
-        2, // P0
+        3, // P0
         1, // P1
         0, // P2
         0, // P3
@@ -74,32 +91,32 @@ public class Main {
         0   // S5
     };
     private static Integer[] MIN_DELAY_TIMES = {
-        0,   // T0
-        100, // T1
-        0,   // T2
-        0,   // T3
-        100, // T4
-        100, // T5
-        0,   // T6
-        0,   // T7
-        100, // T8
-        100, // T9
-        100, // T10
-        0,   // T11
+        500, // T0
+        700, // T1
+        500, // T2
+        500, // T3
+        700, // T4
+        700, // T5
+        500, // T6
+        500, // T7
+        700, // T8
+        700, // T9
+        700, // T10
+        500, // T11
     };
     private static Integer[] MAX_DELAY_TIMES = {
-        1,   // T0
-        200, // T1
-        1,   // T2
-        1,   // T3
-        200, // T4
-        200, // T5
-        1,   // T6
-        1,   // T7
-        200, // T8
-        200, // T9
-        200, // T10
-        1,   // T11
+        500, // T0
+        900, // T1
+        500, // T2
+        500, // T3
+        900, // T4
+        900, // T5
+        500, // T6
+        500, // T7
+        900, // T8
+        900, // T9
+        900, // T10
+        500, // T11
     };
     private static Integer[] PROBABILITIES = {
         75, // P1
@@ -114,6 +131,7 @@ public class Main {
 
         Monitor monitor = new Monitor(
                 INCIDENCE_MATRIX,
+                MAIN_PLACES,
                 INITIAL_MARKING,
                 PLACES_SEGMENTS_MATRIX,
                 TRANSITIONS_SEGMENTS_MATRIX,

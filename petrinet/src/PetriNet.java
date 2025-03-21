@@ -18,6 +18,7 @@ public class PetriNet {
 
     public PetriNet(
             Integer[][] incidenceMatrix,
+            Integer[] mainPlaces,
             Integer[] initialMarking,
             Integer[][] placesSegmentsMatrix,
             Integer[][] transitionsSegmentsMatrix,
@@ -33,7 +34,9 @@ public class PetriNet {
         this.segments = new ArrayList<>();
         this.policy = policy;
         this.logger = logger;
-        createPlaces(initialMarking);
+        createPlaces(
+                mainPlaces,
+                initialMarking);
         createTransitions(
                 incidenceMatrix,
                 minDelayTimes,
@@ -49,12 +52,15 @@ public class PetriNet {
      * METHODS
      */
 
-    private void createPlaces(Integer[] initialMarking) {
+    private void createPlaces(
+            Integer[] mainPlaces,
+            Integer[] initialMarking) {
 
         // Create places based on initial marking
         for (int i = 0; i < initialMarking.length; i++) {
             Place place = new Place(
                     i,
+                    mainPlaces[i] == 1,
                     initialMarking[i]);
             this.places.add(place);
         }
@@ -70,29 +76,27 @@ public class PetriNet {
 
         // Create transitions based on incidence matrix columns
         for (int i = 0; i < incidenceMatrix[0].length; i++) {
-            ArrayList<Integer> consumedQuantities = new ArrayList<>();
-            ArrayList<Integer> producedQuantities = new ArrayList<>();
+            ArrayList<Integer> quantitiesToConsume = new ArrayList<>();
+            ArrayList<Integer> quantitiesToProduce = new ArrayList<>();
             ArrayList<Place> inputPlaces = new ArrayList<>();
             ArrayList<Place> outputPlaces = new ArrayList<>();
 
             // Load consumed & produced quantities and input & output places for each transition based on incidence matrix rows
             for (int j = 0; j < incidenceMatrix.length; j++) {
                 if (incidenceMatrix[j][i] < 0) {
-                    consumedQuantities.add(-incidenceMatrix[j][i]);
+                    quantitiesToConsume.add(-incidenceMatrix[j][i]);
                     inputPlaces.add(places.get(j));
                 } else if (incidenceMatrix[j][i] > 0) {
-                    producedQuantities.add(incidenceMatrix[j][i]);
+                    quantitiesToProduce.add(incidenceMatrix[j][i]);
                     outputPlaces.add(places.get(j));
                 }
             }
             Transition transition = new Transition(
                     i,
-                    minDelayTimes[i],
-                    maxDelayTimes[i],
-                    consumedQuantities,
-                    producedQuantities,
                     inputPlaces,
-                    outputPlaces);
+                    outputPlaces,
+                    minDelayTimes[i],
+                    maxDelayTimes[i]);
             this.transitions.add(transition);
         }
 
@@ -147,4 +151,8 @@ public class PetriNet {
     public ArrayList<Transition> getTransitions() { return transitions; }
 
     public ArrayList<Segment> getSegments() { return segments; }
+
+    public Policy getPolicy() { return policy; }
+
+    public Logger getLogger() { return logger; }
 }

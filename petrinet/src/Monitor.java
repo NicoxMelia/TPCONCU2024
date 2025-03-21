@@ -14,6 +14,7 @@ public class Monitor {
 
     public Monitor(
             Integer[][] incidenceMatrix,
+            Integer[] mainPlaces,
             Integer[] initialMarking,
             Integer[][] placesSegmentsMatrix,
             Integer[][] transitionsSegmentsMatrix,
@@ -29,6 +30,7 @@ public class Monitor {
                 logger);
         this.petriNet = new PetriNet(
                 incidenceMatrix,
+                mainPlaces,
                 initialMarking,
                 placesSegmentsMatrix,
                 transitionsSegmentsMatrix,

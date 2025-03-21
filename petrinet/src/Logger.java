@@ -27,7 +27,15 @@ public class Logger extends Thread {
         System.out.println("<< CREATED PLACES >>");
         for (Place place : places) {
             System.out.println("Place ID: " + place.getId());
-            System.out.println(" |--> Tokens: " + place.getTokens());
+            System.out.println(" |--> Tracked: " + place.getIsTracked());
+            System.out.print(" |--> Tokens: ");
+            if (place.getTokens().isEmpty()) {
+                System.out.print("None");
+            }
+            for (Token token : place.getTokens()) {
+                System.out.print(token.getId() + " ");
+            }
+            System.out.println();
         }
     }
 
@@ -37,14 +45,6 @@ public class Logger extends Thread {
             System.out.println("Transition ID: " + transition.getId());
             System.out.println(" |--> Min delay time: " + transition.getMinDelayTime());
             System.out.println(" |--> Max delay time: " + transition.getMaxDelayTime());
-            System.out.print(" |--> Consumed quantities: ");
-            for (Integer consumedQuantity : transition.getConsumedQuantities()) {
-                System.out.print(consumedQuantity + " ");
-            }
-            System.out.print("\n |--> Produced quantities: ");
-            for (Integer producedQuantity : transition.getProducedQuantities()) {
-                System.out.print(producedQuantity + " ");
-            }
             System.out.print("\n |--> Input places: ");
             for (Place inputPlace : transition.getInputPlaces()) {
                 System.out.print(inputPlace.getId() + " ");
@@ -69,8 +69,8 @@ public class Logger extends Thread {
             for (Transition transition : segment.getTransitions()) {
                 System.out.print(transition.getId() + " ");
             }
-            System.out.println("\n |--> Start place: " + segment.getStartPlace().getId());
-            System.out.println(" |--> End place: " + segment.getEndPlace().getId());
+            System.out.println("\n |--> Starting place: " + segment.getStartingPlace().getId());
+            System.out.println(" |--> Ending place: " + segment.getEndingPlace().getId());
         }
     }
 

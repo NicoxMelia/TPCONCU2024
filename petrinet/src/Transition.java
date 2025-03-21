@@ -7,13 +7,14 @@ public class Transition {
      */
 
     private Integer id;
-    private Integer minDelayTime;
-    private Integer maxDelayTime;
-    private ArrayList<Integer> consumedQuantities;
-    private ArrayList<Integer> producedQuantities;
+
+    // Connected input and output places
     private ArrayList<Place> inputPlaces;
     private ArrayList<Place> outputPlaces;
-    private Integer fireCounter;
+
+    // Delay time
+    private Integer minDelayTime;
+    private Integer maxDelayTime;
 
     /*
      * CONSTRUCTORS
@@ -21,21 +22,16 @@ public class Transition {
 
     public Transition(
             Integer id,
-            Integer minDelayTime,
-            Integer maxDelayTime,
-            ArrayList<Integer> consumedQuantities,
-            ArrayList<Integer> producedQuantities,
             ArrayList<Place> inputPlaces,
-            ArrayList<Place> outputPlaces) {
+            ArrayList<Place> outputPlaces,
+            Integer minDelayTime,
+            Integer maxDelayTime) {
 
-        this.id = id;        
-        this.minDelayTime = minDelayTime;
-        this.maxDelayTime = maxDelayTime;
-        this.consumedQuantities = consumedQuantities;
-        this.producedQuantities = producedQuantities;
+        this.id = id;
         this.inputPlaces = inputPlaces;
         this.outputPlaces = outputPlaces;
-        this.fireCounter = 0;
+        this.minDelayTime = minDelayTime;
+        this.maxDelayTime = maxDelayTime;
     }
 
     /*
@@ -57,11 +53,18 @@ public class Transition {
         Boolean fireable = canFire();
 
         // Fires transition if possible
-        if(fireable) {
+        if (fireable) {
+
+            // Token to be rescued from input places
+            Token trackedToken = null;
+            Token tmpToken;
 
             // Consumes tokens from input places
             for (int i = 0; i < inputPlaces.size(); i++) {
-                inputPlaces.get(i).consume(consumedQuantities.get(i));
+                tmpToken = inputPlaces.get(i).consume();
+                if (tmpToken.getIsTracked()) {
+                    trackedToken = tmpToken;
+                }
             }
 
             // Sleeps for a random time between minDelayTime and maxDelayTime
@@ -73,11 +76,8 @@ public class Transition {
 
             // Produces tokens in output places
             for (int i = 0; i < outputPlaces.size(); i++) {
-                outputPlaces.get(i).produce(producedQuantities.get(i));
+                outputPlaces.get(i).produce(trackedToken);
             }
-
-            // Increments fire counter
-            fireCounter++;
         }
 
         // Releases semaphores from input places
@@ -92,7 +92,7 @@ public class Transition {
 
         // Checks if there are enough tokens in input places
         for (int i = 0; i < inputPlaces.size(); i++) {
-            if (inputPlaces.get(i).getTokens() < consumedQuantities.get(i)) {
+            if (inputPlaces.get(i).getTokens().isEmpty()) {
                 return false;
             }
         }
@@ -108,18 +108,12 @@ public class Transition {
      */
 
     public Integer getId() { return id; }
-    
-    public Integer getMinDelayTime() { return minDelayTime; }
-
-    public Integer getMaxDelayTime() { return maxDelayTime; }
-
-    public ArrayList<Integer> getConsumedQuantities() { return consumedQuantities; }
-
-    public ArrayList<Integer> getProducedQuantities() { return producedQuantities; }
 
     public ArrayList<Place> getInputPlaces() { return inputPlaces; }
 
     public ArrayList<Place> getOutputPlaces() { return outputPlaces; }
+    
+    public Integer getMinDelayTime() { return minDelayTime; }
 
-    public Integer getFireCounter() { return fireCounter; }
+    public Integer getMaxDelayTime() { return maxDelayTime; }
 }
