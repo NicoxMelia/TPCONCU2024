@@ -15,6 +15,8 @@ public class Transition {
     // Delay time
     private Integer minDelayTime;
     private Integer maxDelayTime;
+    private Long delayTime;
+    private Boolean isWaiting;
 
     /*
      * CONSTRUCTORS
@@ -32,51 +34,40 @@ public class Transition {
         this.outputPlaces = outputPlaces;
         this.minDelayTime = minDelayTime;
         this.maxDelayTime = maxDelayTime;
+        delayTime = System.currentTimeMillis();
+        isWaiting = false;
     }
 
     /*
      * METHODS
      */
 
-    public Boolean fireTransition() {
+    public void fireTransition() {
 
-        // Checks if transition can fire
-        Boolean fireable = canFire();
+        // Token to be rescued from input places
+        Token trackedToken = null;
+        Token tmpToken;
 
-        // Fires transition if possible
-        if (fireable) {
-
-            // Token to be rescued from input places
-            Token trackedToken = null;
-            Token tmpToken;
-
-            // Consumes tokens from input places
-            for (int i = 0; i < inputPlaces.size(); i++) {
-                tmpToken = inputPlaces.get(i).consume();
-                if (tmpToken.getIsTracked()) {
-                    trackedToken = tmpToken;
-                }
-            }
-
-            // Sleeps for a random time between minDelayTime and maxDelayTime
-            try {
-                Thread.sleep(randomizeDelayTime());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            // Produces tokens in output places
-            for (int i = 0; i < outputPlaces.size(); i++) {
-                outputPlaces.get(i).produce(trackedToken);
+        // Consumes tokens from input places
+        for (int i = 0; i < inputPlaces.size(); i++) {
+            tmpToken = inputPlaces.get(i).consume();
+            if (tmpToken.getIsTracked()) {
+                trackedToken = tmpToken;
             }
         }
 
-        return fireable;
+        // Produces tokens in output places
+        for (int i = 0; i < outputPlaces.size(); i++) {
+            outputPlaces.get(i).produce(trackedToken);
+        }
+
+        // Set the waiting flag to false
+        isWaiting = false;
     }
 
-    private Boolean canFire() {
+    public Boolean canFire() {
 
-        // Checks if there are enough tokens in input places
+        // Checks if there are enough tokens in input places to fire the transition
         for (int i = 0; i < inputPlaces.size(); i++) {
             if (inputPlaces.get(i).getTokens().isEmpty()) {
                 return false;
@@ -85,8 +76,11 @@ public class Transition {
         return true;
     }
 
-    public Integer randomizeDelayTime() {
-        return (int) (Math.random() * (maxDelayTime - minDelayTime + 1) + minDelayTime);
+    public void randomizeDelayTime() {
+
+        // Randomizes the delay time and sets the waiting flag to true
+        delayTime = System.currentTimeMillis() + (long) (Math.random() * (maxDelayTime - minDelayTime + 1) + minDelayTime);
+        isWaiting = true;
     }
 
     /*
@@ -102,4 +96,8 @@ public class Transition {
     public Integer getMinDelayTime() { return minDelayTime; }
 
     public Integer getMaxDelayTime() { return maxDelayTime; }
+
+    public Long getDelayTime() { return delayTime; }
+
+    public Boolean getIsWaiting() { return isWaiting; }
 }

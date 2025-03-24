@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class Segment extends Thread {
 
@@ -11,7 +12,6 @@ public class Segment extends Thread {
     private ArrayList<Transition> transitions;
     private Place startingPlace;
     private Place endingPlace;
-    private Logger logger;
 
     /*
      * CONSTRUCTORS
@@ -22,15 +22,13 @@ public class Segment extends Thread {
             ArrayList<Place> places,
             ArrayList<Transition> transitions,
             Place startingPlace,
-            Place endingPlace,
-            Logger logger) {
+            Place endingPlace) {
 
         this.id = id;
         this.places = places;
         this.transitions = transitions;
         this.startingPlace = startingPlace;
         this.endingPlace = endingPlace;
-        this.logger = logger;
     }
 
     /*
@@ -42,41 +40,103 @@ public class Segment extends Thread {
 
         // Fires possible transitions all the time
         while (true) {
+            Integer acquired;
+            Boolean areAcquired;
             for (Transition transition : transitions) {
+                if (transition.getIsWaiting()) {
 
-                // Acquires semaphores from input places
-                for (Place place : transition.getInputPlaces()) {
-                    try {
-                        place.getSemaphore().acquire();
-                    } catch (InterruptedException e) {
-                        System.out.println("ERROR: Place ID " + place.getId() + " semaphore acquire failed.");
+                    // Acquires semaphores from input places
+                    areAcquired = false;
+                    while (!areAcquired) {
+                        acquired = 0;
+                        for (Place place : transition.getInputPlaces()) {
+                            try {
+                                if (!place.getSemaphore().tryAcquire(5, TimeUnit.MILLISECONDS)) {
+                                    for (int i = 0; i < acquired; i++) {
+                                        transition.getInputPlaces().get(i).getSemaphore().release();
+                                    }
+                                    Thread.sleep((long) Math.random() * 10);
+                                    break;
+                                }
+                            } catch (InterruptedException e) {
+                                System.out.println("Semaphore acquire failed.");
+                            }
+                            acquired++;
+                            areAcquired = acquired == transition.getInputPlaces().size();
+                        }
                     }
-                }
 
-                // Aquires semaphores from output places
-                for (Place place : transition.getOutputPlaces()) {
-                    try {
-                        place.getSemaphore().acquire();
-                    } catch (InterruptedException e) {
-                        System.out.println("ERROR: Place ID " + place.getId() + " semaphore acquire failed.");
+                    // Check if transition can fire
+                    if (transition.getDelayTime() <= System.currentTimeMillis() && transition.canFire()) {
+
+                        // Acquires semaphores from input places
+                        areAcquired = false;
+                        while (!areAcquired) {
+                            acquired = 0;
+                            for (Place place : transition.getOutputPlaces()) {
+                                try {
+                                    if (!place.getSemaphore().tryAcquire(5, TimeUnit.MILLISECONDS)) {
+                                        for (int i = 0; i < acquired; i++) {
+                                            transition.getOutputPlaces().get(i).getSemaphore().release();
+                                        }
+                                        Thread.sleep((long) Math.random() * 10);
+                                        break;
+                                    }
+                                } catch (InterruptedException e) {
+                                    System.out.println("Semaphore acquire failed.");
+                                }
+                                acquired++;
+                                areAcquired = acquired == transition.getOutputPlaces().size();
+                            }
+                        }
+
+                        // Fires transition and logs the firing
+                        transition.fireTransition();
+                        Logger.logTransitionFiring(transition);
+                        Logger.logActualMarking(true);
+
+                        // Releases semaphores from output places
+                        for (Place place : transition.getOutputPlaces()) {
+                            place.getSemaphore().release();
+                        }
                     }
-                }
 
-                // Fires transition if possible and then log
-                if (transition.fireTransition()) {
+                    // Releases semaphores from input places
+                    for (Place place : transition.getInputPlaces()) {
+                        place.getSemaphore().release();
+                    }
+                } else {
 
-                    // Log
-                    logger.logTransitionFiring(transition);
-                }
+                    // Acquires semaphores from input places
+                    areAcquired = false;
+                    while (!areAcquired) {
+                        acquired = 0;
+                        for (Place place : transition.getInputPlaces()) {
+                            try {
+                                if (!place.getSemaphore().tryAcquire(5, TimeUnit.MILLISECONDS)) {
+                                    for (int i = 0; i < acquired; i++) {
+                                        transition.getInputPlaces().get(i).getSemaphore().release();
+                                    }
+                                    Thread.sleep((long) Math.random() * 10);
+                                    break;
+                                }
+                            } catch (InterruptedException e) {
+                                System.out.println("Semaphore acquire failed.");
+                            }
+                            acquired++;
+                            areAcquired = acquired == transition.getInputPlaces().size();
+                        }
+                    }
 
-                // Releases semaphores from input places
-                for (Place place : transition.getInputPlaces()) {
-                    place.getSemaphore().release();
-                }
+                    // Randomizes delay time if transition can fire and set the flag isWaiting to true
+                    if (transition.canFire()) {
+                        transition.randomizeDelayTime();
+                    }
 
-                // Releases semaphores from output places
-                for (Place place : transition.getOutputPlaces()) {
-                    place.getSemaphore().release();
+                    // Releases semaphores from input places
+                    for (Place place : transition.getInputPlaces()) {
+                        place.getSemaphore().release();
+                    }
                 }
             }
         }

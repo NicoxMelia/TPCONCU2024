@@ -1,21 +1,10 @@
-import java.util.ArrayList;
+public class Logger {
 
-public class Logger extends Thread {
-
-    /*
-     * VARIABLES
-     */
-
-    private ArrayList<Token> tokens;
-    private ArrayList<Place> places;
-    private ArrayList<Transition> transitions;
-    private ArrayList<Segment> segments;
-    
     /*
      * CONSTRUCTORS
      */
 
-    public Logger() {
+    private Logger() {
 
     }
 
@@ -23,38 +12,16 @@ public class Logger extends Thread {
      * METHODS
      */
 
-    @Override
-    public void run() {
-
-    }
-
-    public void loadPetriNet(
-            ArrayList<Token> tokens,
-            ArrayList<Place> places,
-            ArrayList<Transition> transitions,
-            ArrayList<Segment> segments) {
-
-        this.tokens = tokens;
-        this.places = places;
-        this.transitions = transitions;
-        this.segments = segments;
-
-        logTokensCreation();
-        logPlacesCreation(places);
-        logTransitionsCreation(transitions);
-        logSegmentsCreation(segments);
-    }
-
-    public void logActualMarking(Boolean isMinimal) {
+    public static final synchronized void logActualMarking(Boolean isMinimal) {
         if (isMinimal) {
             System.out.println("P0  P1  P2  P3  P4  P5  P6  P7  P8  P9  P10 P11 P12 P13 P14");
-            for (Place place : places) {
+            for (Place place : PetriNet.getPlaces()) {
                 System.out.printf("%-4d", place.getTokens().size());
             }
             System.out.println();
         } else {
             System.out.println("<< ACTUAL MARKING >>");
-            for (Place place : places) {
+            for (Place place : PetriNet.getPlaces()) {
                 System.out.println("Place ID: " + place.getId());
                 System.out.print(" |--> Tokens: ");
                 if (place.getTokens().isEmpty()) {
@@ -68,22 +35,21 @@ public class Logger extends Thread {
         }
     }
 
-    public synchronized void logTransitionFiring(Transition transition) {
+    public static final synchronized void logTransitionFiring(Transition transition) {
         System.out.println("Transition ID: " + transition.getId() + " fired.");
-        logActualMarking(true);
     }
 
-    public void logTokensCreation() {
+    public static void logTokensCreation() {
         System.out.println("<< CREATED TOKENS >>");
-        for (Token token : tokens) {
+        for (Token token : PetriNet.getTokens()) {
             System.out.println("Token ID: " + token.getId());
             System.out.println(" |--> Tracked: " + token.getIsTracked());
         }
     }
 
-    public void logPlacesCreation(ArrayList<Place> places) {
+    public static final void logPlacesCreation() {
         System.out.println("<< CREATED PLACES >>");
-        for (Place place : places) {
+        for (Place place : PetriNet.getPlaces()) {
             System.out.println("Place ID: " + place.getId());
             System.out.println(" |--> Tracked: " + place.getIsTracked());
             System.out.print(" |--> Tokens: ");
@@ -97,9 +63,9 @@ public class Logger extends Thread {
         }
     }
 
-    public void logTransitionsCreation(ArrayList<Transition> transitions) {
+    public static final void logTransitionsCreation() {
         System.out.println("<< CREATED TRANSITIONS >>");
-        for (Transition transition : transitions) {
+        for (Transition transition : PetriNet.getTransitions()) {
             System.out.println("Transition ID: " + transition.getId());
             System.out.print(" |--> Input places: ");
             for (Place inputPlace : transition.getInputPlaces()) {
@@ -114,9 +80,9 @@ public class Logger extends Thread {
         }
     }
 
-    public void logSegmentsCreation(ArrayList<Segment> segments) {
+    public static final void logSegmentsCreation() {
         System.out.println("<< CREATED SEGMENTS >>");
-        for (Segment segment : segments) {
+        for (Segment segment : PetriNet.getSegments()) {
             System.out.println("Segment ID: " + segment.getId());
             System.out.print(" |--> Places: ");
             for (Place place : segment.getPlaces()) {
@@ -131,10 +97,10 @@ public class Logger extends Thread {
         }
     }
 
-    public void logPolicy(Integer[] policy) {
+    public static final void logPolicy() {
         System.out.println("<< POLICY >>");
-        for (int i = 0; i < policy.length; i++) {
-            System.out.println("Probability " + i + ": " + policy[i]);
+        for (int i = 0; i < Policy.getProbabilites().length; i++) {
+            System.out.println("Probability " + i + ": " + Policy.getProbabilites()[i]);
         }
     }
 }

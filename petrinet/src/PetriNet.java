@@ -6,18 +6,24 @@ public class PetriNet {
      * VARIABLES
      */
 
-    private ArrayList<Token> tokens;
-    private ArrayList<Place> places;
-    private ArrayList<Transition> transitions;
-    private ArrayList<Segment> segments;
-    private Policy policy;
-    private Logger logger;
+    private static ArrayList<Token> tokens;
+    private static ArrayList<Place> places;
+    private static ArrayList<Transition> transitions;
+    private static ArrayList<Segment> segments;
 
     /*
      * CONSTRUCTORS
      */
 
-    public PetriNet(
+    private PetriNet() {
+
+    }
+
+    /*
+     * METHODS
+     */
+
+    public static final void initializePetriNet(
             Integer[][] incidenceMatrix,
             Integer[] mainPlaces,
             Integer[] initialMarking,
@@ -26,16 +32,12 @@ public class PetriNet {
             Integer[] segmentsStarts,
             Integer[] segmentsEnds,
             Integer[] minDelayTimes,
-            Integer[] maxDelayTimes,
-            Policy policy,
-            Logger logger) {
+            Integer[] maxDelayTimes) {
 
-        this.tokens = new ArrayList<>();
-        this.places = new ArrayList<>();
-        this.transitions = new ArrayList<>();
-        this.segments = new ArrayList<>();
-        this.policy = policy;
-        this.logger = logger;
+        PetriNet.tokens = new ArrayList<>();
+        PetriNet.places = new ArrayList<>();
+        PetriNet.transitions = new ArrayList<>();
+        PetriNet.segments = new ArrayList<>();
         createTokens(
                 mainPlaces,
                 initialMarking);
@@ -51,18 +53,16 @@ public class PetriNet {
                 transitionsSegmentsMatrix,
                 segmentsStarts,
                 segmentsEnds);
-        logger.loadPetriNet(
-                tokens,
-                places,
-                transitions,
-                segments);
+
+        // Show creation of tokens, places, transitions, segments and policy
+        //Logger.logTokensCreation();
+        //Logger.logPlacesCreation();
+        //Logger.logTransitionsCreation();
+        //Logger.logSegmentsCreation();
+        //Logger.logPolicy();
     }
 
-    /*
-     * METHODS
-     */
-
-    private void createTokens(
+    private static final void createTokens(
             Integer[] mainPlaces,
             Integer[] initialMarking) {
 
@@ -72,12 +72,12 @@ public class PetriNet {
                 Token token = new Token(
                         j + 100 * i,
                         mainPlaces[i] == 1);
-                this.tokens.add(token);
+                PetriNet.tokens.add(token);
             }
         }
     }
 
-    private void createPlaces(
+    private static final void createPlaces(
             Integer[] mainPlaces,
             Integer[] initialMarking) {
 
@@ -89,14 +89,14 @@ public class PetriNet {
                 tmp.add(tokens.get(tokenIndex));
                 tokenIndex++;
             }
-            this.places.add(new Place(
+            PetriNet.places.add(new Place(
                     j,
                     mainPlaces[j] == 1,
                     tmp));
         }
     }
 
-    private void createTransitions(
+    private static final void createTransitions(
             Integer[][] incidenceMatrix,
             Integer[] minDelayTimes,
             Integer[] maxDelayTimes) {
@@ -124,11 +124,11 @@ public class PetriNet {
                     outputPlaces,
                     minDelayTimes[i],
                     maxDelayTimes[i]);
-            this.transitions.add(transition);
+            PetriNet.transitions.add(transition);
         }
     }
     
-    private void createSegments(
+    private static final void createSegments(
             Integer[][] placesSegmentsMatrix,
             Integer[][] transitionsSegmentsMatrix,
             Integer[] segmentsStarts,
@@ -140,25 +140,24 @@ public class PetriNet {
             ArrayList<Transition> transitions = new ArrayList<>();
 
             // Load all places of the actual segment based on the places list
-            for (int j = 0; j < this.places.size(); j++) {
+            for (int j = 0; j < PetriNet.places.size(); j++) {
                 if (placesSegmentsMatrix[i][j] == 1) {
-                    places.add(this.places.get(j));
+                    places.add(PetriNet.places.get(j));
                 }
             }
 
             // Load all transitions of the actual segment based on the transitions list
-            for (int j = 0; j < this.transitions.size(); j++) {
+            for (int j = 0; j < PetriNet.transitions.size(); j++) {
                 if (transitionsSegmentsMatrix[i][j] == 1) {
-                    transitions.add(this.transitions.get(j));
+                    transitions.add(PetriNet.transitions.get(j));
                 }
             }
             Segment segment = new Segment(
                     i,
                     places,
                     transitions,
-                    this.places.get(segmentsStarts[i]),
-                    this.places.get(segmentsEnds[i]),
-                    logger);
+                    PetriNet.places.get(segmentsStarts[i]),
+                    PetriNet.places.get(segmentsEnds[i]));
             segments.add(segment);
         }
     }
@@ -167,13 +166,11 @@ public class PetriNet {
      * GETTERS AND SETTERS
      */
 
-    public ArrayList<Place> getPlaces() { return places; }
+    public static final ArrayList<Token> getTokens() { return tokens; }
 
-    public ArrayList<Transition> getTransitions() { return transitions; }
+    public static final ArrayList<Place> getPlaces() { return places; }
 
-    public ArrayList<Segment> getSegments() { return segments; }
+    public static final ArrayList<Transition> getTransitions() { return transitions; }
 
-    public Policy getPolicy() { return policy; }
-
-    public Logger getLogger() { return logger; }
+    public static final ArrayList<Segment> getSegments() { return segments; }
 }

@@ -33,30 +33,30 @@ public class Place {
      * METHODS
      */
 
-    public synchronized Token consume() {
-        Token tmp = tokens.get(0);
+    public Token consume() {
+        Token tmpToken = tokens.get(0);
         tokens.remove(0);
-        return tmp;
+        return tmpToken;
     }
 
-    public synchronized void produce(Token token) {
+    public void produce(Token token) {
         if (isTracked) {
             tokens.add(token);
         } else {
-            Integer tmpId;
+            Integer tmpTokenId;
             for (int i = 0; true; i++) {
-                tmpId = i + 100 * id;
+                tmpTokenId = i + 100 * id;
                 Boolean isFound = false;
                 for (Token t : tokens) {
-                    if (t.getId().equals(tmpId)) {
+                    if (t.getId().equals(tmpTokenId)) {
                         isFound = true;
                         break;
                     }
                 }
                 if (!isFound) {
                     tokens.add(new Token(
-                    i + 100 * id,
-                    isTracked));
+                            tmpTokenId,
+                            isTracked));
                     break;
                 }
             }

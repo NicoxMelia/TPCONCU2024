@@ -1,54 +1,24 @@
 public class Monitor {
 
     /*
-     * VARIABLES
-     */
-
-    private PetriNet petriNet;
-    private Policy policy;
-    private Logger logger;
-
-    /*
      * CONSTRUCTORS
      */
 
-    public Monitor(
-            Integer[][] incidenceMatrix,
-            Integer[] mainPlaces,
-            Integer[] initialMarking,
-            Integer[][] placesSegmentsMatrix,
-            Integer[][] transitionsSegmentsMatrix,
-            Integer[] segmentsStarts,
-            Integer[] segmentsEnds,
-            Integer[] minDelayTimes,
-            Integer[] maxDelayTimes,
-            Integer[] probabilities) {
-        
-        this.logger = new Logger();
-        this.policy = new Policy(
-                probabilities,
-                logger);
-        this.petriNet = new PetriNet(
-                incidenceMatrix,
-                mainPlaces,
-                initialMarking,
-                placesSegmentsMatrix,
-                transitionsSegmentsMatrix,
-                segmentsStarts,
-                segmentsEnds,
-                minDelayTimes,
-                maxDelayTimes,
-                policy,
-                logger);
+    private Monitor() {
+
     }
 
-    public void start() {
-        for (Segment segment : petriNet.getSegments()) {
+    /*
+     * METHODS
+     */
+
+    public static final void start() {
+        for (Segment segment : PetriNet.getSegments()) {
             segment.start();
         }
     }
 
-    public void updatePolicy(Integer[] probabilities) {
-        policy.setProbabilites(probabilities);
+    public static final void updatePolicy(Integer[] probabilities) {
+        Policy.setProbabilites(probabilities);
     }
 }

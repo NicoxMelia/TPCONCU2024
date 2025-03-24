@@ -40,7 +40,7 @@ public class Main {
         1  // P14
     };
     private static Integer[] INITIAL_MARKING = {
-        8, // P0
+        9, // P0
         1, // P1
         0, // P2
         0, // P3
@@ -92,16 +92,16 @@ public class Main {
     };
     private static Integer[] MIN_DELAY_TIMES = {
         100, // T0
-        700, // T1
+        300, // T1
         100, // T2
         100, // T3
-        700, // T4
-        700, // T5
+        300, // T4
+        300, // T5
         100, // T6
         100, // T7
-        700, // T8
-        700, // T9
-        700, // T10
+        300, // T8
+        300, // T9
+        300, // T10
         100, // T11
     };
     private static Integer[] MAX_DELAY_TIMES = {
@@ -118,9 +118,39 @@ public class Main {
         900, // T10
         100, // T11
     };
+    /*
+    private static Integer[] MIN_DELAY_TIMES = {
+        0, // T0
+        0, // T1
+        0, // T2
+        0, // T3
+        0, // T4
+        0, // T5
+        0, // T6
+        0, // T7
+        0, // T8
+        0, // T9
+        0, // T10
+        0, // T11
+    };
+    private static Integer[] MAX_DELAY_TIMES = {
+        0, // T0
+        0, // T1
+        0, // T2
+        0, // T3
+        0, // T4
+        0, // T5
+        0, // T6
+        0, // T7
+        0, // T8
+        0, // T9
+        0, // T10
+        0, // T11
+    };
+    */
     private static Integer[] PROBABILITIES = {
         75, // P1
-        30, // P2
+        80, // P2
     };
     
     /*
@@ -128,8 +158,7 @@ public class Main {
      */
     
     public static void main(String args[]) {
-
-        Monitor monitor = new Monitor(
+        PetriNet.initializePetriNet(
                 INCIDENCE_MATRIX,
                 MAIN_PLACES,
                 INITIAL_MARKING,
@@ -138,9 +167,8 @@ public class Main {
                 SEGMENTS_STARTS,
                 SEGMENTS_ENDS,
                 MIN_DELAY_TIMES,
-                MAX_DELAY_TIMES,
-                PROBABILITIES);
-
-        monitor.start();
+                MAX_DELAY_TIMES);
+        Policy.setProbabilites(PROBABILITIES);
+        Monitor.start();
     }
 }

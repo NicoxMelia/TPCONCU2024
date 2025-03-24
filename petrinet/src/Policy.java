@@ -4,34 +4,21 @@ public class Policy {
      * VARIABLES
      */
     
-    private Integer[] probabilites;
-    private Logger logger;
+    private static Integer[] probabilites;
 
     /*
      * CONSTRUCTORS
      */
 
-    public Policy(
-            Integer[] probabilites,
-            Logger logger) {
+    private Policy() {
 
-        this.probabilites = probabilites;
-        this.logger = logger;
-
-        // Log
-        logger.logPolicy(probabilites);
     }
 
     /*
      * GETTERS AND SETTERS
      */
 
-    public Integer[] getProbabilites() { return probabilites; }
+    public static final Integer[] getProbabilites() { return probabilites; }
 
-    public void setProbabilites(Integer[] probabilites) {
-        this.probabilites = probabilites;
-
-        // Log
-        logger.logPolicy(probabilites);
-    }
+    public static final void setProbabilites(Integer[] probabilites) { Policy.probabilites = probabilites; }
 }
