@@ -40,7 +40,7 @@ public class Main {
         1  // P14
     };
     private static Integer[] INITIAL_MARKING = {
-        9, // P0
+        8, // P0
         1, // P1
         0, // P2
         0, // P3
@@ -134,18 +134,18 @@ public class Main {
         0, // T11
     };
     private static Integer[] MAX_DELAY_TIMES = {
-        0, // T0
-        0, // T1
-        0, // T2
-        0, // T3
-        0, // T4
-        0, // T5
-        0, // T6
-        0, // T7
-        0, // T8
-        0, // T9
-        0, // T10
-        0, // T11
+        1, // T0
+        1, // T1
+        1, // T2
+        1, // T3
+        1, // T4
+        1, // T5
+        1, // T6
+        1, // T7
+        1, // T8
+        1, // T9
+        1, // T10
+        1, // T11
     };
     */
     private static Integer[] PROBABILITIES = {

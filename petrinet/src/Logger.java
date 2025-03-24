@@ -27,8 +27,8 @@ public class Logger {
                 if (place.getTokens().isEmpty()) {
                     System.out.print("None");
                 }
-                for (Token token : place.getTokens()) {
-                    System.out.print(token.getId() + " ");
+                for (int i = 0; i < place.getTokens().size(); i++) {
+                    System.out.print(place.getTokens().get(i).getId() + " ");
                 }
                 System.out.println();
             }
@@ -39,7 +39,7 @@ public class Logger {
         System.out.println("Transition ID: " + transition.getId() + " fired.");
     }
 
-    public static void logTokensCreation() {
+    public static final void logTokensCreation() {
         System.out.println("<< CREATED TOKENS >>");
         for (Token token : PetriNet.getTokens()) {
             System.out.println("Token ID: " + token.getId());
