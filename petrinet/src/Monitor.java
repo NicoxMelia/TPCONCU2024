@@ -25,14 +25,14 @@ public class Monitor {
         Policy.setProbabilites(probabilities);
     }
 
-    public static final void getSemaphore(ArrayList<Place> places) {
+    public static final void getPlaceSemaphore(ArrayList<Place> places) {
         Boolean areAcquired = false;
         while (!areAcquired) {
             Integer acquired = 0;
             for (Place place : places) {
                 try {
                     if (!place.getSemaphore().tryAcquire(5, TimeUnit.MILLISECONDS)) {
-                        releaseSemaphore(places, acquired);
+                        releasePlaceSemaphore(places, acquired);
                         Thread.sleep((long) Math.random() * 10);
                         break;
                     }
@@ -45,15 +45,34 @@ public class Monitor {
         }
     }
 
-    public static final void releaseSemaphore(ArrayList<Place> places) {
+    public static final void getLoggerSemaphore() {
+        Boolean isAcquired = false;
+        while (!isAcquired) {
+            try {
+                if (!Logger.getSemaphore().tryAcquire(5, TimeUnit.MILLISECONDS)) {
+                    Thread.sleep((long) Math.random() * 10);
+                } else {
+                    isAcquired = true;
+                }
+            } catch (InterruptedException e) {
+                System.out.println("Semaphore acquire failed.");
+            }
+        }
+    }
+
+    public static final void releasePlaceSemaphore(ArrayList<Place> places) {
         for (Place place : places) {
             place.getSemaphore().release();
         }
     }
 
-    public static final void releaseSemaphore(ArrayList<Place> places, int acquired) {
+    public static final void releasePlaceSemaphore(ArrayList<Place> places, int acquired) {
         for (int i = 0; i < acquired; i++) {
             places.get(i).getSemaphore().release();
         }
+    }
+
+    public static final void releaseLoggerSemaphore() {
+        Logger.getSemaphore().release();
     }
 }

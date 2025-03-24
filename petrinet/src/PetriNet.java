@@ -55,11 +55,11 @@ public class PetriNet {
                 segmentsEnds);
 
         // Show creation of tokens, places, transitions, segments and policy
-        //Logger.logTokensCreation();
-        //Logger.logPlacesCreation();
-        //Logger.logTransitionsCreation();
-        //Logger.logSegmentsCreation();
-        //Logger.logPolicy();
+        //Logger.showTokensCreation();
+        //Logger.showPlacesCreation();
+        //Logger.showTransitionsCreation();
+        //Logger.showSegmentsCreation();
+        //Logger.showPolicy();
     }
 
     private static final void createTokens(

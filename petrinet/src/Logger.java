@@ -1,4 +1,15 @@
+import java.util.ArrayList;
+import java.util.concurrent.Semaphore;
+
 public class Logger {
+
+    /*
+     * VARIABLES
+     */
+
+    private static Long startTime;
+    private static ArrayList<Integer> transitionFireCounters;
+    private static Semaphore semaphore;
 
     /*
      * CONSTRUCTORS
@@ -12,15 +23,37 @@ public class Logger {
      * METHODS
      */
 
-    public static final synchronized void logActualMarking(Boolean isMinimal) {
+    public static final void initializeLogger() {
+        startTime = System.currentTimeMillis();
+        transitionFireCounters = new ArrayList<>();
+        for (int i = 0; i < PetriNet.getTransitions().size(); i++) {
+            transitionFireCounters.add(0);
+        }
+        semaphore = new Semaphore(1);
+    }
+
+    public static final synchronized void incrementTransitionFireCounter(Transition transition) {
+        transitionFireCounters.set(transition.getId(), transitionFireCounters.get(transition.getId()) + 1);
+    }
+
+    public static final void showTransitionFireCounters() {
+        System.out.println("Fire Counters ------ | T0  T1  T2  T3  T4  T5  T6  T7  T8  T9  T10 T11");
+        System.out.print("                     | ");
+        for (int i = 0; i < transitionFireCounters.size(); i++) {
+            System.out.printf("%-4d", transitionFireCounters.get(i));
+        }
+        System.out.println();
+    }
+
+    public static final synchronized void showActualMarking(Boolean isMinimal) {
         if (isMinimal) {
-            System.out.println("P0  P1  P2  P3  P4  P5  P6  P7  P8  P9  P10 P11 P12 P13 P14");
+            System.out.println("Actual marking ----- | P0  P1  P2  P3  P4  P5  P6  P7  P8  P9  P10 P11 P12 P13 P14");
+            System.out.print("                     | ");
             for (Place place : PetriNet.getPlaces()) {
                 System.out.printf("%-4d", place.getTokens().size());
             }
             System.out.println();
         } else {
-            System.out.println("<< ACTUAL MARKING >>");
             for (Place place : PetriNet.getPlaces()) {
                 System.out.println("Place ID: " + place.getId());
                 System.out.print(" |--> Tokens: ");
@@ -35,11 +68,11 @@ public class Logger {
         }
     }
 
-    public static final synchronized void logTransitionFiring(Transition transition) {
-        System.out.println("Transition ID: " + transition.getId() + " fired.");
+    public static final synchronized void showTransitionFiring(Transition transition) {
+        System.out.println("Transition fired --- | " + transition.getId());
     }
 
-    public static final void logTokensCreation() {
+    public static final void showTokensCreation() {
         System.out.println("<< CREATED TOKENS >>");
         for (Token token : PetriNet.getTokens()) {
             System.out.println("Token ID: " + token.getId());
@@ -47,7 +80,7 @@ public class Logger {
         }
     }
 
-    public static final void logPlacesCreation() {
+    public static final void showPlacesCreation() {
         System.out.println("<< CREATED PLACES >>");
         for (Place place : PetriNet.getPlaces()) {
             System.out.println("Place ID: " + place.getId());
@@ -63,7 +96,7 @@ public class Logger {
         }
     }
 
-    public static final void logTransitionsCreation() {
+    public static final void showTransitionsCreation() {
         System.out.println("<< CREATED TRANSITIONS >>");
         for (Transition transition : PetriNet.getTransitions()) {
             System.out.println("Transition ID: " + transition.getId());
@@ -80,7 +113,7 @@ public class Logger {
         }
     }
 
-    public static final void logSegmentsCreation() {
+    public static final void showSegmentsCreation() {
         System.out.println("<< CREATED SEGMENTS >>");
         for (Segment segment : PetriNet.getSegments()) {
             System.out.println("Segment ID: " + segment.getId());
@@ -97,10 +130,27 @@ public class Logger {
         }
     }
 
-    public static final void logPolicy() {
-        System.out.println("<< POLICY >>");
+    public static final void showPolicy() {
         for (int i = 0; i < Policy.getProbabilites().length; i++) {
-            System.out.println("Probability " + i + ": " + Policy.getProbabilites()[i]);
+            System.out.println("Probabilities " + i + ": " + Policy.getProbabilites()[i]);
         }
     }
+
+    public static final void showStartTime() {
+        System.out.println("Start time reference | " + startTime + " [ms]");
+    }
+
+    public static final synchronized void showElapsedTime() {
+        System.out.println("Elapsed time ------- | " + (System.currentTimeMillis() - startTime) + " [ms]");
+    }
+
+    /*
+     * GETTERS AND SETTERS
+     */
+
+    public static final Long getStartTime() { return startTime; }
+
+    public static final ArrayList<Integer> getTransitionFireCounters() { return transitionFireCounters; }
+
+    public static final Semaphore getSemaphore() { return semaphore; }
 }

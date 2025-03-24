@@ -43,29 +43,35 @@ public class Segment extends Thread {
                 if (transition.getIsWaiting()) {
 
                     // Acquires semaphores from input places
-                    Monitor.getSemaphore(transition.getInputPlaces());
+                    Monitor.getPlaceSemaphore(transition.getInputPlaces());
 
                     // Check if transition can fire
                     if (transition.getDelayTime() <= System.currentTimeMillis() && transition.canFire()) {
 
                         // Acquires semaphores from output places
-                        Monitor.getSemaphore(transition.getOutputPlaces());
+                        Monitor.getPlaceSemaphore(transition.getOutputPlaces());
 
                         // Fires transition and logs the firing
                         transition.fireTransition();
-                        Logger.logTransitionFiring(transition);
-                        Logger.logActualMarking(true);
+                        Monitor.getLoggerSemaphore();
+                        Logger.incrementTransitionFireCounter(transition);
+                        Logger.showElapsedTime();
+                        Logger.showTransitionFiring(transition);
+                        Logger.showTransitionFireCounters();
+                        Logger.showActualMarking(true);
+                        System.out.println();
+                        Monitor.releaseLoggerSemaphore();
 
                         // Releases semaphores from output places
-                        Monitor.releaseSemaphore(transition.getOutputPlaces());
+                        Monitor.releasePlaceSemaphore(transition.getOutputPlaces());
                     }
 
                     // Releases semaphores from input places
-                    Monitor.releaseSemaphore(transition.getInputPlaces());
+                    Monitor.releasePlaceSemaphore(transition.getInputPlaces());
                 } else {
 
                     // Acquires semaphores from input places
-                    Monitor.getSemaphore(transition.getInputPlaces());
+                    Monitor.getPlaceSemaphore(transition.getInputPlaces());
 
                     // Randomizes delay time if transition can fire and set the flag isWaiting to true
                     if (transition.canFire()) {
@@ -73,7 +79,7 @@ public class Segment extends Thread {
                     }
 
                     // Releases semaphores from input places
-                    Monitor.releaseSemaphore(transition.getInputPlaces());
+                    Monitor.releasePlaceSemaphore(transition.getInputPlaces());
                 }
             }
         }

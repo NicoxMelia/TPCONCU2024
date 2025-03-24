@@ -169,6 +169,7 @@ public class Main {
                 MIN_DELAY_TIMES,
                 MAX_DELAY_TIMES);
         Policy.setProbabilites(PROBABILITIES);
+        Logger.initializeLogger();
         Monitor.start();
     }
 }
