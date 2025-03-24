@@ -26,17 +26,13 @@ public class Monitor {
     }
 
     public static final void getSemaphore(ArrayList<Place> places) {
-        Integer acquired;
-        Boolean areAcquired;
-        areAcquired = false;
+        Boolean areAcquired = false;
         while (!areAcquired) {
-            acquired = 0;
+            Integer acquired = 0;
             for (Place place : places) {
                 try {
                     if (!place.getSemaphore().tryAcquire(5, TimeUnit.MILLISECONDS)) {
-                        for (int i = 0; i < acquired; i++) {
-                            places.get(i).getSemaphore().release();
-                        }
+                        releaseSemaphore(places, acquired);
                         Thread.sleep((long) Math.random() * 10);
                         break;
                     }
@@ -52,6 +48,12 @@ public class Monitor {
     public static final void releaseSemaphore(ArrayList<Place> places) {
         for (Place place : places) {
             place.getSemaphore().release();
+        }
+    }
+
+    public static final void releaseSemaphore(ArrayList<Place> places, int acquired) {
+        for (int i = 0; i < acquired; i++) {
+            places.get(i).getSemaphore().release();
         }
     }
 }
