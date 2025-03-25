@@ -44,20 +44,24 @@ public class Logger {
         }
     }
 
-    public static final void showTokensCreation() {
-        System.out.println("<< CREATED TOKENS >>");
+    public static final void showTokens() {
+        System.out.println("=======================|");
+        System.out.println(" TOKENS                |");
+        System.out.println("=======================|");
         for (Token token : PetriNet.getTokens()) {
-            System.out.println("Token ID: " + token.getId());
-            System.out.println(" |--> Tracked: " + token.getIsTracked());
+            System.out.println("Token ID ------------- | " + token.getId());
+            System.out.println(" |-----------> Tracked | " + token.getIsTracked());
         }
     }
 
-    public static final void showPlacesCreation() {
-        System.out.println("<< CREATED PLACES >>");
+    public static final void showPlaces() {
+        System.out.println("=======================|");
+        System.out.println(" PLACES                |");
+        System.out.println("=======================|");
         for (Place place : PetriNet.getPlaces()) {
-            System.out.println("Place ID: " + place.getId());
-            System.out.println(" |--> Tracked: " + place.getIsTracked());
-            System.out.print(" |--> Tokens: ");
+            System.out.println("Place ID ------------- | " + place.getId());
+            System.out.println(" |-----------> Tracked | " + place.getIsTracked());
+            System.out.print(" |------------> Tokens | ");
             if (place.getTokens().isEmpty()) {
                 System.out.print("None");
             }
@@ -68,43 +72,50 @@ public class Logger {
         }
     }
 
-    public static final void showTransitionsCreation() {
-        System.out.println("<< CREATED TRANSITIONS >>");
+    public static final void showTransitions() {
+        System.out.println("=======================|");
+        System.out.println(" TRANSITIONS           |");
+        System.out.println("=======================|");
         for (Transition transition : PetriNet.getTransitions()) {
-            System.out.println("Transition ID: " + transition.getId());
-            System.out.print(" |--> Input places: ");
+            System.out.println("Transition ID -------- | " + transition.getId());
+            System.out.print(" |------> Input places | ");
             for (Place inputPlace : transition.getInputPlaces()) {
                 System.out.print(inputPlace.getId() + " ");
             }
-            System.out.print("\n |--> Output places: ");
+            System.out.print("\n |-----> Output places | ");
             for (Place outputPlace : transition.getOutputPlaces()) {
                 System.out.print(outputPlace.getId() + " ");
             }
-            System.out.println("\n |--> Min delay time: " + transition.getMinDelayTime());
-            System.out.println(" |--> Max delay time: " + transition.getMaxDelayTime());
+            System.out.println("\n |----> Min delay time | " + transition.getMinDelayTime());
+            System.out.println(" |----> Max delay time | " + transition.getMaxDelayTime());
         }
     }
 
-    public static final void showSegmentsCreation() {
-        System.out.println("<< CREATED SEGMENTS >>");
+    public static final void showSegments() {
+        System.out.println("=======================|");
+        System.out.println(" SEGMENTS              |");
+        System.out.println("=======================|");
         for (Segment segment : PetriNet.getSegments()) {
-            System.out.println("Segment ID: " + segment.getId());
-            System.out.print(" |--> Places: ");
+            System.out.println("Segment ID ----------- | " + segment.getId());
+            System.out.print(" |------------> Places | ");
             for (Place place : segment.getPlaces()) {
                 System.out.print(place.getId() + " ");
             }
-            System.out.print("\n |--> Transitions: ");
+            System.out.print("\n |-------> Transitions | ");
             for (Transition transition : segment.getTransitions()) {
                 System.out.print(transition.getId() + " ");
             }
-            System.out.println("\n |--> Starting place: " + segment.getStartingPlace().getId());
-            System.out.println(" |--> Ending place: " + segment.getEndingPlace().getId());
+            System.out.println("\n |----> Starting place | " + segment.getStartingPlace().getId());
+            System.out.println(" |------> Ending place | " + segment.getEndingPlace().getId());
         }
     }
 
     public static final void showPolicy() {
+        System.out.println("=======================|");
+        System.out.println(" POLICY                |");
+        System.out.println("=======================|");
         for (int i = 0; i < Policy.getProbabilites().length; i++) {
-            System.out.println("Probabilities " + i + ": " + Policy.getProbabilites()[i]);
+            System.out.println("Probability " + i + " -------- | " + Policy.getProbabilites()[i]);
         }
     }
 
@@ -161,7 +172,9 @@ public class Logger {
     }
 
     public static final void showEndSimulation() {
-        System.out.println("<< END OF SIMULATION >>");
+        System.out.println("=======================|");
+        System.out.println(" END OF SIMULATION     |");
+        System.out.println("=======================|");
     }
 
     /*

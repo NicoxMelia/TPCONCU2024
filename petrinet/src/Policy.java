@@ -15,6 +15,15 @@ public class Policy {
     }
 
     /*
+     * METHODS
+     */
+
+    public static final void initializePolicy(Float[] probabilities) {
+        Policy.probabilites = probabilities;
+        Logger.showPolicy();
+    }
+
+    /*
      * GETTERS AND SETTERS
      */
 

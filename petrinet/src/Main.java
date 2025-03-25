@@ -172,8 +172,9 @@ public class Main {
                 SEGMENTS_ENDS,
                 MIN_DELAY_TIMES,
                 MAX_DELAY_TIMES);
-        Policy.setProbabilites(PROBABILITIES);
+        Policy.initializePolicy(PROBABILITIES);
         Logger.initializeLogger();
+        System.out.println();
         Monitor.initializeMonitor();
 
         System.out.println("Program successfully finished!");
