@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-public class Monitor extends Thread {
+public class Monitor implements MonitorInterface {
 
     /*
      * VARIABLES
@@ -34,6 +34,11 @@ public class Monitor extends Thread {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public final synchronized void fireTransition(Integer transitionId) {
+        PetriNet.getTransitions().get(transitionId).fireTransition();
     }
 
     public static final void stopSimulation() {
