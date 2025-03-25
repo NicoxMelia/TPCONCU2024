@@ -38,7 +38,7 @@ public class Segment extends Thread {
     public void run() {
 
         // Fires possible transitions all the time
-        while (true) {
+        while (Monitor.getSimulationState() == 1) {
             for (Transition transition : transitions) {
                 if (transition.getIsWaiting()) {
 
@@ -59,7 +59,13 @@ public class Segment extends Thread {
                         Logger.showTransitionFiring(transition);
                         Logger.showTransitionFireCounters();
                         Logger.showActualMarking(true);
-                        System.out.println();
+                        Logger.voidLine();
+
+                        // Check if the transition has fired 186 times and then stops the simulation
+                        if (Logger.getTransitionFireCounters().get(transition.getId()) == 186) {
+                            Monitor.stopSimulation();
+                            return;
+                        }
                         Monitor.releaseLoggerSemaphore();
 
                         // Releases semaphores from output places

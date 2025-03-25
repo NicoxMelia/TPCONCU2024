@@ -91,32 +91,32 @@ public class Main {
         0   // S5
     };
     private static Integer[] MIN_DELAY_TIMES = {
-        100, // T0
-        300, // T1
-        100, // T2
-        100, // T3
-        300, // T4
-        300, // T5
-        100, // T6
-        100, // T7
-        300, // T8
-        300, // T9
-        300, // T10
-        100, // T11
+        10, // T0
+        20, // T1
+        10, // T2
+        10, // T3
+        20, // T4
+        20, // T5
+        10, // T6
+        10, // T7
+        20, // T8
+        20, // T9
+        20, // T10
+        10, // T11
     };
     private static Integer[] MAX_DELAY_TIMES = {
-        100, // T0
-        900, // T1
-        100, // T2
-        100, // T3
-        900, // T4
-        900, // T5
-        100, // T6
-        100, // T7
-        900, // T8
-        900, // T9
-        900, // T10
-        100, // T11
+        10, // T0
+        50, // T1
+        10, // T2
+        10, // T3
+        50, // T4
+        50, // T5
+        10, // T6
+        10, // T7
+        50, // T8
+        50, // T9
+        50, // T10
+        10, // T11
     };
     /*
     private static Integer[] MIN_DELAY_TIMES = {
@@ -134,18 +134,18 @@ public class Main {
         0, // T11
     };
     private static Integer[] MAX_DELAY_TIMES = {
-        1, // T0
-        1, // T1
-        1, // T2
-        1, // T3
-        1, // T4
-        1, // T5
-        1, // T6
-        1, // T7
-        1, // T8
-        1, // T9
-        1, // T10
-        1, // T11
+        0, // T0
+        0, // T1
+        0, // T2
+        0, // T3
+        0, // T4
+        0, // T5
+        0, // T6
+        0, // T7
+        0, // T8
+        0, // T9
+        0, // T10
+        0, // T11
     };
     */
     private static Integer[] PROBABILITIES = {
@@ -170,6 +170,9 @@ public class Main {
                 MAX_DELAY_TIMES);
         Policy.setProbabilites(PROBABILITIES);
         Logger.initializeLogger();
-        Monitor.start();
+        Monitor.initializeMonitor();
+
+        System.out.println("Program successfully finished!");
+        return;
     }
 }

@@ -1,7 +1,14 @@
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-public class Monitor {
+public class Monitor extends Thread {
+
+    /*
+     * VARIABLES
+     */
+
+    // Indicates the state of the simulation: 0 - stopped, 1 - running
+    private static Integer simulationState;
 
     /*
      * CONSTRUCTORS
@@ -15,10 +22,37 @@ public class Monitor {
      * METHODS
      */
 
-    public static final void start() {
+    public static final void initializeMonitor() {
+        simulationState = 1;
         for (Segment segment : PetriNet.getSegments()) {
             segment.start();
         }
+        for (Segment segment : PetriNet.getSegments()) {
+            try {
+                segment.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static final void stopSimulation() {
+
+        // Set the simulation state to stopped and interrupt all segments
+        Monitor.setSimulationState(0);
+        for (Segment segment : PetriNet.getSegments()) {
+            segment.interrupt();
+        }
+
+        // Show end of simulation, elapsed time, transition fire counters and actual marking
+        simulationState = 1;
+        Logger.showEndSimulation();
+        Logger.showElapsedTime();
+        Logger.showTransitionFireCounters();
+        Logger.showActualMarking(true);
+        Logger.voidLine();
+        simulationState = 0;
+        Monitor.releaseLoggerSemaphore();
     }
 
     public static final void updatePolicy(Integer[] probabilities) {
@@ -37,7 +71,7 @@ public class Monitor {
                         break;
                     }
                 } catch (InterruptedException e) {
-                    System.out.println("Semaphore acquire failed.");
+                    //e.printStackTrace();
                 }
                 acquired++;
                 areAcquired = acquired == places.size();
@@ -55,7 +89,7 @@ public class Monitor {
                     isAcquired = true;
                 }
             } catch (InterruptedException e) {
-                System.out.println("Semaphore acquire failed.");
+                //e.printStackTrace();
             }
         }
     }
@@ -75,4 +109,12 @@ public class Monitor {
     public static final void releaseLoggerSemaphore() {
         Logger.getSemaphore().release();
     }
+
+    /*
+     * GETTERS AND SETTERS
+     */
+
+    public static final Integer getSimulationState() { return simulationState; }
+
+    public static final void setSimulationState(Integer simulationState) { Monitor.simulationState = simulationState; }
 }

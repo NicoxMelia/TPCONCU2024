@@ -33,43 +33,15 @@ public class Logger {
     }
 
     public static final synchronized void incrementTransitionFireCounter(Transition transition) {
-        transitionFireCounters.set(transition.getId(), transitionFireCounters.get(transition.getId()) + 1);
-    }
-
-    public static final void showTransitionFireCounters() {
-        System.out.println("Fire Counters ------ | T0  T1  T2  T3  T4  T5  T6  T7  T8  T9  T10 T11");
-        System.out.print("                     | ");
-        for (int i = 0; i < transitionFireCounters.size(); i++) {
-            System.out.printf("%-4d", transitionFireCounters.get(i));
+        if (Monitor.getSimulationState() != 0) {
+            transitionFireCounters.set(transition.getId(), transitionFireCounters.get(transition.getId()) + 1);
         }
-        System.out.println();
     }
 
-    public static final synchronized void showActualMarking(Boolean isMinimal) {
-        if (isMinimal) {
-            System.out.println("Actual marking ----- | P0  P1  P2  P3  P4  P5  P6  P7  P8  P9  P10 P11 P12 P13 P14");
-            System.out.print("                     | ");
-            for (Place place : PetriNet.getPlaces()) {
-                System.out.printf("%-4d", place.getTokens().size());
-            }
+    public static final void voidLine() {
+        if (Monitor.getSimulationState() != 0) {
             System.out.println();
-        } else {
-            for (Place place : PetriNet.getPlaces()) {
-                System.out.println("Place ID: " + place.getId());
-                System.out.print(" |--> Tokens: ");
-                if (place.getTokens().isEmpty()) {
-                    System.out.print("None");
-                }
-                for (int i = 0; i < place.getTokens().size(); i++) {
-                    System.out.print(place.getTokens().get(i).getId() + " ");
-                }
-                System.out.println();
-            }
         }
-    }
-
-    public static final synchronized void showTransitionFiring(Transition transition) {
-        System.out.println("Transition fired --- | " + transition.getId());
     }
 
     public static final void showTokensCreation() {
@@ -137,11 +109,59 @@ public class Logger {
     }
 
     public static final void showStartTime() {
-        System.out.println("Start time reference | " + startTime + " [ms]");
+        System.out.println("Start time reference - | " + startTime + " [ms]");
     }
 
     public static final synchronized void showElapsedTime() {
-        System.out.println("Elapsed time ------- | " + (System.currentTimeMillis() - startTime) + " [ms]");
+        if (Monitor.getSimulationState() != 0) {
+            System.out.println("Elapsed time --------- | " + (System.currentTimeMillis() - startTime) + " [ms]");
+        }
+    }
+
+    public static final synchronized void showTransitionFiring(Transition transition) {
+        if (Monitor.getSimulationState() != 0) {
+            System.out.println("Transition fired ----- | " + transition.getId());
+        }
+    }
+
+    public static final synchronized void showTransitionFireCounters() {
+        if (Monitor.getSimulationState() != 0) {
+            System.out.println("Transition counters -- | T0  T1  T2  T3  T4  T5  T6  T7  T8  T9  T10 T11");
+            System.out.print("                       | ");
+            for (int i = 0; i < transitionFireCounters.size(); i++) {
+                System.out.printf("%-4d", transitionFireCounters.get(i));
+            }
+            System.out.println();
+        }
+    }
+
+    public static final synchronized void showActualMarking(Boolean isMinimal) {
+        if (Monitor.getSimulationState() != 0) {
+            if (isMinimal) {
+                System.out.println("Actual marking ------- | P0  P1  P2  P3  P4  P5  P6  P7  P8  P9  P10 P11 P12 P13 P14");
+                System.out.print("                       | ");
+                for (Place place : PetriNet.getPlaces()) {
+                    System.out.printf("%-4d", place.getTokens().size());
+                }
+                System.out.println();
+            } else {
+                for (Place place : PetriNet.getPlaces()) {
+                    System.out.println("Place ID: " + place.getId());
+                    System.out.print(" |--> Tokens: ");
+                    if (place.getTokens().isEmpty()) {
+                        System.out.print("None");
+                    }
+                    for (int i = 0; i < place.getTokens().size(); i++) {
+                        System.out.print(place.getTokens().get(i).getId() + " ");
+                    }
+                    System.out.println();
+                }
+            }
+        }
+    }
+
+    public static final void showEndSimulation() {
+        System.out.println("<< END OF SIMULATION >>");
     }
 
     /*
