@@ -148,9 +148,13 @@ public class Main {
         0, // T11
     };
     */
-    private static Integer[] PROBABILITIES = {
-        75, // P1
-        80, // P2
+    private static Float[] PROBABILITIES = {
+        1.00f, // S0
+        0.75f, // S1
+        0.25f, // S2
+        0.80f, // S3
+        0.20f, // S4
+        1.00f  // S5
     };
     
     /*

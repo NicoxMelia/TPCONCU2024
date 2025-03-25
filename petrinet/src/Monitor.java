@@ -60,7 +60,7 @@ public class Monitor implements MonitorInterface {
         Monitor.releaseLoggerSemaphore();
     }
 
-    public static final void updatePolicy(Integer[] probabilities) {
+    public static final void updatePolicy(Float[] probabilities) {
         Policy.setProbabilites(probabilities);
     }
 

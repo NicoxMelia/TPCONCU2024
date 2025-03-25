@@ -100,4 +100,6 @@ public class Transition {
     public Long getDelayTime() { return delayTime; }
 
     public Boolean getIsWaiting() { return isWaiting; }
+
+    public void setIsWaiting(Boolean isWaiting) { this.isWaiting = isWaiting; }
 }
