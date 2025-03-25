@@ -34,30 +34,35 @@ public class Place {
      */
 
     public Token consume() {
-        Token tmpToken = tokens.get(0);
-        tokens.remove(0);
-        return tmpToken;
+        if (!tokens.isEmpty()) {
+            Token tmpToken = tokens.get(0);
+            tokens.remove(0);
+            return tmpToken;
+        }
+        return null;
     }
 
     public void produce(Token token) {
-        if (isTracked) {
-            tokens.add(token);
-        } else {
-            Integer tmpTokenId;
-            for (int i = 0; true; i++) {
-                tmpTokenId = i + 100 * id;
-                Boolean isFound = false;
-                for (Token t : tokens) {
-                    if (t.getId().equals(tmpTokenId)) {
-                        isFound = true;
+        if (token != null) {
+            if (isTracked) {
+                tokens.add(token);
+            } else {
+                Integer tmpTokenId;
+                for (int i = 0; true; i++) {
+                    tmpTokenId = i + 100 * id;
+                    Boolean isFound = false;
+                    for (Token t : tokens) {
+                        if (t.getId().equals(tmpTokenId)) {
+                            isFound = true;
+                            break;
+                        }
+                    }
+                    if (!isFound) {
+                        tokens.add(new Token(
+                                tmpTokenId,
+                                isTracked));
                         break;
                     }
-                }
-                if (!isFound) {
-                    tokens.add(new Token(
-                            tmpTokenId,
-                            isTracked));
-                    break;
                 }
             }
         }
