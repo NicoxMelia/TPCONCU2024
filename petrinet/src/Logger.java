@@ -42,13 +42,15 @@ public class Logger {
         System.out.println("=======================|");
         System.out.println(" TOKENS                |");
         System.out.println("=======================|");
-        Integer totalTokens = 0;
+        Integer totalTrackedTokens = 0;
         for (Token token : PetriNet.getTokens()) {
             System.out.println("Token ID ------------- | " + token.getId());
             System.out.println(" |-----------> Tracked | " + token.getIsTracked());
-            totalTokens++;
+            if (token.getIsTracked()) {
+                totalTrackedTokens++;
+            }
         }
-        System.out.println("Total tokens --------- | " + totalTokens);
+        System.out.println("Total tokens --------- | " + totalTrackedTokens);
     }
 
     public static final void showPlaces() {
@@ -132,12 +134,14 @@ public class Logger {
             if (isMinimal) {
                 System.out.println("Actual marking ------- | P0  P1  P2  P3  P4  P5  P6  P7  P8  P9  P10 P11 P12 P13 P14 | TOTAL");
                 System.out.print("                       | ");
-                Integer totalTokens = 0;
+                Integer totalTrackedTokens = 0;
                 for (Place place : PetriNet.getPlaces()) {
                     System.out.printf("%-4d", place.getTokens().size());
-                    totalTokens += place.getTokens().size();
+                    if (place.getIsTracked()) {
+                        totalTrackedTokens += place.getTokens().size();
+                    }
                 }
-                System.out.printf("| %-4d", totalTokens);
+                System.out.printf("| %-4d", totalTrackedTokens);
                 System.out.println();
             } else {
                 for (Place place : PetriNet.getPlaces()) {
@@ -169,12 +173,14 @@ public class Logger {
         if (isMinimal) {
             System.out.println("Actual marking ------- | P0  P1  P2  P3  P4  P5  P6  P7  P8  P9  P10 P11 P12 P13 P14 | TOTAL");
             System.out.print("                       | ");
-            Integer totalTokens = 0;
+            Integer totalTrackedTokens = 0;
             for (Place place : PetriNet.getPlaces()) {
                 System.out.printf("%-4d", place.getTokens().size());
-                totalTokens += place.getTokens().size();
+                if (place.getIsTracked()) {
+                    totalTrackedTokens += place.getTokens().size();
+                }
             }
-            System.out.printf("| %-4d", totalTokens);
+            System.out.printf("| %-4d", totalTrackedTokens);
             System.out.println();
         } else {
             for (Place place : PetriNet.getPlaces()) {
@@ -205,12 +211,14 @@ public class Logger {
         if (isMinimal) {
             System.out.println("Actual marking ------- | P0  P1  P2  P3  P4  P5  P6  P7  P8  P9  P10 P11 P12 P13 P14 | TOTAL");
             System.out.print("                       | ");
-            Integer totalTokens = 0;
+            Integer totalTrackedTokens = 0;
             for (Place place : PetriNet.getPlaces()) {
                 System.out.printf("%-4d", place.getTokens().size());
-                totalTokens += place.getTokens().size();
+                if (place.getIsTracked()) {
+                    totalTrackedTokens += place.getTokens().size();
+                }
             }
-            System.out.printf("| %-4d", totalTokens);
+            System.out.printf("| %-4d", totalTrackedTokens);
             System.out.println();
         } else {
             for (Place place : PetriNet.getPlaces()) {
