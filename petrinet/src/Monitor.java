@@ -53,10 +53,6 @@ public class Monitor implements MonitorInterface {
         }
     }
 
-    public static final void updatePolicy(Float[] probabilities) {
-        Policy.setProbabilites(probabilities);
-    }
-
     public static final void getPlaceSemaphore(ArrayList<Place> places) {
         Boolean areAcquired = false;
         while (!areAcquired) {
