@@ -37,7 +37,7 @@ public class Segment extends Thread {
     @Override
     public void run() {
 
-        // Fires possible transitions all the time
+        // Fires possible transitions all the time while simulation is running
         while (Monitor.getSimulationState() == 1) {
             for (Transition transition : transitions) {
                 if (transition.getIsWaiting()) {
@@ -45,7 +45,7 @@ public class Segment extends Thread {
                     // Acquires semaphores from input places
                     Monitor.getPlaceSemaphore(transition.getInputPlaces());
 
-                    // Check if transition can fire
+                    // Check if transition delay time has passed and if it can fire
                     if (transition.getDelayTime() <= System.currentTimeMillis() && transition.canFire()) {
 
                         // Acquires semaphores from output places
@@ -58,7 +58,7 @@ public class Segment extends Thread {
                         Logger.showTransitionFiring(transition, true);
                         Monitor.releaseLoggerSemaphore();
 
-                        // Check if the transition has fired 186 times and then stops the simulation
+                        // Check if the transition has fired enough times to stop the simulation
                         if (Logger.getTransitionFireCounters().get(transition.getId()) >= Setup.getMaxTransitionFireCounter()) {
                             Monitor.setSimulationState(0);
                         }
