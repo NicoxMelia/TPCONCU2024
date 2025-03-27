@@ -67,7 +67,7 @@ public class Monitor implements MonitorInterface {
                         break;
                     }
                 } catch (InterruptedException e) {
-                    //e.printStackTrace();
+                    e.printStackTrace();
                 }
                 acquired++;
                 areAcquired = acquired == places.size();
@@ -85,7 +85,7 @@ public class Monitor implements MonitorInterface {
                     isAcquired = true;
                 }
             } catch (InterruptedException e) {
-                //e.printStackTrace();
+                e.printStackTrace();
             }
         }
     }
