@@ -34,7 +34,7 @@ public class Logger {
         semaphore = new Semaphore(1);
     }
 
-    public static final synchronized void incrementTransitionFireCounter(Transition transition) {
+    public static final void incrementTransitionFireCounter(Transition transition) {
         transitionFireCounters.set(transition.getId(), transitionFireCounters.get(transition.getId()) + 1);
     }
 
@@ -118,7 +118,7 @@ public class Logger {
         }
     }
 
-    public static final synchronized void showTransitionFiring(Transition transition, Boolean isMinimal) {
+    public static final void showTransitionFiring(Transition transition, Boolean isMinimal) {
         System.out.println("=======================|");
         System.out.println(" TRANSITION FIRED      |");
         System.out.println("=======================|");
