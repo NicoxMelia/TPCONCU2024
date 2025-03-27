@@ -37,13 +37,11 @@ public class PetriNet {
                 Setup.getInitialMarking());
         createTransitions(
                 Setup.getIncidenceMatrix(),
-                Setup.getMinDelayTimes(),
-                Setup.getMaxDelayTimes());
+                Setup.getDelayTimeLimitsMatrix());
         createSegments(
                 Setup.getPlacesSegmentsMatrix(),
                 Setup.getTransitionsSegmentsMatrix(),
-                Setup.getSegmentsStarts(),
-                Setup.getSegmentsEnds());
+                Setup.getSegmentsPlaceLimitsMatrix());
 
         // Show creation of tokens, places, transitions, segments and policy
         Logger.showTokens();
@@ -88,8 +86,7 @@ public class PetriNet {
 
     private static final void createTransitions(
             Integer[][] incidenceMatrix,
-            Integer[] minDelayTimes,
-            Integer[] maxDelayTimes) {
+            Integer[][] delayTimeLimits) {
 
         // Create transitions based on incidence matrix columns
         for (int i = 0; i < incidenceMatrix[0].length; i++) {
@@ -112,8 +109,7 @@ public class PetriNet {
                     i,
                     inputPlaces,
                     outputPlaces,
-                    minDelayTimes[i],
-                    maxDelayTimes[i]);
+                    delayTimeLimits[i]);
             PetriNet.transitions.add(transition);
         }
     }
@@ -121,8 +117,7 @@ public class PetriNet {
     private static final void createSegments(
             Integer[][] placesSegmentsMatrix,
             Integer[][] transitionsSegmentsMatrix,
-            Integer[] segmentsStarts,
-            Integer[] segmentsEnds) {
+            Integer[][] segmentsPlaceLimitsMatrix) {
 
         // Create transitions and places for each segment based on places segments matrix rows
         for (int i = 0; i < placesSegmentsMatrix.length; i++) {
@@ -146,8 +141,10 @@ public class PetriNet {
                     i,
                     places,
                     transitions,
-                    PetriNet.places.get(segmentsStarts[i]),
-                    PetriNet.places.get(segmentsEnds[i]));
+                    new Place[] {
+                            PetriNet.places.get(segmentsPlaceLimitsMatrix[i][0]),
+                            PetriNet.places.get(segmentsPlaceLimitsMatrix[i][1])
+                    });
             segments.add(segment);
         }
     }

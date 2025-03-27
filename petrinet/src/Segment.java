@@ -9,8 +9,7 @@ public class Segment extends Thread {
     private long id;
     private ArrayList<Place> places;
     private ArrayList<Transition> transitions;
-    private Place startingPlace;
-    private Place endingPlace;
+    private Place[] placeLimits;
 
     /*
      * CONSTRUCTORS
@@ -20,14 +19,12 @@ public class Segment extends Thread {
             long id,
             ArrayList<Place> places,
             ArrayList<Transition> transitions,
-            Place startingPlace,
-            Place endingPlace) {
+            Place[] placeLimits) {
 
         this.id = id;
         this.places = places;
         this.transitions = transitions;
-        this.startingPlace = startingPlace;
-        this.endingPlace = endingPlace;
+        this.placeLimits = placeLimits;
     }
 
     /*
@@ -96,7 +93,5 @@ public class Segment extends Thread {
 
     public ArrayList<Transition> getTransitions() { return transitions; }
 
-    public Place getStartingPlace() { return startingPlace; }
-
-    public Place getEndingPlace() { return endingPlace; }
+    public Place[] getPlaceLimits() { return placeLimits; }
 }

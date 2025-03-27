@@ -13,8 +13,7 @@ public class Transition {
     private ArrayList<Place> outputPlaces;
 
     // Delay time
-    private Integer minDelayTime;
-    private Integer maxDelayTime;
+    private Integer[] delayTimeLimits;
     private Long delayTime;
     private Boolean isWaiting;
 
@@ -26,14 +25,12 @@ public class Transition {
             Integer id,
             ArrayList<Place> inputPlaces,
             ArrayList<Place> outputPlaces,
-            Integer minDelayTime,
-            Integer maxDelayTime) {
+            Integer[] delayTimeLimits) {
 
         this.id = id;
         this.inputPlaces = inputPlaces;
         this.outputPlaces = outputPlaces;
-        this.minDelayTime = minDelayTime;
-        this.maxDelayTime = maxDelayTime;
+        this.delayTimeLimits = delayTimeLimits;
         delayTime = System.currentTimeMillis();
         isWaiting = false;
     }
@@ -79,7 +76,7 @@ public class Transition {
     public void randomizeDelayTime() {
 
         // Randomizes the delay time and sets the waiting flag to true
-        delayTime = System.currentTimeMillis() + (long) (Math.random() * (maxDelayTime - minDelayTime + 1) + minDelayTime);
+        delayTime = System.currentTimeMillis() + (long) (Math.random() * (delayTimeLimits[1] - delayTimeLimits[0] + 1) + delayTimeLimits[0]);
         isWaiting = true;
     }
 
@@ -93,9 +90,7 @@ public class Transition {
 
     public ArrayList<Place> getOutputPlaces() { return outputPlaces; }
     
-    public Integer getMinDelayTime() { return minDelayTime; }
-
-    public Integer getMaxDelayTime() { return maxDelayTime; }
+    public Integer[] getDelayTimeLimits() { return delayTimeLimits; }
 
     public Long getDelayTime() { return delayTime; }
 
