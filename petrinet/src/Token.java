@@ -4,7 +4,7 @@ public class Token {
      * VARIABLES
      */
     
-    private Integer id;
+    private Integer tokenId;
     private Boolean isTracked;
     
     /*
@@ -12,10 +12,10 @@ public class Token {
      */
 
     public Token(
-            Integer id,
+            Integer tokenId,
             Boolean isTracked) {
 
-        this.id = id;
+        this.tokenId = tokenId;
         this.isTracked = isTracked;
     }
 
@@ -23,7 +23,7 @@ public class Token {
      * GETTERS AND SETTERS
      */
 
-    public Integer getId() { return id; }
+    public Integer getTokenId() { return tokenId; }
 
     public Boolean getIsTracked() { return isTracked; }
 }

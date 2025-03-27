@@ -35,7 +35,7 @@ public class Logger {
     }
 
     public static final void incrementTransitionFireCounter(Transition transition) {
-        transitionFireCounters.set(transition.getId(), transitionFireCounters.get(transition.getId()) + 1);
+        transitionFireCounters.set(transition.getTransitionId(), transitionFireCounters.get(transition.getTransitionId()) + 1);
     }
 
     public static final void showTokens() {
@@ -44,7 +44,7 @@ public class Logger {
         System.out.println("=======================|");
         Integer totalTrackedTokens = 0;
         for (Token token : PetriNet.getTokens()) {
-            System.out.println("Token ID ------------- | " + token.getId());
+            System.out.println("Token ID ------------- | " + token.getTokenId());
             System.out.println(" |-----------> Tracked | " + token.getIsTracked());
             if (token.getIsTracked()) {
                 totalTrackedTokens++;
@@ -58,14 +58,14 @@ public class Logger {
         System.out.println(" PLACES                |");
         System.out.println("=======================|");
         for (Place place : PetriNet.getPlaces()) {
-            System.out.println("Place ID ------------- | " + place.getId());
+            System.out.println("Place ID ------------- | " + place.getPlaceId());
             System.out.println(" |-----------> Tracked | " + place.getIsTracked());
             System.out.print(" |------------> Tokens | ");
             if (place.getTokens().isEmpty()) {
                 System.out.print("None");
             }
             for (Token token : place.getTokens()) {
-                System.out.print(token.getId() + " ");
+                System.out.print(token.getTokenId() + " ");
             }
             System.out.println();
         }
@@ -76,14 +76,14 @@ public class Logger {
         System.out.println(" TRANSITIONS           |");
         System.out.println("=======================|");
         for (Transition transition : PetriNet.getTransitions()) {
-            System.out.println("Transition ID -------- | " + transition.getId());
+            System.out.println("Transition ID -------- | " + transition.getTransitionId());
             System.out.print(" |------> Input places | ");
             for (Place inputPlace : transition.getInputPlaces()) {
-                System.out.print(inputPlace.getId() + " ");
+                System.out.print(inputPlace.getPlaceId() + " ");
             }
             System.out.print("\n |-----> Output places | ");
             for (Place outputPlace : transition.getOutputPlaces()) {
-                System.out.print(outputPlace.getId() + " ");
+                System.out.print(outputPlace.getPlaceId() + " ");
             }
             System.out.println("\n |----> Min delay time | " + transition.getDelayTimeLimits()[0] + " [ms]");
             System.out.println(" |----> Max delay time | " + transition.getDelayTimeLimits()[1] + " [ms]");
@@ -95,17 +95,17 @@ public class Logger {
         System.out.println(" SEGMENTS              |");
         System.out.println("=======================|");
         for (Segment segment : PetriNet.getSegments()) {
-            System.out.println("Segment ID ----------- | " + segment.getId());
+            System.out.println("Segment ID ----------- | " + segment.getSegmentId());
             System.out.print(" |------------> Places | ");
             for (Place place : segment.getPlaces()) {
-                System.out.print(place.getId() + " ");
+                System.out.print(place.getPlaceId() + " ");
             }
             System.out.print("\n |-------> Transitions | ");
             for (Transition transition : segment.getTransitions()) {
-                System.out.print(transition.getId() + " ");
+                System.out.print(transition.getTransitionId() + " ");
             }
-            System.out.println("\n |----> Starting place | " + segment.getPlaceLimits()[0].getId());
-            System.out.println(" |------> Ending place | " + segment.getPlaceLimits()[1].getId());
+            System.out.println("\n |----> Starting place | " + segment.getPlaceLimits()[0].getPlaceId());
+            System.out.println(" |------> Ending place | " + segment.getPlaceLimits()[1].getPlaceId());
         }
     }
 
@@ -123,7 +123,7 @@ public class Logger {
         System.out.println(" TRANSITION FIRED      |");
         System.out.println("=======================|");
         System.out.println("Elapsed time --------- | " + (System.currentTimeMillis() - startTime) + " [ms]");
-        System.out.println("Transition fired ----- | " + transition.getId());
+        System.out.println("Transition fired ----- | " + transition.getTransitionId());
         System.out.println("Transition counters -- | T0  T1  T2  T3  T4  T5  T6  T7  T8  T9  T10 T11");
         System.out.print("                       | ");
         for (int i = 0; i < transitionFireCounters.size(); i++) {
@@ -144,13 +144,13 @@ public class Logger {
             System.out.println();
         } else {
             for (Place place : PetriNet.getPlaces()) {
-                System.out.println("Place ID ------------- | " + place.getId());
+                System.out.println("Place ID ------------- | " + place.getPlaceId());
                 System.out.print(" |------------> Tokens | ");
                 if (place.getTokens().isEmpty()) {
                     System.out.print("None");
                 }
                 for (int i = 0; i < place.getTokens().size(); i++) {
-                    System.out.print(place.getTokens().get(i).getId() + " ");
+                    System.out.print(place.getTokens().get(i).getTokenId() + " ");
                 }
                 System.out.println();
             }
@@ -182,13 +182,13 @@ public class Logger {
             System.out.println();
         } else {
             for (Place place : PetriNet.getPlaces()) {
-                System.out.println("Place ID ------------- | " + place.getId());
+                System.out.println("Place ID ------------- | " + place.getPlaceId());
                 System.out.print(" |------------> Tokens | ");
                 if (place.getTokens().isEmpty()) {
                     System.out.print("None");
                 }
                 for (int i = 0; i < place.getTokens().size(); i++) {
-                    System.out.print(place.getTokens().get(i).getId() + " ");
+                    System.out.print(place.getTokens().get(i).getTokenId() + " ");
                 }
                 System.out.println();
             }
@@ -220,13 +220,13 @@ public class Logger {
             System.out.println();
         } else {
             for (Place place : PetriNet.getPlaces()) {
-                System.out.println("Place ID ------------- | " + place.getId());
+                System.out.println("Place ID ------------- | " + place.getPlaceId());
                 System.out.print(" |------------> Tokens | ");
                 if (place.getTokens().isEmpty()) {
                     System.out.print("None");
                 }
                 for (int i = 0; i < place.getTokens().size(); i++) {
-                    System.out.print(place.getTokens().get(i).getId() + " ");
+                    System.out.print(place.getTokens().get(i).getTokenId() + " ");
                 }
                 System.out.println();
             }

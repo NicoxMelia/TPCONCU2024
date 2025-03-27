@@ -6,7 +6,7 @@ public class Segment extends Thread {
      * VARIABLES
      */
 
-    private long id;
+    private Integer segmentId;
     private ArrayList<Place> places;
     private ArrayList<Transition> transitions;
     private Place[] placeLimits;
@@ -16,12 +16,12 @@ public class Segment extends Thread {
      */
 
     public Segment(
-            long id,
+            Integer segmentId,
             ArrayList<Place> places,
             ArrayList<Transition> transitions,
             Place[] placeLimits) {
 
-        this.id = id;
+        this.segmentId = segmentId;
         this.places = places;
         this.transitions = transitions;
         this.placeLimits = placeLimits;
@@ -56,7 +56,7 @@ public class Segment extends Thread {
                         Monitor.releaseLoggerSemaphore();
 
                         // Check if the transition has fired enough times to stop the simulation
-                        if (Logger.getTransitionFireCounters().get(transition.getId()) >= Setup.getMaxTransitionFireCounter()) {
+                        if (Logger.getTransitionFireCounters().get(transition.getTransitionId()) >= Setup.getMaxTransitionFireCounter()) {
                             Monitor.setSimulationIsRunning(false);
                         }
 
@@ -87,7 +87,7 @@ public class Segment extends Thread {
      * GETTERS AND SETTERS
      */
 
-    public long getId() { return id; }
+    public Integer getSegmentId() { return segmentId; }
 
     public ArrayList<Place> getPlaces() { return places; }
 

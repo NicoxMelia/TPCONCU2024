@@ -6,7 +6,7 @@ public class Transition {
      * VARIABLES
      */
 
-    private Integer id;
+    private Integer transitionId;
 
     // Connected input and output places
     private ArrayList<Place> inputPlaces;
@@ -22,12 +22,12 @@ public class Transition {
      */
 
     public Transition(
-            Integer id,
+            Integer transitionId,
             ArrayList<Place> inputPlaces,
             ArrayList<Place> outputPlaces,
             Integer[] delayTimeLimits) {
 
-        this.id = id;
+        this.transitionId = transitionId;
         this.inputPlaces = inputPlaces;
         this.outputPlaces = outputPlaces;
         this.delayTimeLimits = delayTimeLimits;
@@ -84,7 +84,7 @@ public class Transition {
      * GETTERS AND SETTERS
      */
 
-    public Integer getId() { return id; }
+    public Integer getTransitionId() { return transitionId; }
 
     public ArrayList<Place> getInputPlaces() { return inputPlaces; }
 

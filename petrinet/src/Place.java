@@ -7,7 +7,7 @@ public class Place {
      * VARIABLES
      */
 
-    private Integer id;
+    private Integer placeId;
     private Boolean isTracked;
     private ArrayList<Token> tokens;
 
@@ -19,11 +19,11 @@ public class Place {
      */
 
     public Place(
-            Integer id,
+            Integer placeId,
             Boolean isTracked,
             ArrayList<Token> tokens) {
 
-        this.id = id;
+        this.placeId = placeId;
         this.isTracked = isTracked;
         this.tokens = tokens;
         this.semaphore = new Semaphore(1);
@@ -49,10 +49,10 @@ public class Place {
             } else {
                 Integer tmpTokenId;
                 for (int i = 0; true; i++) {
-                    tmpTokenId = i + 100 * id;
+                    tmpTokenId = i + 100 * placeId;
                     Boolean isFound = false;
                     for (Token t : tokens) {
-                        if (t.getId().equals(tmpTokenId)) {
+                        if (t.getTokenId().equals(tmpTokenId)) {
                             isFound = true;
                             break;
                         }
@@ -72,7 +72,7 @@ public class Place {
      * GETTERS AND SETTERS
      */
 
-    public Integer getId() { return id; }
+    public Integer getPlaceId() { return placeId; }
 
     public Boolean getIsTracked() { return isTracked; }
 
