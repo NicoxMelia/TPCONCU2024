@@ -75,13 +75,13 @@ public class Setup {
         {  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1  }, // S5
     };
     private static final Integer[][] SEGMENTS_PLACE_LIMITS_MATRIX = {
-        // Start  End
-        {  0,     3   }, // S0
-        {  3,     9   }, // S1
-        {  3,     9   }, // S2
-        {  9,     14  }, // S3
-        {  9,     14  }, // S4
-        {  14,    0   }  // S5
+        // P_i  P_o
+        {  0,   3   }, // S0
+        {  3,   9   }, // S1
+        {  3,   9   }, // S2
+        {  9,   14  }, // S3
+        {  9,   14  }, // S4
+        {  14,  0   }  // S5
     };
     private static final Integer[][] DELAY_TIME_LIMITS_MATRIX = {
         // Min  Max
