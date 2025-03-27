@@ -48,7 +48,9 @@ public class Monitor implements MonitorInterface {
 
     @Override
     public final synchronized void fireTransition(Integer transitionId) {
-        PetriNet.getTransitions().get(transitionId).fireTransition();
+        if (PetriNet.getTransitions().get(transitionId).canFire()) {
+            PetriNet.getTransitions().get(transitionId).fireTransition();
+        }
     }
 
     public static final void updatePolicy(Float[] probabilities) {
