@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class Monitor implements MonitorInterface {
@@ -43,6 +44,43 @@ public class Monitor implements MonitorInterface {
         }
 
         // Show end of simulation
+        Logger.showEndSimulation(true);
+    }
+
+    public static final void startManualMode() {
+    
+        // Show start of manual mode
+        Logger.showStartSimulation(true);
+
+        // Start manual mode
+        simulationIsRunning = true;
+        Scanner scanner = new Scanner(System.in);
+        while (simulationIsRunning) {
+            System.out.print("Enter transition ID to fire (or 'exit' to quit): ");
+            String input = scanner.nextLine();
+            if (input.equals("exit")) {
+                simulationIsRunning = false;
+                break;
+            } else {
+                try {
+                    Integer transitionId = Integer.parseInt(input);
+                    if (PetriNet.getTransitions().get(transitionId).canFire()) {
+                        PetriNet.getTransitions().get(transitionId).fireTransition();
+                        Logger.incrementTransitionFireCounter(PetriNet.getTransitions().get(transitionId));
+                        Logger.showTransitionFiring(PetriNet.getTransitions().get(transitionId), true);
+                    } else {
+                        System.out.println("Transition cannot be fired.");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input.");
+                } catch (IndexOutOfBoundsException e) {
+                    System.out.println("Invalid input.");
+                }
+            }
+        }
+        scanner.close();
+
+        // Show end of manual mode
         Logger.showEndSimulation(true);
     }
 
