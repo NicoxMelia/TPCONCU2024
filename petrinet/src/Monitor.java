@@ -7,8 +7,8 @@ public class Monitor implements MonitorInterface {
      * VARIABLES
      */
 
-    // Indicates the state of the simulation: 0 - stopped, 1 - running
-    private static Integer simulationState;
+    // Indicates the state of the simulation: false - stopped, true - running
+    private static Boolean simulationIsRunning;
 
     /*
      * CONSTRUCTORS
@@ -28,7 +28,7 @@ public class Monitor implements MonitorInterface {
         Logger.showStartSimulation(true);
 
         // Start simulation
-        simulationState = 1;
+        simulationIsRunning = true;
         for (Segment segment : PetriNet.getSegments()) {
             segment.start();
         }
@@ -108,7 +108,7 @@ public class Monitor implements MonitorInterface {
      * GETTERS AND SETTERS
      */
 
-    public static final Integer getSimulationState() { return simulationState; }
+    public static final Boolean getSimulationIsRunning() { return simulationIsRunning; }
 
-    public static final void setSimulationState(Integer simulationState) { Monitor.simulationState = simulationState; }
+    public static final void setSimulationIsRunning(Boolean simulationIsRunning) { Monitor.simulationIsRunning = simulationIsRunning; }
 }

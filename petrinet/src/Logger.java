@@ -9,6 +9,8 @@ public class Logger {
 
     private static Long startTime;
     private static ArrayList<Integer> transitionFireCounters;
+
+    // Semaphore to control access to the logger
     private static Semaphore semaphore;
 
     /*
@@ -33,9 +35,7 @@ public class Logger {
     }
 
     public static final synchronized void incrementTransitionFireCounter(Transition transition) {
-        if (Monitor.getSimulationState() != 0) {
-            transitionFireCounters.set(transition.getId(), transitionFireCounters.get(transition.getId()) + 1);
-        }
+        transitionFireCounters.set(transition.getId(), transitionFireCounters.get(transition.getId()) + 1);
     }
 
     public static final void showTokens() {
