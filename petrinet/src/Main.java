@@ -13,10 +13,10 @@ public class Main {
         Policy.initializePolicy();
         Logger.initializeLogger();
         
-        // Selection and start of simulation or manual mode
-        System.out.print("Select mode (0 - simulation, 1 - manual mode): ");
+        // Selection of simulation or manual mode and run
         Scanner scanner = new Scanner(System.in);
         while (true) {
+            System.out.print("Select mode (0 - simulation, 1 - manual mode): ");
             String input = scanner.nextLine();
             if (input.equals("0")) {
                 Monitor.startSimulation();
@@ -26,7 +26,6 @@ public class Main {
                 break;
             } else {
                 System.out.println("Invalid input.");
-                System.out.print("Select mode (0 - simulation, 1 - manual mode): ");
             }
         }
         scanner.close();
