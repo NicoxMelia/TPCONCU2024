@@ -23,36 +23,27 @@ public class PetriNet {
      * METHODS
      */
 
-    public static final void initializePetriNet(
-            Integer[][] incidenceMatrix,
-            Integer[] mainPlaces,
-            Integer[] initialMarking,
-            Integer[][] placesSegmentsMatrix,
-            Integer[][] transitionsSegmentsMatrix,
-            Integer[] segmentsStarts,
-            Integer[] segmentsEnds,
-            Integer[] minDelayTimes,
-            Integer[] maxDelayTimes) {
+    public static final void initializePetriNet() {
 
         PetriNet.tokens = new ArrayList<>();
         PetriNet.places = new ArrayList<>();
         PetriNet.transitions = new ArrayList<>();
         PetriNet.segments = new ArrayList<>();
         createTokens(
-                mainPlaces,
-                initialMarking);
+                Setup.getMainPlaces(),
+                Setup.getInitialMarking());
         createPlaces(
-                mainPlaces,
-                initialMarking);
+                Setup.getMainPlaces(),
+                Setup.getInitialMarking());
         createTransitions(
-                incidenceMatrix,
-                minDelayTimes,
-                maxDelayTimes);
+                Setup.getIncidenceMatrix(),
+                Setup.getMinDelayTimes(),
+                Setup.getMaxDelayTimes());
         createSegments(
-                placesSegmentsMatrix,
-                transitionsSegmentsMatrix,
-                segmentsStarts,
-                segmentsEnds);
+                Setup.getPlacesSegmentsMatrix(),
+                Setup.getTransitionsSegmentsMatrix(),
+                Setup.getSegmentsStarts(),
+                Setup.getSegmentsEnds());
 
         // Show creation of tokens, places, transitions, segments and policy
         Logger.showTokens();

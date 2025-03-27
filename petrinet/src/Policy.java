@@ -18,8 +18,8 @@ public class Policy {
      * METHODS
      */
 
-    public static final void initializePolicy(Float[] probabilities) {
-        Policy.probabilites = probabilities;
+    public static final void initializePolicy() {
+        Policy.probabilites = Setup.getProbabilities();
         Logger.showPolicy();
     }
 

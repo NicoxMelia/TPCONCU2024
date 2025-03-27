@@ -55,18 +55,13 @@ public class Segment extends Thread {
                         transition.fireTransition();
                         Monitor.getLoggerSemaphore();
                         Logger.incrementTransitionFireCounter(transition);
-                        Logger.showElapsedTime();
-                        Logger.showTransitionFiring(transition);
-                        Logger.showTransitionFireCounters();
-                        Logger.showActualMarking(true);
-                        Logger.voidLine();
+                        Logger.showTransitionFiring(transition, true);
+                        Monitor.releaseLoggerSemaphore();
 
                         // Check if the transition has fired 186 times and then stops the simulation
-                        if (Logger.getTransitionFireCounters().get(transition.getId()) == 186) {
-                            Monitor.stopSimulation();
-                            return;
+                        if (Logger.getTransitionFireCounters().get(transition.getId()) >= Setup.getMaxTransitionFireCounter()) {
+                            Monitor.setSimulationState(0);
                         }
-                        Monitor.releaseLoggerSemaphore();
 
                         // Releases semaphores from output places
                         Monitor.releasePlaceSemaphore(transition.getOutputPlaces());

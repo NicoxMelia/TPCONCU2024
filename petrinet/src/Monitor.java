@@ -22,11 +22,18 @@ public class Monitor implements MonitorInterface {
      * METHODS
      */
 
-    public static final void initializeMonitor() {
+    public static final void startSimulation() {
+
+        // Show start of simulation
+        Logger.showStartSimulation(true);
+
+        // Start simulation
         simulationState = 1;
         for (Segment segment : PetriNet.getSegments()) {
             segment.start();
         }
+
+        // Wait for all segments to finish
         for (Segment segment : PetriNet.getSegments()) {
             try {
                 segment.join();
@@ -34,30 +41,14 @@ public class Monitor implements MonitorInterface {
                 e.printStackTrace();
             }
         }
+
+        // Show end of simulation
+        Logger.showEndSimulation(true);
     }
 
     @Override
     public final synchronized void fireTransition(Integer transitionId) {
         PetriNet.getTransitions().get(transitionId).fireTransition();
-    }
-
-    public static final void stopSimulation() {
-
-        // Set the simulation state to stopped and interrupt all segments
-        Monitor.setSimulationState(0);
-        for (Segment segment : PetriNet.getSegments()) {
-            segment.interrupt();
-        }
-
-        // Show end of simulation, elapsed time, transition fire counters and actual marking
-        simulationState = 1;
-        Logger.showEndSimulation();
-        Logger.showElapsedTime();
-        Logger.showTransitionFireCounters();
-        Logger.showActualMarking(true);
-        Logger.voidLine();
-        simulationState = 0;
-        Monitor.releaseLoggerSemaphore();
     }
 
     public static final void updatePolicy(Float[] probabilities) {
