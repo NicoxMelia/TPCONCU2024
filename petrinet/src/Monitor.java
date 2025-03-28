@@ -58,7 +58,7 @@ public class Monitor implements MonitorInterface {
         simulationIsRunning = true;
         Scanner scanner = new Scanner(System.in);
         while (simulationIsRunning) {
-            System.out.print("Enter transition ID to fire (or 'exit' to quit): ");
+            System.out.print("                   >>> | Enter transition ID to fire ('exit'=quit): ");
             String input = scanner.nextLine();
             if (input.equals("exit")) {
                 simulationIsRunning = false;
@@ -71,12 +71,12 @@ public class Monitor implements MonitorInterface {
                         Logger.incrementTransitionFireCounter(PetriNet.getTransitions().get(transitionId));
                         Logger.showTransitionFiring(PetriNet.getTransitions().get(transitionId), true);
                     } else {
-                        System.out.println("Transition cannot be fired.");
+                        System.out.println("                   >>> | ERROR: Transition cannot be fired.");
                     }
                 } catch (NumberFormatException e) {
-                    System.out.println("Invalid input.");
+                    System.out.println("                   >>> | ERROR: Invalid input.");
                 } catch (IndexOutOfBoundsException e) {
-                    System.out.println("Invalid input.");
+                    System.out.println("                   >>> | ERROR: Invalid input.");
                 }
             }
         }
