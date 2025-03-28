@@ -8,7 +8,7 @@ public class Monitor implements MonitorInterface {
      * VARIABLES
      */
 
-    // Indicates the state of the simulation: false - stopped, true - running
+    // Indicates the state of the simulation: 'false'=stopped, 'true'=running
     private static Boolean simulationIsRunning;
 
     /*
@@ -87,10 +87,12 @@ public class Monitor implements MonitorInterface {
     }
 
     @Override
-    public final synchronized void fireTransition(Integer transitionId) {
+    public final synchronized Boolean fireTransition(Integer transitionId) {
         if (PetriNet.getTransitions().get(transitionId).canFire()) {
             PetriNet.getTransitions().get(transitionId).fireTransition();
+            return true;
         }
+        return false;
     }
 
     public static final void getPlaceSemaphore(ArrayList<Place> places) {

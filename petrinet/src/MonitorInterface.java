@@ -4,5 +4,5 @@ public interface MonitorInterface {
      * METHODS
      */
     
-    public abstract void fireTransition(Integer transitionId);
+    public abstract Boolean fireTransition(Integer transitionId);
 }
