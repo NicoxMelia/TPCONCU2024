@@ -26,7 +26,7 @@ public class Logger {
      */
 
     public static final void initializeLogger() {
-        startTime = System.currentTimeMillis();
+        startTime = null;
         transitionFireCounters = new ArrayList<>();
         for (int i = 0; i < PetriNet.getTransitions().size(); i++) {
             transitionFireCounters.add(0);
@@ -238,6 +238,8 @@ public class Logger {
      */
 
     public static final Long getStartTime() { return startTime; }
+
+    public static final void setStartTime(Long startTime) { Logger.startTime = startTime; }
 
     public static final ArrayList<Integer> getTransitionFireCounters() { return transitionFireCounters; }
 

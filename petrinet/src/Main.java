@@ -30,7 +30,7 @@ public class Main {
         }
         scanner.close();
 
-        // Show end of manual mode
+        // Show end of the program
         System.out.println("Program successfully finished!");
         return;
     }

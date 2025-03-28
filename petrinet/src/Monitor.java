@@ -26,6 +26,7 @@ public class Monitor implements MonitorInterface {
     public static final void startSimulation() {
 
         // Show start of simulation
+        Logger.setStartTime(System.currentTimeMillis());
         Logger.showStartSimulation(true);
 
         // Start simulation
@@ -49,7 +50,8 @@ public class Monitor implements MonitorInterface {
 
     public static final void startManualMode() {
     
-        // Show start of manual mode
+        // Show start of manual mod
+        Logger.setStartTime(System.currentTimeMillis());
         Logger.showStartSimulation(true);
 
         // Start manual mode
