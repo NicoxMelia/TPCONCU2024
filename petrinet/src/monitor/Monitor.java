@@ -1,5 +1,13 @@
+package petrinet.src.monitor;
+
+import petrinet.src.Main;
+import petrinet.src.models.PetriNet;
+import petrinet.src.models.Place;
+import petrinet.src.models.Segment;
+import petrinet.src.threads.SegmentThread;
+import petrinet.src.utils.Logger;
+
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Monitor implements MonitorInterface {
 
@@ -24,7 +32,7 @@ public class Monitor implements MonitorInterface {
     public static final void initializeMonitor() {
         threads = new ArrayList<>();
         for (Segment segment : PetriNet.getSegments()) {
-            threads.add(new Thread(segment));
+            threads.add(new Thread(new SegmentThread(segment)));
         }
         threadsState = new ArrayList<>();
         for (int i = 0; i < threads.size(); i++) {
@@ -33,20 +41,16 @@ public class Monitor implements MonitorInterface {
     }
 
     public static final void startSimulationMode() {
-
-        // Show start of simulation mode
+        // Log start of simulation mode
         Logger.setStartTime(System.currentTimeMillis());
-        Logger.showThreadsState();
-        Logger.showStartSimulation(true);
-
+        Logger.logStartSimulation(true);
         // Start simulation mode
         for (Thread thread : threads) {
             thread.start();
             Monitor.acquireLogger();
-            Logger.showThreadsState();
+            Logger.logThreadsState();
             Monitor.releaseLogger();
         }
-
         // Wait for all segments to finish
         for (Thread thread : threads) {
             try {
@@ -55,26 +59,18 @@ public class Monitor implements MonitorInterface {
                 e.printStackTrace();
             }
         }
-
-        // Show end of simulation mode
-        Logger.showEndSimulation(false);
-        Logger.showThreadsState();
+        // Log end of simulation mode
+        Logger.logEndSimulation(true);
     }
 
     public static final void startManualMode() {
-    
-        // Show start of manual mode
+        // Log start of manual mode
         Logger.setStartTime(System.currentTimeMillis());
-        Logger.showStartSimulation(true);
-
+        Logger.logStartSimulation(true);
         // Start manual mode
-        Boolean isRunning = true;
-        Scanner scanner = new Scanner(System.in);
-        while (isRunning) {
-            System.out.print("                                   >>> | Enter transition ID to fire ('exit'=quit): ");
-            String input = scanner.nextLine();
+        while (true) {
+            String input = Main.getUserInterface().requestTransitionToFire();
             if (input.equals("exit")) {
-                isRunning = false;
                 break;
             } else {
                 try {
@@ -82,24 +78,19 @@ public class Monitor implements MonitorInterface {
                     if (PetriNet.getTransitions().get(transitionId).canFire()) {
                         PetriNet.getTransitions().get(transitionId).fireTransition();
                         Logger.incrementTransitionFireCounter(transitionId);
-                        Logger.showTransitionFiring(
-                                PetriNet.getTransitions().get(transitionId),
-                                true,
-                                false);
+                        Logger.logTransitionFiring(PetriNet.getTransitions().get(transitionId), true, false);
                     } else {
-                        System.out.println("                                   >>> | ERROR: Transition cannot be fired.");
+                        Main.getUserInterface().showErrorMessage(1);
                     }
                 } catch (NumberFormatException e) {
-                    System.out.println("                                   >>> | ERROR: Invalid input.");
+                    Main.getUserInterface().showErrorMessage(0);
                 } catch (IndexOutOfBoundsException e) {
-                    System.out.println("                                   >>> | ERROR: Invalid input.");
+                    Main.getUserInterface().showErrorMessage(0);
                 }
             }
         }
-        scanner.close();
-
-        // Show end of manual mode
-        Logger.showEndSimulation(true);
+        // Log end of manual mode
+        Logger.logEndSimulation(true);
     }
 
     @Override
@@ -107,10 +98,7 @@ public class Monitor implements MonitorInterface {
         if (PetriNet.getTransitions().get(transitionId).canFire()) {
             PetriNet.getTransitions().get(transitionId).fireTransition();
             Logger.incrementTransitionFireCounter(transitionId);
-            Logger.showTransitionFiring(
-                    PetriNet.getTransitions().get(transitionId),
-                    true,
-                    false);
+            Logger.logTransitionFiring(PetriNet.getTransitions().get(transitionId), true, false);
             return true;
         }
         return false;
@@ -152,11 +140,5 @@ public class Monitor implements MonitorInterface {
 
     public static final ArrayList<Integer> getThreadsState() { return threadsState; }
 
-    public static final void setThreadState(
-            Integer threadId,
-            Integer state) {
-        
-        threadsState.set(threadId, state);
-        
-    }
+    public static final void setThreadState(Integer threadId, Integer state) { threadsState.set(threadId, state); }
 }

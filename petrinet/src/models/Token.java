@@ -1,3 +1,5 @@
+package petrinet.src.models;
+
 public class Token {
 
     /*
@@ -11,10 +13,7 @@ public class Token {
      * CONSTRUCTORS
      */
 
-    public Token(
-            Integer tokenId,
-            Boolean isTracked) {
-
+    public Token(Integer tokenId, Boolean isTracked) {
         this.tokenId = tokenId;
         this.isTracked = isTracked;
     }

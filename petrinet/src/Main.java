@@ -1,41 +1,50 @@
-import java.util.Scanner;
+package petrinet.src;
+
+import petrinet.src.models.PetriNet;
+import petrinet.src.models.Policy;
+import petrinet.src.monitor.Monitor;
+import petrinet.src.userinterface.ConsoleUserInterface;
+import petrinet.src.userinterface.UserInterface;
+import petrinet.src.utils.Logger;
 
 public class Main {
+
+    /*
+     * VARIABLES
+     */
+
+    private static UserInterface userInterface;
     
     /*
      * MAIN METHOD
      */
     
-    public static void main(String args[]) {
-
-        // Initialize the PetriNet, policy, logger, and monitor
+    public static final void main(String args[]) {
+        // Initialize the User Interface by default, PetriNet, Policy, Logger and Monitor
+        userInterface = new ConsoleUserInterface();
+        userInterface = userInterface.requestUserInterface();
         PetriNet.initializePetriNet();
         Policy.initializePolicy();
         Logger.initializeLogger();
         Monitor.initializeMonitor();
-        
-        // Selection and launching of simulation mode or manual mode
-        System.out.println("=======================================|");
-        System.out.println(" MODE SELECTION                        |");
-        System.out.println("=======================================|");
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            System.out.print("                                   >>> | Select mode ('0'=Simulation mode, '1'=Manual mode): ");
-            String input = scanner.nextLine();
-            if (input.equals("0")) {
+        // Selection of mode
+        switch (userInterface.requestModeSelection()) {
+            case "0":
                 Monitor.startSimulationMode();
                 break;
-            } else if (input.equals("1")) {
+            case "1":
                 Monitor.startManualMode();
                 break;
-            } else {
-                System.out.println("                                   >>> | ERROR: Invalid input.");
-            }
         }
-        scanner.close();
-
-        // Show end of the program
-        System.out.println("                                   >>> | Program successfully finished!");
+        // End of the program
         return;
     }
+
+    /*
+     * GETTERS AND SETTERS
+     */
+
+    public static final UserInterface getUserInterface() { return userInterface; }
+
+    public static final void setUserInterface(UserInterface userInterface) { Main.userInterface = userInterface; }
 }
