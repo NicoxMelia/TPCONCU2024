@@ -40,7 +40,7 @@ public class Setup {
         1  // P14
     };
     private static final Integer[] INITIAL_MARKING = {
-        8, // P0
+        5, // P0
         1, // P1
         0, // P2
         0, // P3
@@ -83,23 +83,28 @@ public class Setup {
         {  9,   14  }, // S4
         {  14,  0   }  // S5
     };
-    /*
-    private static final Integer[][] DELAY_TIME_LIMITS_MATRIX = {
-        // Min  Max
-        {  10,  10  }, // T0
-        {  20,  50  }, // T1
-        {  10,  10  }, // T2
-        {  10,  10  }, // T3
-        {  20,  50  }, // T4
-        {  20,  50  }, // T5
-        {  10,  10  }, // T6
-        {  10,  10  }, // T7
-        {  20,  50  }, // T8
-        {  20,  50  }, // T9
-        {  20,  50  }, // T10
-        {  10,  10  }  // T11
-    };
-    */
+    // private static final Integer[][] DELAY_TIME_LIMITS_MATRIX = {
+    //     // Min  Max
+    //     {  10,  10  }, // T0
+    //     {  20,  50  }, // T1
+    //     {  10,  10  }, // T2
+    //     {  10,  10  }, // T3
+    //     {  20,  50  }, // T4
+    //     {  20,  50  }, // T5
+    //     {  10,  10  }, // T0
+    //     {  20,  50  }, // T1
+    //     {  10,  10  }, // T2
+    //     {  10,  10  }, // T3
+    //     {  20,  50  }, // T4
+    //     {  20,  50  }, // T5
+    //     {  10,  10  }, // T6
+    //     {  10,  10  }, // T7
+    //     {  20,  50  }, // T8
+    //     {  20,  50  }, // T9
+    //     {  20,  50  }, // T10
+    //     {  10,  10  }  // T11
+    // };
+
     private static final Integer[][] DELAY_TIME_LIMITS_MATRIX = {
         // Min  Max
         {  0,   0  }, // T0
@@ -115,14 +120,17 @@ public class Setup {
         {  0,   0  }, // T10
         {  0,   0  }  // T11
     };
-    private static final Float[] PROBABILITIES = {
-        1.00f, // S0
-        0.75f, // S1
-        0.25f, // S2
-        0.80f, // S3
-        0.20f, // S4
-        1.00f  // S5
-    };
+
+    // ESTO NO SE USA MAS, LO DEJO PQ NO ES MI RAMA
+    // private static final Float[] PROBABILITIES = {
+    //     1.00f, // S0
+    //     0.75f, // S1
+    //     0.25f, // S2
+    //     0.80f, // S3
+    //     0.20f, // S4
+    //     1.00f  // S5
+    // };
+
     private static final Integer MAX_TRANSITION_FIRE_COUNTER = 186;
 
     /*
@@ -143,7 +151,7 @@ public class Setup {
 
     public static final Integer[][] getDelayTimeLimitsMatrix() { return DELAY_TIME_LIMITS_MATRIX; }
 
-    public static final Float[] getProbabilities() { return PROBABILITIES; }
+    // public static final Float[] getProbabilities() { return PROBABILITIES; }
 
     public static final Integer getMaxTransitionFireCounter() { return MAX_TRANSITION_FIRE_COUNTER; }
 }

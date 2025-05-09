@@ -5,6 +5,7 @@ public class Main {
      */
     
     public static void main(String args[]) {
+        //CAMBIAR INICIALIZADOR Y METER EN CONSTRUCTOR DE LA CLASE
         PetriNet.initializePetriNet();
         Policy.initializePolicy();
         Logger.initializeLogger();

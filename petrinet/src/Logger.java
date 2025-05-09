@@ -113,8 +113,12 @@ public class Logger {
         System.out.println("=======================|");
         System.out.println(" POLICY                |");
         System.out.println("=======================|");
-        for (int i = 0; i < Policy.getProbabilites().length; i++) {
-            System.out.println("Probability " + i + " -------- | " + Policy.getProbabilites()[i]);
+        System.out.println("Politica seleccionada:");
+        if (Policy.getPolicyId() == 0) {
+            System.out.println("Balanceada");
+        }
+        else{
+            System.out.println("Priorizada");
         }
     }
 
