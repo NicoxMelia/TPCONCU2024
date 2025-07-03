@@ -8,12 +8,10 @@ public class GraphicUserInterface implements UserInterface {
      * METHODS
      */
 
-    public GraphicUserInterface() {
-        super();
-    }
+    public GraphicUserInterface() { }
 
     @Override
-    public final UserInterface requestUserInterface() { return null; }
+    public final String requestUserInterface() { return null; }
 
     @Override
     public final String requestModeSelection() { return null; }
@@ -28,7 +26,10 @@ public class GraphicUserInterface implements UserInterface {
     public final void showTokens() { }
 
     @Override
-    public final void showPlaces(Boolean showMinimal, Boolean showTitle, Boolean showIsTracked) { }
+    public final void showPlaces(
+            Boolean showMinimal,
+            Boolean showTitle,
+            Boolean showIsTracked) { }
     
     @Override
     public final void showTransitions() { }
@@ -37,28 +38,30 @@ public class GraphicUserInterface implements UserInterface {
     public final void showSegments() { }
 
     @Override
-    public final void showPaths() { }
-
-    @Override
     public final void showPolicy() { }
 
     @Override
     public final void showThreadsState() { }
 
     @Override
-    public final void showTransitionFiring(Transition transition, Boolean showMinimal, Boolean showSegmentsCompletionCounters) { }
+    public final void showTransitionFiring(
+            Transition transition,
+            Boolean showMinimal) { }
     
     @Override
-    public final void showStartSimulation(Boolean showMinimal) { }
+    public final void showStartSimulation() { }
 
     @Override
-    public final void showEndSimulation(Boolean showMinimal) { }
+    public final void showEndSimulation() { }
+
+    @Override
+    public final void showTransitionsByToken() { }
 
     @Override
     public final void showElapsedTime() { }
 
     @Override
-    public final void showTransitionsByToken() { }
+    public final void showPaths(Boolean showTitle) { }
 
     @Override
     public final void showTransitionFireCounters() { }

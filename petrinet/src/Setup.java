@@ -58,6 +58,10 @@ public class Setup {
         0, // P13
         0  // P14
     };
+    private static final Integer[] PETRINET_PLACE_LIMITS = {
+        0,  // P_i
+        14, // P_o
+    };
     private static final Integer[][] PLACES_SEGMENTS_MATRIX = {
         // P0  P1  P2  P3  P4  P5  P6  P7  P8  P9  P10 P11 P12 P13 P14
         {  1,  1,  1,  1,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0  }, // S0
@@ -85,7 +89,7 @@ public class Setup {
         {  9,   14  }, // S4
         {  14,  0   }  // S5
     };
-
+    /*
     private static final Integer[][] DELAY_TIME_LIMITS_MATRIX = {
         // Min  Max
         {  0,   0   }, // T0
@@ -101,7 +105,7 @@ public class Setup {
         {  5,   40  }, // T10
         {  0,   0   }  // T11
     };
-    /*
+    */
     private static final Integer[][] DELAY_TIME_LIMITS_MATRIX = {
         // Min  Max
         {  0,   0  }, // T0
@@ -117,7 +121,6 @@ public class Setup {
         {  0,   0  }, // T10
         {  0,   0  }  // T11
     };
-    */
     private static final Float[] PROBABILITIES = {
         1.00f, // S0
         0.50f, // S1
@@ -148,6 +151,8 @@ public class Setup {
 
     public static final Integer[] getInitialMarking() { return INITIAL_MARKING; }
 
+    public static final Integer[] getPetrinetPlaceLimits() { return PETRINET_PLACE_LIMITS; }
+    
     public static final Integer[][] getPlacesSegmentsMatrix() { return PLACES_SEGMENTS_MATRIX; }
 
     public static final Integer[][] getTransitionsSegmentsMatrix() { return TRANSITIONS_SEGMENTS_MATRIX; }

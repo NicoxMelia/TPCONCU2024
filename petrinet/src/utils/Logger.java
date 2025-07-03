@@ -1,8 +1,10 @@
 package petrinet.src.utils;
 
 import petrinet.src.Main;
+import petrinet.src.Setup;
 import petrinet.src.models.PetriNet;
 import petrinet.src.models.Place;
+import petrinet.src.models.Segment;
 import petrinet.src.models.Token;
 import petrinet.src.models.Transition;
 
@@ -65,8 +67,14 @@ public class Logger {
         Main.getUserInterface().showTokens();
     }
 
-    public static final void logPlaces(Boolean logMinimal, Boolean logTitle, Boolean logIsTracked) {
-        Main.getUserInterface().showPlaces(logMinimal, logTitle, logIsTracked);
+    public static final void logPlaces(
+            Boolean logMinimal,
+            Boolean logTitle,
+            Boolean logIsTracked) {
+        Main.getUserInterface().showPlaces(
+                logMinimal,
+                logTitle,
+                logIsTracked);
     }
 
     public static final void logTransitions() {
@@ -78,7 +86,7 @@ public class Logger {
     }
 
     public static final void logPaths() {
-        Main.getUserInterface().showPaths();
+        Main.getUserInterface().showPaths(true);
     }
 
     public static final void logPolicy() {
@@ -89,16 +97,37 @@ public class Logger {
         Main.getUserInterface().showThreadsState();
     }
 
-    public static final void logTransitionFiring(Transition transition, Boolean logMinimal, Boolean logSegmentsCompletionCounters) {
-        Main.getUserInterface().showTransitionFiring(transition, logMinimal, logSegmentsCompletionCounters);
+    public static final void logTransitionFiring(
+            Segment segment,
+            Transition transition,
+            Integer trackedTokenId,
+            Boolean logMinimal) {
+        // Add the transition to the list of transitions fired by the tracked token
+        transitionsByTokenLogs.get(trackedTokenId).add(transition.getTransitionId());
+        // Increment the counter of the fired transition
+        transitionFireCounters.set(
+                transition.getTransitionId(),
+                transitionFireCounters.get(transition.getTransitionId()) + 1);
+        // Increment the counter of the segment when fires the last transition of the segment
+        if (transition == segment.getTransitionLimits()[1]) {
+            segmentCompletionCounters.set(
+                    segment.getSegmentId(),
+                    segmentCompletionCounters.get(segment.getSegmentId()) + 1);
+        }
+        // Increment the counter of the followed actual path when fires the last transition of a path
+        // CODE TO BE COMPLETED
+        // Show the transition firing
+        Main.getUserInterface().showTransitionFiring(
+                transition,
+                logMinimal);
     }
 
-    public static final void logStartSimulation(Boolean logMinimal) {
-        Main.getUserInterface().showStartSimulation(logMinimal);
+    public static final void logStartSimulation() {
+        Main.getUserInterface().showStartSimulation();
     }
 
-    public static final void logEndSimulation(Boolean logMinimal) {
-        Main.getUserInterface().showEndSimulation(logMinimal);
+    public static final void logEndSimulation() {
+        Main.getUserInterface().showEndSimulation();
     }
 
     public static final void logElapsedTime() {
@@ -117,23 +146,19 @@ public class Logger {
         Main.getUserInterface().showSegmentCompletionCounters();
     }
 
-    public static final void addTransitionByTokenLog(Integer tokenId, Integer transitionId) {
-        transitionsByTokenLogs.get(tokenId).add(transitionId);
-    }
-
-    public static final void incrementTransitionFireCounter(Integer transitionId) {
-        transitionFireCounters.set(transitionId, transitionFireCounters.get(transitionId) + 1);
-    }
-
-    public static final void incrementSegmentCompletionCounter(Integer segmentId) {
-        segmentCompletionCounters.set(segmentId, segmentCompletionCounters.get(segmentId) + 1);
-    }
-
     private static final void initializePaths() {
-        Logger.findPaths(PetriNet.getPlaces().get(0), PetriNet.getPlaces().get(0), new ArrayList<>(), new ArrayList<>());
+        Logger.findPaths(
+                PetriNet.getPlaces().get(Setup.getPetrinetPlaceLimits()[0]),
+                PetriNet.getPlaces().get(Setup.getPetrinetPlaceLimits()[0]),
+                new ArrayList<>(),
+                new ArrayList<>());
     }
 
-    private static final void findPaths(Place startPlace, Place currentPlace, ArrayList<Integer> currentPath, ArrayList<Integer> visitedTransition) {
+    private static final void findPaths(
+            Place startPlace,
+            Place currentPlace,
+            ArrayList<Integer> currentPath,
+            ArrayList<Integer> visitedTransition) {
         for (Transition transition : PetriNet.getTransitions()) {
             if (transition.getInputPlaces().contains(currentPlace) && !visitedTransition.contains(transition.getTransitionId())) {
                 visitedTransition.add(transition.getTransitionId());
@@ -143,7 +168,11 @@ public class Logger {
                         if (nextPlace.equals(startPlace)) {
                             paths.add(new ArrayList<>(currentPath));
                         } else {
-                            Logger.findPaths(startPlace, nextPlace, currentPath, visitedTransition);
+                            Logger.findPaths(
+                                    startPlace,
+                                    nextPlace,
+                                    currentPath,
+                                    visitedTransition);
                         }
                     }
                 }

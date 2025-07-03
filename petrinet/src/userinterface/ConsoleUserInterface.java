@@ -24,7 +24,6 @@ public class ConsoleUserInterface implements UserInterface {
      */
 
     public ConsoleUserInterface() {
-        super();
         this.scanner = new Scanner(System.in);
     }
 
@@ -33,20 +32,20 @@ public class ConsoleUserInterface implements UserInterface {
      */
 
     @Override
-    public final UserInterface requestUserInterface() {
+    public final String requestUserInterface() {
         System.out.println("=======================================|");
         System.out.println(" USER INTERFACE SELECTION              |");
         System.out.println("=======================================|");
-        while (true) {
-            System.out.print("                                   >>> | Select user interface ('0'=Console, '1'=GUI): ");
-            String input = scanner.nextLine();
-            if (input.equals("0")) {
-                return new ConsoleUserInterface();
-            } else if (input.equals("1")) {
-                return new GraphicUserInterface();
-            } else {
-                System.out.println("                                   >>> | ERROR: Invalid input.");
-            }
+        System.out.print("                                   >>> | Select user interface ('0'=Console, '1'=GUI, default=Console): ");
+        String input = scanner.nextLine();
+        switch (input) {
+            case "0":
+                return "0";
+            case "1":
+                return "1";
+            default:
+                this.showErrorMessage(1);
+                return "0";
         }
     }
 
@@ -55,16 +54,16 @@ public class ConsoleUserInterface implements UserInterface {
         System.out.println("=======================================|");
         System.out.println(" MODE SELECTION                        |");
         System.out.println("=======================================|");
-        while (true) {
-            System.out.print("                                   >>> | Select mode ('0'=Simulation mode, '1'=Manual mode): ");
-            String input = scanner.nextLine();
-            if (input.equals("0")) {
+        System.out.print("                                   >>> | Select mode ('0'=Simulation mode, '1'=Manual mode, default=Simualtion mode): ");
+        String input = scanner.nextLine();
+        switch (input) {
+            case "0":
                 return "0";
-            } else if (input.equals("1")) {
+            case "1":
                 return "1";
-            } else {
-                System.out.println("                                   >>> | ERROR: Invalid input.");
-            }
+            default:
+                this.showErrorMessage(1);
+                return "0";
         }
     }
 
@@ -78,9 +77,12 @@ public class ConsoleUserInterface implements UserInterface {
     public final void showErrorMessage(Integer code) {
         switch (code) {
             case 0:
-                System.out.println("                                   >>> | ERROR: Invalid input.");
+                System.out.println("                                   >>> | ERROR: Invalid input. Requesting again.");
                 break;
             case 1:
+                System.out.println("                                   >>> | ERROR: Invalid input. Setting default.");
+                break;
+            case 2:
                 System.out.println("                                   >>> | ERROR: Transition cannot fire.");
                 break;
             default:
@@ -106,7 +108,10 @@ public class ConsoleUserInterface implements UserInterface {
     }
 
     @Override
-    public final void showPlaces(Boolean showMinimal, Boolean showTitle, Boolean showIsTracked) {
+    public final void showPlaces(
+            Boolean showMinimal,
+            Boolean showTitle,
+            Boolean showIsTracked) {
         if (!showMinimal) {
             if (showTitle) {
                 System.out.println("=======================================|");
@@ -134,12 +139,16 @@ public class ConsoleUserInterface implements UserInterface {
             System.out.print("                                       | ");
             Integer totalTrackedTokens = 0;
             for (Place place : PetriNet.getPlaces()) {
-                System.out.printf("%-4d| ", place.getTokens().size());
+                System.out.printf(
+                        "%-4d| ",
+                        place.getTokens().size());
                 if (place.getIsTracked()) {
                     totalTrackedTokens += place.getTokens().size();
                 }
             }
-            System.out.printf("%-4d  |", totalTrackedTokens);
+            System.out.printf(
+                    "%-4d  |",
+                    totalTrackedTokens);
             System.out.println();
         }
     }
@@ -195,20 +204,6 @@ public class ConsoleUserInterface implements UserInterface {
     }
 
     @Override
-    public final void showPaths() {
-        System.out.println("=======================================|");
-        System.out.println(" PATHS                                 |");
-        System.out.println("=======================================|");
-        for (int i = 0; i < Logger.getPaths().size(); i++) {
-            System.out.print("Path " + i + " ------------------------------- | ");
-            for (Integer segmentId : Logger.getPaths().get(i)) {
-                System.out.print(segmentId + " ");
-            }
-            System.out.println("\n |---------------------------> Counter | " + Logger.getPathsCounters().get(i));
-        }
-    }
-
-    @Override
     public final void showPolicy() {
         System.out.println("=======================================|");
         System.out.println(" POLICY                                |");
@@ -229,54 +224,61 @@ public class ConsoleUserInterface implements UserInterface {
     }
 
     @Override
-    public final void showTransitionFiring(Transition transition, Boolean showMinimal, Boolean showSegmentsCompletionCounters) {
+    public final void showTransitionFiring(
+            Transition transition,
+            Boolean showMinimal) {
         System.out.println("=======================================|");
         System.out.println(" TRANSITION FIRED                      |");
         System.out.println("=======================================|");
         this.showElapsedTime();
         System.out.println("Transition fired --------------------- | " + transition.getTransitionId());
         this.showTransitionFireCounters();
-        if (showSegmentsCompletionCounters) {
-            this.showSegmentCompletionCounters();
-        }
-        this.showPlaces(showMinimal, false, false);
+        this.showSegmentCompletionCounters();
+        this.showPlaces(
+                showMinimal,
+                false,
+                false);
+        this.showPaths(false);
     }
 
     @Override
-    public final void showStartSimulation(Boolean showMinimal) {
+    public final void showStartSimulation() {
         System.out.println("=======================================|");
         System.out.println(" START OF SIMULATION                   |");
         System.out.println("=======================================|");
         this.showElapsedTime();
         this.showTransitionFireCounters();
         this.showSegmentCompletionCounters();
-        this.showPlaces(showMinimal, false, false);
+        this.showPlaces(
+                true,
+                false,
+                false);
         this.showThreadsState();
         this.showTransitionsByToken();
+        this.showPaths(true);
     }
 
     @Override
-    public final void showEndSimulation(Boolean showMinimal) {
+    public final void showEndSimulation() {
         System.out.println("=======================================|");
         System.out.println(" END OF SIMULATION                     |");
         System.out.println("=======================================|");
         this.showElapsedTime();
         this.showTransitionFireCounters();
         this.showSegmentCompletionCounters();
-        this.showPlaces(showMinimal, false, false);
+        this.showPlaces(
+                true,
+                false,
+                false);
         this.showThreadsState();
         this.showTransitionsByToken();
-    }
-
-    @Override
-    public final void showElapsedTime() {
-        System.out.println("Elapsed time ------------------------- | " + (System.currentTimeMillis() - Logger.getStartTime()) + " [ms]");
+        this.showPaths(true);
     }
 
     @Override
     public final void showTransitionsByToken() {
         System.out.println("=======================================|");
-        System.out.println(" TRANSITIONS BY TOKEN                  |");
+        System.out.println(" TRANSITIONS TAKEN BY TOKEN            |");
         System.out.println("=======================================|");
         for (int i = 0; i < Logger.getTransitionsByTokenLogs().size(); i++) {
             System.out.println("Token ID ----------------------------- | " + i);
@@ -292,11 +294,34 @@ public class ConsoleUserInterface implements UserInterface {
     }
 
     @Override
+    public final void showElapsedTime() {
+        System.out.println("Elapsed time ------------------------- | " + (System.currentTimeMillis() - Logger.getStartTime()) + " [ms]");
+    }
+
+    @Override
+    public final void showPaths(Boolean showTitle) {
+        if (showTitle) {
+            System.out.println("=======================================|");
+            System.out.println(" PATHS                                 |");
+            System.out.println("=======================================|");
+        }
+        for (int i = 0; i < Logger.getPaths().size(); i++) {
+            System.out.print("Path " + i + " ------------------------------- | ");
+            for (Integer segmentId : Logger.getPaths().get(i)) {
+                System.out.print(segmentId + " ");
+            }
+            System.out.println("\n |---------------------------> Counter | " + Logger.getPathsCounters().get(i));
+        }
+    }
+
+    @Override
     public final void showTransitionFireCounters() {
         System.out.println("Transition counters ------------------ | T0  | T1  | T2  | T3  | T4  | T5  | T6  | T7  | T8  | T9  | T10 | T11 |");
         System.out.print("                                       | ");
         for (int i = 0; i < Logger.getTransitionFireCounters().size(); i++) {
-            System.out.printf("%-4d| ", Logger.getTransitionFireCounters().get(i));
+            System.out.printf(
+                    "%-4d| ",
+                    Logger.getTransitionFireCounters().get(i));
         }
         System.out.println();
     }
@@ -306,7 +331,9 @@ public class ConsoleUserInterface implements UserInterface {
         System.out.println("Segment counters --------------------- | S0  | S1  | S2  | S3  | S4  | S5  |");
         System.out.print("                                       | ");
         for (int i = 0; i < Logger.getSegmentCompletionCounters().size(); i++) {
-            System.out.printf("%-4d| ", Logger.getSegmentCompletionCounters().get(i));
+            System.out.printf(
+                    "%-4d| ",
+                    Logger.getSegmentCompletionCounters().get(i));
         }
         System.out.println();
     }
