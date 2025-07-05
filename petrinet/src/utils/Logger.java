@@ -114,6 +114,28 @@ public class Logger {
                     segment.getSegmentId(),
                     segmentCompletionCounters.get(segment.getSegmentId()) + 1);
         }
+
+        // Verificar si esta transición completa algún path para el token rastreado
+        ArrayList<Integer> transicionesDelToken = transitionsByTokenLogs.get(trackedTokenId);
+        for (int i = 0; i < paths.size(); i++) {
+            ArrayList<Integer> path = paths.get(i);
+            // Verificar si la secuencia de transiciones del token coincide con este path
+            if (transicionesDelToken.size() >= path.size()) {
+                boolean pathCompletado = true;
+                // Verificar si las últimas 'path.size()' transiciones coinciden con el path
+                for (int j = 0; j < path.size(); j++) {
+                    if (!transicionesDelToken.get(transicionesDelToken.size() - path.size() + j).equals(path.get(j))) {
+                        pathCompletado = false;
+                        break;
+                    }
+                }
+                if (pathCompletado) {
+                    // Incrementar el contador para este path
+                    pathsCounters.set(i, pathsCounters.get(i) + 1);
+                }
+            }
+        }
+
         // Increment the counter of the followed actual path when fires the last transition of a path
         // CODE TO BE COMPLETED
         // Show the transition firing

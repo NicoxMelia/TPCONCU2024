@@ -42,7 +42,7 @@ public class Setup {
         1  // P14
     };
     private static final Integer[] INITIAL_MARKING = {
-        8, // P0
+        5, // P0
         1, // P1
         0, // P2
         0, // P3
@@ -93,16 +93,16 @@ public class Setup {
     private static final Integer[][] DELAY_TIME_LIMITS_MATRIX = {
         // Min  Max
         {  0,   0   }, // T0
-        {  5,   40  }, // T1
+        {  5,   40  }, // T1 Temporal
         {  0,   0   }, // T2
         {  0,   0   }, // T3
-        {  5,   40  }, // T4
-        {  5,   40  }, // T5
+        {  5,   40  }, // T4 Temporal
+        {  5,   40  }, // T5 Temporal
         {  0,   1   }, // T6
         {  0,   0   }, // T7
-        {  5,   40  }, // T8
-        {  5,   40  }, // T9
-        {  5,   40  }, // T10
+        {  5,   40  }, // T8 Temporal
+        {  5,   40  }, // T9 Temporal
+        {  5,   40  }, // T10 Temporal
         {  0,   0   }  // T11
     };
     */
@@ -121,6 +121,7 @@ public class Setup {
         {  0,   0  }, // T10
         {  0,   0  }  // T11
     };
+    /* 
     private static final Float[] PROBABILITIES = {
         1.00f, // S0
         0.50f, // S1
@@ -129,7 +130,7 @@ public class Setup {
         0.50f, // S4
         1.00f  // S5
     };
-    /*
+    */
     private static final Float[] PROBABILITIES = {
         1.00f, // S0
         0.75f, // S1
@@ -138,7 +139,7 @@ public class Setup {
         0.20f, // S4
         1.00f  // S5
     };
-    */
+    
     private static final Integer MAX_SEGMENTS_COMPLETION_COUNTER = 186;
 
     /*
