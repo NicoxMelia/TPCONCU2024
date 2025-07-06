@@ -23,26 +23,36 @@ public class Main {
     public static final void main(String args[]) {
         // Initialize the User Interface, PetriNet, Policy, Logger and Monitor
         userInterface = new ConsoleUserInterface();
-        switch (userInterface.requestUserInterface()) {
+        // Selection of user interface
+        // switch (userInterface.requestUserInterface()) {
+        //     case "0":
+        //         userInterface = new ConsoleUserInterface();
+        //         break;
+        //     case "1":
+        //         userInterface = new GraphicUserInterface();
+        // }
+        PetriNet.initializePetriNet();
+        // Selection of Policy
+        switch (userInterface.requestPolicySelection()) {
             case "0":
-                userInterface = new ConsoleUserInterface();
+                Setup.setProbabilityPolicy("0");
                 break;
             case "1":
-                userInterface = new GraphicUserInterface();
+                Setup.setProbabilityPolicy("1");
+                break;
         }
-        PetriNet.initializePetriNet();
         Policy.initializePolicy();
         Logger.initializeLogger();
         Monitor.initializeMonitor();
         // Selection of mode
-        switch (userInterface.requestModeSelection()) {
-            case "0":
-                Monitor.startSimulationMode();
-                break;
-            case "1":
-                Monitor.startManualMode();
-                break;
-        }
+        // switch (userInterface.requestModeSelection()) {
+        //     case "0":
+                 Monitor.startSimulationMode();
+        //         break;
+        //     case "1":
+        //         Monitor.startManualMode();
+        //         break;
+        // }
         // End of the program
         return;
     }

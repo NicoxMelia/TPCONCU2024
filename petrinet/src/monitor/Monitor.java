@@ -47,9 +47,9 @@ public class Monitor implements MonitorInterface {
         // Start simulation mode
         for (Thread thread : threads) {
             thread.start();
-            Monitor.acquireLogger();
-            Logger.logThreadsState();
-            Monitor.releaseLogger();
+            //Monitor.acquireLogger();
+            //Logger.logThreadsState();
+            //Monitor.releaseLogger();
         }
         // Wait for all segments to finish
         for (Thread thread : threads) {

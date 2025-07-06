@@ -121,8 +121,10 @@ public class Setup {
         {  0,   0  }, // T10
         {  0,   0  }  // T11
     };
-    /* 
-    private static final Float[] PROBABILITIES = {
+    
+    private static String selectedProbabilityPolicy = "0";
+
+    private static final Float[] PROBABILITIES_BALANCED = {
         1.00f, // S0
         0.50f, // S1
         0.50f, // S2
@@ -130,8 +132,8 @@ public class Setup {
         0.50f, // S4
         1.00f  // S5
     };
-    */
-    private static final Float[] PROBABILITIES = {
+    
+    private static final Float[] PROBABILITIES_WEIGHTED = {
         1.00f, // S0
         0.75f, // S1
         0.25f, // S2
@@ -162,7 +164,9 @@ public class Setup {
 
     public static final Integer[][] getDelayTimeLimitsMatrix() { return DELAY_TIME_LIMITS_MATRIX; }
 
-    public static final Float[] getProbabilities() { return PROBABILITIES; }
+    public static final void setProbabilityPolicy(String policy) { selectedProbabilityPolicy = policy; }
+    
+    public static final Float[] getProbabilities() { return selectedProbabilityPolicy.equals("0") ? PROBABILITIES_BALANCED : PROBABILITIES_WEIGHTED; }
 
     public static final Integer getMaxSegmentCompletionCounter() { return MAX_SEGMENTS_COMPLETION_COUNTER; }
 }

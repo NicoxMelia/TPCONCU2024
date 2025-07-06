@@ -45,13 +45,13 @@ public class PetriNet {
                 Setup.getTransitionsSegmentsMatrix(),
                 Setup.getSegmentsPlaceLimitsMatrix());
         // Log creation of tokens, places, transitions and segments
-        Logger.logTokens();
-        Logger.logPlaces(
-                false,
-                true,
-                true);
-        Logger.logTransitions();
-        Logger.logSegments();
+        //Logger.logTokens();
+        // Logger.logPlaces(
+        //         false,
+        //         true,
+        //         true);
+        //Logger.logTransitions();
+        //Logger.logSegments();
     }
 
     private static final void createTokens(

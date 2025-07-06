@@ -10,6 +10,7 @@ public interface UserInterface {
 
     public abstract String requestUserInterface();
     public abstract String requestModeSelection();
+    public abstract String requestPolicySelection();
     public abstract String requestTransitionToFire();
     public abstract void showErrorMessage(Integer code);
     public abstract void showTokens();

@@ -64,9 +64,9 @@ public class SegmentThread implements Runnable {
 
     private void stopSegment() {
         Monitor.setThreadState(segment.getSegmentId(), 0);
-        Monitor.acquireLogger();
-        Logger.logThreadsState();
-        Monitor.releaseLogger();
+        // Monitor.acquireLogger();
+        // Logger.logThreadsState();
+        // Monitor.releaseLogger();
     }
 
     private void processTransition(Transition transition) {
@@ -109,9 +109,9 @@ public class SegmentThread implements Runnable {
             PetriNet.getSegments().stream()
                     .filter(s -> s.getSegmentId() != segment.getSegmentId() && s.getPlaceLimits()[0] == segment.getPlaceLimits()[0])
                     .forEach(s -> Monitor.setThreadState(s.getSegmentId(), 2));
-            Monitor.acquireLogger();
-            Logger.logThreadsState();
-            Monitor.releaseLogger();
+            // Monitor.acquireLogger();
+            // Logger.logThreadsState();
+            // Monitor.releaseLogger();
         }
     }
 

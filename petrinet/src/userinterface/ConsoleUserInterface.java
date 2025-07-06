@@ -68,6 +68,24 @@ public class ConsoleUserInterface implements UserInterface {
     }
 
     @Override
+    public final String requestPolicySelection() {
+        System.out.println("=======================================|");
+        System.out.println(" POLICY SELECTION                      |");
+        System.out.println("=======================================|");
+        System.out.print("                                   >>> | Select policy ('0'= Balanceada, '1'= Priorizada, default= Balanceada): ");
+        String input = scanner.nextLine();
+        switch (input) {
+            case "0":
+                return "0";
+            case "1":
+                return "1";
+            default:
+                this.showErrorMessage(1);
+                return "0";
+        }
+    }
+
+    @Override
     public final String requestTransitionToFire() {
         System.out.print("                                   >>> | Enter transition ID to fire ('exit'=quit): ");
         return scanner.nextLine();
@@ -270,7 +288,7 @@ public class ConsoleUserInterface implements UserInterface {
                 true,
                 false,
                 false);
-        this.showThreadsState();
+        //this.showThreadsState();
         this.showTransitionsByToken();
         this.showPaths(true);
     }
