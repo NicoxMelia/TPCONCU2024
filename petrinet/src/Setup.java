@@ -93,19 +93,20 @@ public class Setup {
     private static final Integer[][] DELAY_TIME_LIMITS_MATRIX = {
         // Min  Max
         {  0,   0   }, // T0
-        {  5,   40  }, // T1 Temporal
+        {  2,   2  }, // T1 Temporal
         {  0,   0   }, // T2
         {  0,   0   }, // T3
-        {  5,   40  }, // T4 Temporal
-        {  5,   40  }, // T5 Temporal
-        {  0,   1   }, // T6
+        {  50,   50  }, // T4 Temporal
+        {  50,   50  }, // T5 Temporal
+        {  0,   0   }, // T6
         {  0,   0   }, // T7
-        {  5,   40  }, // T8 Temporal
-        {  5,   40  }, // T9 Temporal
-        {  5,   40  }, // T10 Temporal
+        {  80,   80   }, // T8 Temporal
+        {  40,  40  }, // T9 Temporal
+        {  100,  100  }, // T10 Temporal
         {  0,   0   }  // T11
     };
     */
+    
     private static final Integer[][] DELAY_TIME_LIMITS_MATRIX = {
         // Min  Max
         {  0,   0  }, // T0

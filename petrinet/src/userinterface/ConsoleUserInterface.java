@@ -10,6 +10,11 @@ import petrinet.src.monitor.Monitor;
 import petrinet.src.utils.Logger;
 
 import java.util.Scanner;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class ConsoleUserInterface implements UserInterface {
 
@@ -295,6 +300,7 @@ public class ConsoleUserInterface implements UserInterface {
 
     @Override
     public final void showTransitionsByToken() {
+        StringBuilder stringLog = new StringBuilder();
         System.out.println("=======================================|");
         System.out.println(" TRANSITIONS TAKEN BY TOKEN            |");
         System.out.println("=======================================|");
@@ -306,8 +312,23 @@ public class ConsoleUserInterface implements UserInterface {
             }
             for (Integer transitionId : Logger.getTransitionsByTokenLogs().get(i)) {
                 System.out.print(transitionId + " ");
+                stringLog.append("T" + transitionId);
             }
             System.out.println();
+        }
+
+        String log = stringLog.toString();
+
+        try {
+            String fileName = "transitions.txt";
+            
+            // Escribir al archivo
+            try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
+                writer.print(log);
+                System.out.println("Transitions by token saved to: " + fileName);
+            }
+        } catch (IOException e) {
+            System.err.println("Error writing to file: " + e.getMessage());
         }
     }
 
@@ -320,11 +341,11 @@ public class ConsoleUserInterface implements UserInterface {
     public final void showPaths(Boolean showTitle) {
         if (showTitle) {
             System.out.println("=======================================|");
-            System.out.println(" PATHS                                 |");
+            System.out.println(" INVARIANTS                            |");
             System.out.println("=======================================|");
         }
         for (int i = 0; i < Logger.getPaths().size(); i++) {
-            System.out.print("Path " + i + " ------------------------------- | ");
+            System.out.print("IT " + i + " --------------------------------- | ");
             for (Integer segmentId : Logger.getPaths().get(i)) {
                 System.out.print(segmentId + " ");
             }
