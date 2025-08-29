@@ -320,7 +320,7 @@ public class ConsoleUserInterface implements UserInterface {
         String log = stringLog.toString();
 
         try {
-            String fileName = "transitions.txt";
+            String fileName = "petrinet/logs/transitions.txt";
             
             // Escribir al archivo
             try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
